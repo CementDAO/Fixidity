@@ -2,11 +2,11 @@ pragma solidity ^0.4.24;
 
 import "./FixidityLib.sol";
 
-library Logarithm {
+library LogarithmLib {
 
     using FixidityLib for FixidityLib.Fixidity;
 
-    function log_e(Fixidity fixidity, int256 v) public pure returns (int256) {
+    function log_e(FixidityLib.Fixidity storage fixidity, int256 v) public view returns (int256) {
         assert(v > 0);
         int256 r = 0;
 
@@ -14,7 +14,7 @@ library Logarithm {
             v = fixidity.safe_multiply(v, fixidity.fixed_e);
             r--;
         }
-        while(v > fixidity_e) {
+        while(v > fixidity.fixed_e) {
             v = fixidity.divide_and_round(v, fixidity.fixed_e);
             r++;
         }
@@ -27,16 +27,17 @@ library Logarithm {
 
         int256 m = fixidity.divide_and_round(fixidity.fixed_1 * v, v + 3 * fixidity.fixed_1);
         r += 2 * m;
-        int256 m_2 = (m * m) / fixidity.fixed_1;
+        int256 m_2 = fixidity.safe_multiply(m, m);
         for(uint8 i = 3; i <= 2 * fixidity.digits + 3; i += 2) {
             m = fixidity.safe_multiply(m, m_2);
-            r += fixidity.divide_and_round(2 * m, fixidity_1 * i);
+            r += fixidity.divide_and_round(2 * m, fixidity.fixed_1 * i);
         }
 
         return r;
     }
 
-    function log_base(Fixidity fixidity, int256 base, int256 v) public pure returns (int256) {
-        return log_e(v) / log_e(base, fixidity.e);
+    function log_base(FixidityLib.Fixidity storage fixidity, int256 base, int256 v) public view returns (int256) {
+        assert(base > 0);
+        return log_e(fixidity, v) / log_e(fixidity, int256(base));
     }
 }
