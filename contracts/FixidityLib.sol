@@ -11,6 +11,7 @@ library FixidityLib {
     int256 constant public fixed_log_10_5 =      698970004336018804786261105275506973;    
     int256 constant public fixed_e =            2718281828459045235360287471352662498;
     int256 constant public fixed_pi =           3141592653589793238462643383279502884;
+    int256 constant public fixed_exp_10 =   22026465794806716516957900645284244000000;
 
 	struct Fixidity {
 		uint8 digits;
@@ -21,6 +22,7 @@ library FixidityLib {
         int256 fixed_log_2_1_5;
 		int256 fixed_e;
         int256 fixed_pi;
+        int256 fixed_exp_10;
 	}
 
     function init(Fixidity storage fixidity, uint8 digits) public {
@@ -34,6 +36,7 @@ library FixidityLib {
         fixidity.fixed_log_2_1_5 = fixed_log_2_1_5 / t;
         fixidity.fixed_e = fixed_e / t;
         fixidity.fixed_pi = fixed_pi / t;
+        fixidity.fixed_exp_10 = fixed_exp_10 / t;
     }
 
     function multiply(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
@@ -69,7 +72,7 @@ library FixidityLib {
         return divide(fixidity, fixidity.fixed_1, a);
     }
 
-    function round_off(Fixidity storage fixidity, int256 v, uint8 digits)  public view returns (int256) {
+    function round_off(Fixidity storage fixidity, int256 v, uint8 digits) public view returns (int256) {
         int256 t = int256(uint256(10) ** uint256(digits));
         int8 sign = 1;
         if(v < 0) {
@@ -80,8 +83,12 @@ library FixidityLib {
         return v * sign;
     }
 
-    function round_to(Fixidity storage fixidity, int256 v, uint8 digits)  public view returns (int256) {
+    function round_to(Fixidity storage fixidity, int256 v, uint8 digits) public view returns (int256) {
         assert(digits < fixidity.digits);
         return round_off(fixidity, v, fixidity.digits - digits);
+    }
+
+    function trunc_digits(Fixidity storage fixidity, int256 v, uint8 digits) public view returns (int256) {
+        return round_off(fixidity, v, digits) / (10 ** digits);
     }
 }

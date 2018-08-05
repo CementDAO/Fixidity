@@ -4,12 +4,12 @@ import "./FixidityLib.sol";
 
 library LogarithmLib {
 
+    using FixidityLib for FixidityLib.Fixidity;
+
     uint8 constant public longer_digits = 36;
     int256 constant public longer_fixed_log_e_1_5 =     405465108108164381978013115464349137;    
     int256 constant public longer_fixed_1 =            1000000000000000000000000000000000000;    
     int256 constant public longer_fixed_log_e_10 =     2302585092994045684017991454684364208;
-
-    using FixidityLib for FixidityLib.Fixidity;
 
     function log_e(FixidityLib.Fixidity storage fixidity, int256 v) public view returns (int256) {
         assert(v > 0);

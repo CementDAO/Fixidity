@@ -1,43 +1,16 @@
+var utils = require('./utils');
 
-function forInstance(msg, cb) {
-	return it(msg, () => artifacts.require("TestContract").deployed().then(cb));
-}
+const digits = 3;
 
-function expectToThrow(cb) {
-	var flag = false;
-	return cb()
-	.catch(() => { flag = true; return assert(true); } )
-	.then(() => { if(!flag) return assert(false); });
-}
-
-function toFixed(a) {
-	return a * 1000000000000000000;
-}
-
-function compareNumbers(fixed, float, msg) {
-	console.log('' + msg + '   =>  ' + fixed + '   ' + float);
-	var a = Math.round(fixed / 100);
-	var b = Math.round(float * 10000000000);
-	return assert.equal(a, b, msg);
-}
-
-forInstance('FixidityLib add', (instance) => {
-	return instance.init(18)
-		.then(() => instance.add.call(toFixed(3), toFixed(4)))
-		.then((result) => assert.equal(result.valueOf(), toFixed(7), 'add two numbers'))
-		.then(() => instance.add.call(toFixed(3), toFixed(-4)))
-		.then((result) => assert.equal(result.valueOf(), toFixed(-1), 'add two numbers, one negative'))
-		.then(() => instance.add.call(toFixed(-3), toFixed(-4)))
-		.then((result) => assert.equal(result.valueOf(), toFixed(-7), 'add two numbers, both negative'));
-});
-
-forInstance('FixidityLib log_e', (instance) => {
-	return instance.init(18)
-		.then(() => instance.add.call(toFixed(3), toFixed(4)))
-		.then((result) => assert.equal(result.valueOf(), toFixed(7), 'add two numbers'))
-		.then(() => instance.add.call(toFixed(3), toFixed(-4)))
-		.then((result) => assert.equal(result.valueOf(), toFixed(-1), 'add two numbers, one negative'))
-		.then(() => instance.add.call(toFixed(-3), toFixed(-4)))
-		.then((result) => assert.equal(result.valueOf(), toFixed(-7), 'add two numbers, both negative'));
+describe('FixidityLib.add', () => {
+	var data = [
+		[ [3, 4], 7000 ],
+		[ [3, -4], -1000 ],
+		[ [-3, 4], 1000 ],
+		[ [3.123, 4.789], 7912 ]
+	];
+	utils.testArray('', data, digits, (instance, t) => {
+		return instance.add.call(utils.toFixed(t[0], digits), utils.toFixed(t[1], digits));
+	});
 });
 
