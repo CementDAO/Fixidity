@@ -29,11 +29,11 @@ library ExponentLib {
     	return fixidity.trunc_digits(fixidity.multiply(tr, r), 2);
     }
 
-    function power(FixidityLib.Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
+    function power_any(FixidityLib.Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
         return power_e(fixidity, fixidity.multiply(fixidity.log_e(a), b));
     }
 
-    function root(FixidityLib.Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
+    function root_any(FixidityLib.Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
         return power(fixidity, a, fixidity.reciprocal(b));
     }
 
