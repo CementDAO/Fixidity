@@ -26,17 +26,27 @@ library FixidityLib {
         fixidity.fixed_exp_10 = fixed_exp_10 / t;
     }
 
+    function round(Fixidity storage fixidity, int256 v) public view returns (int256) {
+        return round_off(fixidity, v, fixidity.digits);
+    }
+
+    function floor(Fixidity storage fixidity, int256 v) public view returns (int256) {
+        return (v / fixidity.fixed_1) * fixidity.fixed_1;
+    }
+
     function multiply(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
         if(b == fixidity.fixed_1) return a;
-        int256 t = (a * b) / fixidity.fixed_1;
-        //assert(fixidity.fixed_1 * t / a == b);           FUBAR
-        return t;
+        int256 x1 = a / fixidity.fixed_1;
+        int256 x2 = a - fixidity.fixed_1 * x1;
+        int256 y1 = b / fixidity.fixed_1;
+        int256 y2 = b - fixidity.fixed_1 * y1;
+        return fixidity.fixed_1 * x1 * y1 + x1 * y2 + x2 * y1 + x2 * y2 / fixidity.fixed_1;
     }
 
     function divide(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
         if(b == fixidity.fixed_1) return a;
         assert(b != 0);
-        return (fixidity.fixed_1 * a) / b;
+        return multiply(fixidity, a, reciprocal(fixidity, b));
     }
 
     function add(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
@@ -52,7 +62,7 @@ library FixidityLib {
     }
 
     function reciprocal(Fixidity storage fixidity, int256 a) public view returns (int256) {
-        return divide(fixidity, fixidity.fixed_1, a);
+        return round_off(fixidity, 10 * fixidity.fixed_1 * fixidity.fixed_1 / a, 1) / 10;
     }
 
     function round_off(Fixidity storage fixidity, int256 v, uint8 digits) public view returns (int256) {
@@ -72,6 +82,7 @@ library FixidityLib {
     }
 
     function trunc_digits(Fixidity storage fixidity, int256 v, uint8 digits) public view returns (int256) {
+        if(digits <= 0) return v;
         return round_off(fixidity, v, digits) / (10 ** digits);
     }
 }

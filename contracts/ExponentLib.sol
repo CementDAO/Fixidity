@@ -9,7 +9,7 @@ library ExponentLib {
     using LogarithmLib for FixidityLib.Fixidity;
 
     function power_e(FixidityLib.Fixidity storage fixidity, int256 x) public view returns (int256) {
-        assert(x < 100 * fixidity.fixed_1);
+        assert(x < 172 * fixidity.fixed_1);
     	int256 r = fixidity.fixed_1;
         while(x >= 10 * fixidity.fixed_1) {
             x -= 10 * fixidity.fixed_1;
@@ -38,6 +38,6 @@ library ExponentLib {
     }
 
     function root_n(FixidityLib.Fixidity storage fixidity, int256 a, uint8 n) public view returns (int256) {
-        return power_e(fixidity, fixidity.log_e(a) / n);
+        return power_e(fixidity, fixidity.divide(fixidity.log_e(a), fixidity.fixed_1 * n));
     }
 }
