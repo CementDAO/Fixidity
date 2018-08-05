@@ -1,7 +1,5 @@
 var utils = require('./utils');
 
-const digits = 16;
-
 describe('ExponentLib.power_e', () => {
 	//                      .1234567890123456
 	var data = [
@@ -24,7 +22,35 @@ describe('ExponentLib.power_e', () => {
 		[ 10, 		    220264657948067165170 ],
 		[ 21.785,  28913807698291736761599108 ]
 	];
-	utils.testArray('', data, digits, (instance, t) => {
-		return instance.power_e.call(utils.toFixed(t, digits));
+	utils.testArray('', data, 16, 16, (instance, t) => {
+		return instance.power_e.call(t);
 	});
 });
+
+describe('ExponentLib.power_any', () => {
+	//                      			.123456789012
+	var data = [
+		[ [ 2, 3 ], 					8000000000000 ],
+		[ [ 2, -3 ], 					 125000000000 ],
+		[ [ 2.1, 3 ], 		    		9261000000000 ],
+		[ [ 2.1, 3.789123456 ],   	   16631395358635 ]
+	];
+	utils.testArray('', data, 12, 10, (instance, t) => {
+		return instance.power_any.call(t[0], t[1]);
+	});
+});
+
+describe('ExponentLib.root_any', () => {
+	//                      			.123456789012
+	var data = [
+		[ [ 2, 3 ],				1259921049895 ],
+		[ [ 2, -3 ], 			 793700525984 ],
+		[ [ 2.1, 3 ], 		    1280579164987 ],
+		[ [ 2.1, 3.789123456 ], 1216292282161 ]
+	];
+
+	utils.testArray('', data, 12, 10, (instance, t) => {
+		return instance.root_any.call(t[0], t[1]);
+	});
+});
+

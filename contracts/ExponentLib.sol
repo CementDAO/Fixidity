@@ -15,7 +15,7 @@ library ExponentLib {
             x -= 10 * fixidity.fixed_1;
             r = fixidity.multiply(r, fixidity.fixed_exp_10);
         }
-        if(x == 1) {
+        if(x == fixidity.fixed_1) {
             return fixidity.multiply(r, fixidity.fixed_e);
         } else if(x == 0) {
             return r;
@@ -34,7 +34,7 @@ library ExponentLib {
     }
 
     function root_any(FixidityLib.Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
-        return power(fixidity, a, fixidity.reciprocal(b));
+        return power_any(fixidity, a, fixidity.reciprocal(b));
     }
 
     function root_n(FixidityLib.Fixidity storage fixidity, int256 a, uint8 n) public view returns (int256) {

@@ -1,7 +1,5 @@
 var utils = require('./utils');
 
-const digits = 3;
-
 describe('FixidityLib.add', () => {
 	var data = [
 		[ [3, 4], 7000 ],
@@ -9,8 +7,7 @@ describe('FixidityLib.add', () => {
 		[ [-3, 4], 1000 ],
 		[ [3.123, 4.789], 7912 ]
 	];
-	utils.testArray('', data, digits, (instance, t) => {
-		return instance.add.call(utils.toFixed(t[0], digits), utils.toFixed(t[1], digits));
+	utils.testArray('', data, 3, 3, (instance, t) => {
+		return instance.add.call(t[0], t[1]);
 	});
 });
-

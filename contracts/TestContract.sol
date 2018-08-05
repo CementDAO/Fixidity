@@ -35,12 +35,19 @@ contract TestContract {
 		return fixidity.log_e(input);
 	}
 
-	function log_base(uint8 base, int256 input) public view returns (int256) {
-		return fixidity.log_base(base, input);
+	function log_any(int256 base, int256 v) public view returns (int256) {
+		return fixidity.log_any(base, v);
 	}
 
 	function power_e(int256 input) public view returns (int256) {
 		return fixidity.power_e(input);
 	}
 
+	function power_any(int256 a, int256 b) public view returns (int256) {
+		return fixidity.power_any(a, b);
+	}
+
+	function root_any(int256 a, int256 b) public view returns (int256) {
+		return fixidity.root_any(a, b);
+	}
 }

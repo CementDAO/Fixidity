@@ -1,7 +1,5 @@
 var utils = require('./utils');
 
-const digits = 16;
-
 describe('LogarithmLib.log_e', () => {
 	var data = [
 	//                 .1234567890123456
@@ -26,8 +24,20 @@ describe('LogarithmLib.log_e', () => {
 		[ 148, 		   49972122737641151 ],
 		[ 19283765,   167747741081649877 ]
 	];
-	utils.testArray('', data, digits, (instance, t) => {
-		return instance.log_e.call(utils.toFixed(t, digits));
+	utils.testArray('', data, 16, 14, (instance, t) => {
+		return instance.log_e.call(t);
 	});
 });
 
+describe('LogarithmLib.log_any', () => {
+	var data = [
+	//                 		 			.1234567890123456
+		[ [ 2, 2.123 ],		 			10861043712432906 ],
+		[ [ 1.1, 2.1 ],		 			77844501631683068 ],
+		[ [ 10.8876, 2.8777655443 ], 	 4427053451662782 ],
+		[ [ 0.00002, 0.0004 ],			 7231244305744783 ]
+	];
+	utils.testArray('', data, 16, 12, (instance, t) => {
+		return instance.log_any.call(t[0], t[1]);
+	});
+});
