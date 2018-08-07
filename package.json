@@ -1,0 +1,22 @@
+{
+  "name": "fixidity",
+  "version": "1.0.0",
+  "description": "Fixed precision decimal math library for Solidity",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/extraterrestrial-tech/fixidity.git"
+  },
+  "author": "gadiguy@gmail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/extraterrestrial-tech/fixidity/issues"
+  },
+  "homepage": "https://github.com/extraterrestrial-tech/fixidity#readme"
+}
