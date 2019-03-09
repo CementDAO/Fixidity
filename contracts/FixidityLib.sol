@@ -184,7 +184,7 @@ library FixidityLib {
 
     /**
      * @dev Converts to positive if negative
-     * Test abs(0 returns 0
+     * Test abs(0) returns 0
      * Test abs(fixed_1()) returns -fixed_1()
      * Test abs(-fixed_1()) returns fixed_1()
      * Test abs(newFromInt256(max_fixed_new())) returns -max_fixed_new()*fixed_1()
