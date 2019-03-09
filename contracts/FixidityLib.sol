@@ -100,7 +100,12 @@ library FixidityLib {
 
     /**
      * @notice Maximum value that can be safely used as a multiplication operator.
-     * @dev Calculated as sqrt(maxNewFixed())*fixed1(). Be careful with your sqrt() implementation
+     * @dev Calculated as sqrt(maxInt256()*fixed1()). 
+     * Be careful with your sqrt() implementation. I couldn't find a calculator
+     * that would give the exact square root of maxInt256*fixed1 so this number
+     * is below the real number by no more than 3*10**28. It is safe to use as
+     * a limit for your multiplications, although powers of two of numbers over
+     * this value might still work.
      * Test multiply(maxFixedMul(),maxFixedMul()) equals maxFixedMul() * maxFixedMul()
      * Test multiply(maxFixedMul(),maxFixedMul()+1) throws 
      * Test multiply(-maxFixedMul(),maxFixedMul()) equals -maxFixedMul() * maxFixedMul()
@@ -108,7 +113,7 @@ library FixidityLib {
      * Hardcoded to 24 digits.
      */
     function maxFixedMul() public pure returns(int256) {
-        return 240615969168004494714208256000000000000000000000000;
+        return 240615969168004498257251713877715648331380787511296;
     }
 
     /**
