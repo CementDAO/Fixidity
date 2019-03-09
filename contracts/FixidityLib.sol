@@ -29,6 +29,15 @@ library FixidityLib {
     }
 
     /**
+     * @dev The amount of decimals lost on each multiplication operand.
+     * Test mul_precision() equals sqrt(fixed_1)
+     * Hardcoded to 36 digits.
+     */
+    function mul_precision() public pure returns(int256) {
+        return 1000000000000000000;
+    }
+
+    /**
      * @dev This is e in the fixed point units used in this library.
      * Hardcoded to 36 digits.
      */
@@ -220,7 +229,7 @@ library FixidityLib {
      * Test add(max_fixed_add(),max_fixed_add()) returns max_int256()-1
      * Test add(max_fixed_add()+1,max_fixed_add()+1) fails
      * Test add(-max_fixed_sub(),-max_fixed_sub()) returns min_int256()
-     * Test add(-max_fixed_sub(),-max_fixed_sub()-1) fails
+     * Test add(-max_fixed_sub()-1,-max_fixed_sub()-1) fails
      */
     function add(int256 a, int256 b) public pure returns (int256) {
         int256 t = a + b;
@@ -242,8 +251,8 @@ library FixidityLib {
      * might overflow.
      * Test multiply(0,0) returns 0
      * Test multiply(max_fixed_mul(),0) returns 0
-     * Test multiply(max_fixed_mul(),fixed_1()) returns max_fixed_mul()
      * Test multiply(0,max_fixed_mul()) returns 0
+     * Test multiply(max_fixed_mul(),fixed_1()) returns max_fixed_mul()
      * Test multiply(fixed_1(),max_fixed_mul()) returns max_fixed_mul()
      * Test multiply(fixed_e(),fixed_e()) returns fixed_e()*fixed_e()
      * Test multiply(-fixed_e(),fixed_e()) returns -fixed_e()*fixed_e()
@@ -270,9 +279,10 @@ library FixidityLib {
         int256 a1b1 = a1 * b1;
         if (a1 != 0) assert(a1b1 / a1 == b1); // Overflow a1b1
         
-        // Only a1b1 needs to be multiplied back by fixed_1
+        // a1b1 needs to be multiplied back by fixed_1
         int256 fixed_a1b1 = a1b1 * fixed_1();
         if (a1b1 != 0) assert(fixed_a1b1 / a1b1 == fixed_1()); // Overflow a1b1 * fixed_1
+        a1b1 = fixed_a1b1;
 
         int256 a2b1 = a2 * b1;
         if (a2 != 0) assert(a2b1 / a2 == b1); // Overflow a2b1
@@ -280,11 +290,14 @@ library FixidityLib {
         int256 a1b2 = a1 * b2;
         if (a1 != 0) assert(a1b2 / a1 == b2); // Overflow a1b2
 
+        a2 = a2 / mul_precision();
+        b2 = b2 / mul_precision();
         int256 a2b2 = a2 * b2;
         if (a2 != 0) assert(a2b2 / a2 == b2); // Overflow a2b2
 
-        //int256 result = fixed_1() * x1 * y1 + x1 * y2 + x2 * y1 + x2 * y2 / fixed_1();
-        int256 result = add(a1b1, a2b1); // Add checks for overflow
+        // result = fixed_1() * x1 * y1 + x1 * y2 + x2 * y1 + x2 * y2 / fixed_1();
+        int256 result = a1b1;
+        result = add(result, a2b1); // Add checks for overflow
         result = add(result, a1b2); // Add checks for overflow
         result = add(result, a2b2); // Add checks for overflow
         return result;
