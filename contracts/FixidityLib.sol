@@ -122,7 +122,7 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be safely used as a dividend().
-     * divide(max_fixed_div,newFromInt256Fraction(1,fixed_1())) = max_int256().
+     * divide(max_fixed_div,newFixedFraction(1,fixed_1())) = max_int256().
      * Test max_fixed_div() equals max_int256()/fixed_1()
      * Test divide(max_fixed_div(),multiply(mul_precision(),mul_precision())) = max_fixed_div()*(10^digits())
      * Test divide(max_fixed_div()+1,multiply(mul_precision(),mul_precision())) throws
@@ -135,12 +135,12 @@ library FixidityLib {
     /**
      * @dev Converts an int256 to fixed point units, equivalent to multiplying
      * by 10^digits().
-     * Test newFromInt256(0) returns 0
-     * Test newFromInt256(1) returns fixed_1()
-     * Test newFromInt256(max_fixed_new()) returns max_fixed_new() * fixed_1()
-     * Test newFromInt256(max_fixed_new()+1) fails
+     * Test newFixed(0) returns 0
+     * Test newFixed(1) returns fixed_1()
+     * Test newFixed(max_fixed_new()) returns max_fixed_new() * fixed_1()
+     * Test newFixed(max_fixed_new()+1) fails
      */
-    function newFromInt256(int256 x)
+    function newFixed(int256 x)
         public
         pure
         returns (int256)
@@ -153,16 +153,16 @@ library FixidityLib {
     /**
      * @dev Converts two int256 representing a fraction to fixed point units,
      * equivalent to multiplying dividend and divisor by 10^digits().
-     * Test newFromInt256Fraction(max_fixed_div()+1,1) fails
-     * Test newFromInt256Fraction(1,max_fixed_div()+1) fails
-     * Test newFromInt256Fraction(1,0) fails     
-     * Test newFromInt256Fraction(0,1) returns 0
-     * Test newFromInt256Fraction(1,1) returns fixed_1()
-     * Test newFromInt256Fraction(max_fixed_div(),1) returns max_fixed_div()*fixed_1()
-     * Test newFromInt256Fraction(1,fixed_1()) returns 1
-     * Test newFromInt256Fraction(1,fixed_1()-1) returns 0
+     * Test newFixedFraction(max_fixed_div()+1,1) fails
+     * Test newFixedFraction(1,max_fixed_div()+1) fails
+     * Test newFixedFraction(1,0) fails     
+     * Test newFixedFraction(0,1) returns 0
+     * Test newFixedFraction(1,1) returns fixed_1()
+     * Test newFixedFraction(max_fixed_div(),1) returns max_fixed_div()*fixed_1()
+     * Test newFixedFraction(1,fixed_1()) returns 1
+     * Test newFixedFraction(1,fixed_1()-1) returns 0
      */
-    function newFromInt256Fraction(
+    function newFixedFraction(
         int256 numerator, 
         int256 denominator
         )
@@ -173,8 +173,8 @@ library FixidityLib {
         assert(numerator <= max_fixed_new());
         assert(denominator <= max_fixed_new());
         assert(denominator != 0);
-        int256 convertedNumerator = newFromInt256(numerator);
-        int256 convertedDenominator = newFromInt256(denominator);
+        int256 convertedNumerator = newFixed(numerator);
+        int256 convertedDenominator = newFixed(denominator);
         return divide(convertedNumerator, convertedDenominator);
     }
 
@@ -182,9 +182,9 @@ library FixidityLib {
      * @dev Returns the integer part of a fixed point number.
      * Test integer(0) returns 0
      * Test integer(fixed_1()) returns fixed_1()
-     * Test integer(newFromInt256(max_fixed_new())) returns max_fixed_new()*fixed_1()
+     * Test integer(newFixed(max_fixed_new())) returns max_fixed_new()*fixed_1()
      * Test integer(-fixed_1()) returns -fixed_1()
-     * Test integer(newFromInt256(-max_fixed_new())) returns -max_fixed_new()*fixed_1()
+     * Test integer(newFixed(-max_fixed_new())) returns -max_fixed_new()*fixed_1()
      */
     function integer(int256 x) public pure returns (int256) {
         return (x / fixed_1()) * fixed_1(); // Can't overflow
@@ -211,8 +211,8 @@ library FixidityLib {
      * Test abs(0) returns 0
      * Test abs(fixed_1()) returns -fixed_1()
      * Test abs(-fixed_1()) returns fixed_1()
-     * Test abs(newFromInt256(max_fixed_new())) returns max_fixed_new()*fixed_1()
-     * Test abs(newFromInt256(min_fixed_new())) returns -min_fixed_new()*fixed_1()
+     * Test abs(newFixed(max_fixed_new())) returns max_fixed_new()*fixed_1()
+     * Test abs(newFixed(min_fixed_new())) returns -min_fixed_new()*fixed_1()
      */
     function abs(int256 x) public pure returns (int256) {
         if(x < 0) return -x;

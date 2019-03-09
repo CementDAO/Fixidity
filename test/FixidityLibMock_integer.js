@@ -34,9 +34,9 @@ contract('FixidityLibMock - integer', () => {
             const result = new BigNumber(await fixidityLibMock.integer(fixed_1.toString(10)));
             assert.equal(result.comparedTo(fixed_1), 0, 'should be fixed_1!');
         });
-        it('integer(newFromInt256(max_fixed_new()))', async () => {
+        it('integer(newFixed(max_fixed_new()))', async () => {
             const newFromMaxFixedNew = new BigNumber(
-                await fixidityLibMock.newFromInt256(max_fixed_new.toString(10)),
+                await fixidityLibMock.newFixed(max_fixed_new.toString(10)),
             );
             const result = new BigNumber(
                 await fixidityLibMock.integer(newFromMaxFixedNew.toString(10)),
@@ -54,9 +54,9 @@ contract('FixidityLibMock - integer', () => {
             );
             assert.equal(result.comparedTo(negativeFixed1), 0, 'should be -fixed_1()!');
         });
-        it('integer(newFromInt256(min_fixed_new()))', async () => {
+        it('integer(newFixed(min_fixed_new()))', async () => {
             const newFromMinFixedNew = new BigNumber(
-                await fixidityLibMock.newFromInt256(min_fixed_new.toString(10)),
+                await fixidityLibMock.newFixed(min_fixed_new.toString(10)),
             );
             const result = new BigNumber(
                 await fixidityLibMock.integer(newFromMinFixedNew.toString(10)),
