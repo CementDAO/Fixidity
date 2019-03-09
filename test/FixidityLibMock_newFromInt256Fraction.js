@@ -51,19 +51,19 @@ contract('FixidityLibMock - newFromInt256Fraction', () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFromInt256Fraction(0, 1),
             );
-            assert.equal(result.comparedTo(new BigNumber(0)), 0, 'should be zero!');
+            result.should.be.bignumber.equal(0);
         });
         it('newFromInt256Fraction(1,1)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFromInt256Fraction(1, 1),
             );
-            assert.equal(result.comparedTo(fixed_1), 0, 'should be fixed_1!');
+            result.should.be.bignumber.equal(fixed_1);
         });
         it('newFromInt256Fraction(max_fixed_div(),1)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFromInt256Fraction(max_fixed_div.toString(10), 1),
             );
-            assert.equal(result.comparedTo(max_fixed_div.multipliedBy(fixed_1)), 0, 'should be max_fixed_div!');
+            result.should.be.bignumber.equal(max_fixed_div.multipliedBy(fixed_1));
         });
         /* it('newFromInt256Fraction(100,fixed_1())', async () => {
             const result = new BigNumber(
@@ -76,7 +76,7 @@ contract('FixidityLibMock - newFromInt256Fraction', () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFromInt256Fraction(1, fixed_1.plus(1).toString(10)),
             );
-            assert.equal(result.comparedTo(new BigNumber(0)), 0, 'should be zero!');
+            result.should.be.bignumber.equal(0);
         });
     });
 });

@@ -29,21 +29,17 @@ contract('FixidityLibMock - newFromInt256', () => {
     describe('newFromInt256', () => {
         it('newFromInt256(0)', async () => {
             const result = await fixidityLibMock.newFromInt256(0);
-            assert.equal(result, 0, 'should be 0!');
+            result.should.be.bignumber.equal(0);
         });
         it('newFromInt256(1)', async () => {
             const result = new BigNumber(await fixidityLibMock.newFromInt256(1));
-            assert.equal(result.comparedTo(fixed_1), 0, 'should be fixed_1!');
+            result.should.be.bignumber.equal(fixed_1);
         });
         it('newFromInt256(max_fixed_new())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFromInt256(max_fixed_new.toString(10)),
             );
-            assert.equal(
-                result.comparedTo(fixed_1.multipliedBy(max_fixed_new)),
-                0,
-                'should be max_fixed_new * fixed_1!',
-            );
+            result.should.be.bignumber.equal(fixed_1.multipliedBy(max_fixed_new));
         });
         itShouldThrow(
             'newFromInt256(max_fixed_new()+1)',
@@ -55,17 +51,13 @@ contract('FixidityLibMock - newFromInt256', () => {
         );
         it('newFromInt256(-1)', async () => {
             const result = new BigNumber(await fixidityLibMock.newFromInt256(-1));
-            assert.equal(result.comparedTo(fixed_1.multipliedBy(-1)), 0, 'should be fixed_1*(-1)!');
+            result.should.be.bignumber.equal(fixed_1.multipliedBy(-1));
         });
         it('newFromInt256(min_fixed_new())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFromInt256(min_fixed_new.toString(10)),
             );
-            assert.equal(
-                result.comparedTo(fixed_1.multipliedBy(min_fixed_new)),
-                0,
-                'should be min_fixed_new * fixed_1!',
-            );
+            result.should.be.bignumber.equal(fixed_1.multipliedBy(max_fixed_new));
         });
         itShouldThrow(
             'newFromInt256(min_fixed_new()-1)',
