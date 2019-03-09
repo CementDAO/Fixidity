@@ -226,16 +226,18 @@ library FixidityLib {
     /**
      * @dev a+b. If any operator is higher than max_fixed_add() it 
      * might overflow.
+     * In solidity max_int256 + 1 = min_int256 and viceversa.
      * Test add(max_fixed_add(),max_fixed_add()) returns max_int256()-1
      * Test add(max_fixed_add()+1,max_fixed_add()+1) fails
      * Test add(-max_fixed_sub(),-max_fixed_sub()) returns min_int256()
      * Test add(-max_fixed_sub()-1,-max_fixed_sub()-1) fails
+     * Test add(max_int256(),max_int256()) fails
+     * Test add(min_int256(),min_int256()) fails
      */
     function add(int256 a, int256 b) public pure returns (int256) {
         int256 t = a + b;
-        assert(t - a == b);
-        if(a > 0 && b > 0) assert(t > 0);
-        if(a < 0 && b < 0) assert(t < 0);
+        if(a > 0 && b > 0) assert(t > a && t > b);
+        if(a < 0 && b < 0) assert(t < a && t < b);
         return t;
     }
 

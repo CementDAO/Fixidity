@@ -61,5 +61,35 @@ contract('FixidityLibMock - add', () => {
                 max_fixed_sub.minus(1).toString(10),
             );
         }, 'revert');
+        itShouldThrow('add(max_int256(),max_int256())', async () => {
+            await fixidityLibMock.add(
+                max_int256.toString(10),
+                max_int256.toString(10),
+            );
+        }, 'revert');
+        itShouldThrow('add(min_int256(),min_int256())', async () => {
+            await fixidityLibMock.add(
+                min_int256.toString(10),
+                min_int256.toString(10),
+            );
+        }, 'revert');
+        it('add(max_int256(),-max_int256())', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.add(
+                    max_int256.toString(10),
+                    max_int256.multipliedBy(-1).toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(0);
+        });
+        it('add(min_int256()+1,-(min_int256()+1))', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.add(
+                    min_int256.plus(1).toString(10),
+                    min_int256.plus(1).multipliedBy(-1).toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(0);
+        });
     });
 });
