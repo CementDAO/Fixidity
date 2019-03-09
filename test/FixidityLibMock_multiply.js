@@ -14,6 +14,8 @@ contract('FixidityLibMock - multiply', () => {
     let fixed_e;
     // eslint-disable-next-line camelcase
     let max_fixed_mul;
+    // eslint-disable-next-line camelcase
+    let mul_precision;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
@@ -23,6 +25,8 @@ contract('FixidityLibMock - multiply', () => {
         fixed_e = new BigNumber(await fixidityLibMock.fixed_e());
         // eslint-disable-next-line camelcase
         max_fixed_mul = new BigNumber(await fixidityLibMock.max_fixed_mul());
+        // eslint-disable-next-line camelcase
+        mul_precision = new BigNumber(await fixidityLibMock.mul_precision());
     });
 
     describe('multiply', () => {
@@ -107,14 +111,14 @@ contract('FixidityLibMock - multiply', () => {
             );
             result.should.be.bignumber.equal(fixed_1.multipliedBy(0.25));
         });
-        it('multiply(fixed_1()*0.000000000000000005,fixed_1()*0.000000000000000005)', async () => {
+        it('multiply(fixed_1()/mul_precision(),fixed_1()*mul_precision())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(0.000000000000000005).toString(10),
-                    fixed_1.multipliedBy(0.000000000000000005).toString(10),
+                    fixed_1.dividedBy(mul_precision).toString(10),
+                    fixed_1.dividedBy(mul_precision).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(0.000000000000000000000000000000000025));
+            result.should.be.bignumber.equal(1);
         });
         it('multiply(fixed_1()*2.5,fixed_1()*2.5)', async () => {
             const result = new BigNumber(
