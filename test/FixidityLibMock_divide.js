@@ -15,7 +15,9 @@ contract('FixidityLibMock - divide', () => {
     let max_fixed_div;
     // eslint-disable-next-line camelcase
     let max_int256;
-
+    // eslint-disable-next-line camelcase
+    let mul_precision;
+    
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         // eslint-disable-next-line camelcase
@@ -24,6 +26,8 @@ contract('FixidityLibMock - divide', () => {
         max_fixed_div = new BigNumber(await fixidityLibMock.max_fixed_div());
         // eslint-disable-next-line camelcase
         max_int256 = new BigNumber(await fixidityLibMock.max_int256());
+        // eslint-disable-next-line camelcase
+        mul_precision = new BigNumber(await fixidityLibMock.mul_precision());
     });
 
     /*
@@ -62,33 +66,33 @@ contract('FixidityLibMock - divide', () => {
                 0,
             );
         }, 'revert');
-        /* it('divide(fixed_1(),max_fixed_div())', async () => {
+        it('divide(max_fixed_div(),1)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
-                    fixed_1.toString(10),
                     max_fixed_div.toString(10),
+                    1,
                 ),
             );
             result.should.be.bignumber.equal(
-                max_int256,
+                max_fixed_div.multipliedBy(fixed_1),
             );
         });
-        itShouldThrow('divide(fixed_1(),max_fixed_div()+1)', async () => {
+        itShouldThrow('divide(max_fixed_div()+1,1)', async () => {
             await fixidityLibMock.divide(
-                fixed_1.toString(10),
                 max_fixed_div.plus(1).toString(10),
+                1,
             );
-        });
+        }, 'revert');
         it('divide(max_fixed_div(),max_fixed_div())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
                     max_fixed_div.toString(10),
                     max_fixed_div.toString(10),
                 ),
-            );
+            ).div(mul_precision).dp(0, 0);
             result.should.be.bignumber.equal(
-                fixed_1,
+                fixed_1.div(mul_precision).dp(0, 0),
             );
-        }); */
+        });
     });
 });

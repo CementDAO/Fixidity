@@ -109,7 +109,7 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be safely used as a multiplication operator.
-     * Calculated as sqrt(max_fixed_new())*fixed_1()
+     * Calculated as sqrt(max_fixed_new())*fixed_1(). Be careful with your sqrt() implementation
      * Test multiply(max_fixed_mul(),max_fixed_mul()) equals max_fixed_mul() * max_fixed_mul()
      * Test multiply(max_fixed_mul(),max_fixed_mul()+1) throws 
      * Test multiply(-max_fixed_mul(),max_fixed_mul()) equals -max_fixed_mul() * max_fixed_mul()
@@ -314,9 +314,10 @@ library FixidityLib {
     /**
      * @dev a/b. If the dividend is higher than max_fixed_div() it 
      * might overflow. You can use multiply(a,reciprocal(b)) instead.
+     * There is a loss of precision on division for the lower mul_precision() decimals.
      * Test divide(fixed_1(),0) fails
-     * Test divide(fixed_1(),max_fixed_div()) returns max_int256 // Probably not to the last digits
-     * Test divide(fixed_1(),max_fixed_div()+1) fails // Maybe it will need to be +fixed_1()
+     * Test divide(max_fixed_div(),1) = max_fixed_div()*(10^digits())
+     * Test divide(max_fixed_div()+1,1) throws
      * Test divide(max_fixed_div(),max_fixed_div()) returns fixed_1()
      */
     function divide(int256 a, int256 b) public pure returns (int256) {
