@@ -123,7 +123,7 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(x < max_fixed_new()); // Cannot process numbers above 57896044618658097711785492504343953926633.
+        assert(x <= max_fixed_new()); // Cannot process numbers above 57896044618658097711785492504343953926633.
         return x * fixed_1();
     }
 
@@ -147,8 +147,8 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(numerator < max_fixed_new());
-        assert(denominator < max_fixed_new());
+        assert(numerator <= max_fixed_new());
+        assert(denominator <= max_fixed_new());
         assert(denominator != 0);
         int256 convertedNumerator = newFromInt256(numerator);
         int256 convertedDenominator = newFromInt256(denominator);
