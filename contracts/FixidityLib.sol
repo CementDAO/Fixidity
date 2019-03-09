@@ -1,15 +1,5 @@
 pragma solidity ^0.5.0;
 
-/*
-Tag	Description	Context
-@title	A title that describes the contract	contract, interface
-@author	The name of the author	contract, interface, function
-@notice	Explanation of functionality	contract, interface, function
-@dev	Any extra details	contract, interface, function
-@param	Parameter type followed by parameter name	function
-@return	The return value of a contract’s function	function
-*/
-
 /**
  * @title FixidityLib
  * @author Gadi Guy, Alberto Cuesta Canada

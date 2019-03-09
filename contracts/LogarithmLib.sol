@@ -2,27 +2,33 @@ pragma solidity ^0.5.0;
 
 import "./FixidityLib.sol";
 
+/**
+ * @title LogarithmLib
+ * @author Gadi Guy, Alberto Cuesta Canada
+ * @notice This library extends FixidityLib with logarithm operations.
+ */
 library LogarithmLib {
 
     /**
-     * @dev ln(1.5), hardcoded with the comma 36 positions to the right.
+     * @notice ln(1.5), hardcoded with the comma 36 positions to the right.
      */
     function fixed_ln_1_5() public pure returns(int256) {
         return 405465108108164381978013115464349137;
     }
 
     /**
-     * @dev ln(10), hardcoded with the comma 36 positions to the right.
+     * @notice ln(10), hardcoded with the comma 36 positions to the right.
      */
     function fixed_ln_10() public pure returns(int256) {
         return 2302585092994045684017991454684364208;
     }
 
     /**
-     * @dev ln(x)
-     * README: This function has a 1/50 deviation close to ln(-1), 
+     * @notice ln(x)
+     * This function has a 1/50 deviation close to ln(-1), 
      * 1/maxFixedMul() deviation at fixedE()**2, but diverges to 10x 
      * deviation at maxNewFixed().
+     * @dev 
      * Test ln(0) fails
      * Test ln(-fixed1()) fails
      * Test ln(fixed1()) returns 0
@@ -74,8 +80,9 @@ library LogarithmLib {
     }
 
     /**
-     * @dev log_b(x). The base needs to be in fixed point representation.
-     * Tests covered by ln(x) and divide(a,b)
+     * @notice log_b(x).
+     * *param int256 b Base in fixed point representation.
+     * @dev Tests covered by ln(x) and divide(a,b)
      */
     function log_b(int256 b, int256 x) public pure returns (int256) {
         return FixidityLib.divide(ln(x), ln(b));
