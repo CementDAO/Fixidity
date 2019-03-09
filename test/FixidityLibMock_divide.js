@@ -14,7 +14,7 @@ contract('FixidityLibMock - divide', () => {
     // eslint-disable-next-line camelcase
     let max_fixed_div;
     // eslint-disable-next-line camelcase
-    let max_int256;
+    let max_fixed_divisor;
     // eslint-disable-next-line camelcase
     let mul_precision;
     
@@ -25,7 +25,7 @@ contract('FixidityLibMock - divide', () => {
         // eslint-disable-next-line camelcase
         max_fixed_div = new BigNumber(await fixidityLibMock.max_fixed_div());
         // eslint-disable-next-line camelcase
-        max_int256 = new BigNumber(await fixidityLibMock.max_int256());
+        max_fixed_divisor = new BigNumber(await fixidityLibMock.max_fixed_divisor());
         // eslint-disable-next-line camelcase
         mul_precision = new BigNumber(await fixidityLibMock.mul_precision());
     });
@@ -77,6 +77,30 @@ contract('FixidityLibMock - divide', () => {
                 max_fixed_div.multipliedBy(fixed_1),
             );
         });
+        it('divide(10**38,10**38)', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.divide(
+                    new BigNumber(10).pow(38).toString(10),
+                    new BigNumber(10).pow(38).toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(fixed_1);
+        });
+        it('divide(10*max_fixed_divisor(),max_fixed_divisor())', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.divide(
+                    new BigNumber(10).pow(73).toString(10),
+                    new BigNumber(10).pow(72).toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(fixed_1.multipliedBy(10));
+        });
+        itShouldThrow('divide(10*max_fixed_divisor(),10*max_fixed_divisor()', async () => {
+            await fixidityLibMock.divide(
+                new BigNumber(10).pow(73).toString(10),
+                new BigNumber(10).pow(73).toString(10),
+            );
+        }, 'revert');
         itShouldThrow('divide(max_fixed_div()+1,1)', async () => {
             await fixidityLibMock.divide(
                 max_fixed_div.plus(1).toString(10),

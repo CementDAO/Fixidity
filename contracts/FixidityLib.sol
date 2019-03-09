@@ -121,7 +121,7 @@ library FixidityLib {
     }
 
     /**
-     * @dev Maximum value that can be safely used as a dividend().
+     * @dev Maximum value that can be safely used as a dividend.
      * divide(max_fixed_div,newFixedFraction(1,fixed_1())) = max_int256().
      * Test max_fixed_div() equals max_int256()/fixed_1()
      * Test divide(max_fixed_div(),multiply(mul_precision(),mul_precision())) = max_fixed_div()*(10^digits())
@@ -130,6 +130,17 @@ library FixidityLib {
      */
     function max_fixed_div() public pure returns(int256) {
         return 57896044618658097711785492504343953926634;
+    }
+
+    /**
+     * @dev Maximum value that can be safely used as a divisor.
+     * Test max_fixed_divisor() equals fixed_1()*fixed_1() - Or 10**(digits()*2)
+     * Test divide(10**(digits()*2 + 1),10**(digits()*2)) = returns 10*fixed_1()
+     * Test divide(10**(digits()*2 + 1),10**(digits()*2 + 1)) = throws
+     * Hardcoded to 36 digits.
+     */
+    function max_fixed_divisor() public pure returns(int256) {
+        return 1000000000000000000000000000000000000000000000000000000000000000000000000;
     }
 
     /**
@@ -417,6 +428,7 @@ library FixidityLib {
     function divide(int256 a, int256 b) public pure returns (int256) {
         if(b == fixed_1()) return a;
         assert(b != 0);
+        assert(b <= max_fixed_divisor());
         return multiply(a, reciprocal(b));
     }
 }
