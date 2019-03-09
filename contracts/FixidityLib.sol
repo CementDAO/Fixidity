@@ -76,7 +76,7 @@ library FixidityLib {
 
 
     /**
-     * @dev Converts two uint256 representing a fraction to fixidity units, 
+     * @dev Converts two int256 representing a fraction to fixidity units, 
      * equivalent to multiplying by 10^6.
      * TODO: Require that the parameters aren't greater than
      * MAX_INT_256 / 10^36
