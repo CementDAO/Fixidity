@@ -207,8 +207,8 @@ library FixidityLib {
             //     decimalDifference = abs(_destinationDigits - _originDigits)
             //     decimalDifference < 38
             //     10**38 < 2**128-1
-            assert(x <= max_fixed_new()/uint128(10)**uint128(decimalDifference));
-            assert(x >= min_fixed_new()/uint128(10)**uint128(decimalDifference));
+            assert(x <= max_int256()/uint128(10)**uint128(decimalDifference));
+            assert(x >= min_int256()/uint128(10)**uint128(decimalDifference));
             return x*(uint128(10)**uint128(decimalDifference));
         }
         // _originDigits == digits()) 
