@@ -10,12 +10,12 @@ chai.use(require('chai-bignumber')()).should();
 contract('FixidityLibMock - newFixed', () => {
     let fixidityLibMock;
     // eslint-disable-next-line camelcase
-    let max_int256;
+    let maxInt256;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         // eslint-disable-next-line camelcase
-        max_int256 = new BigNumber(await fixidityLibMock.max_int256());
+        maxInt256 = new BigNumber(await fixidityLibMock.maxInt256());
     });
 
     describe('convertFixed', () => {
@@ -91,18 +91,18 @@ contract('FixidityLibMock - newFixed', () => {
             );
             result.should.be.bignumber.equal(10000);
         });
-        it('convertFixed(max_int256,1,0)', async () => {
+        it('convertFixed(maxInt256,1,0)', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.convertFixed(max_int256.toString(10), 1, 0),
+                await fixidityLibMock.convertFixed(maxInt256.toString(10), 1, 0),
             );
-            result.should.be.bignumber.equal(max_int256.dividedBy(10).dp(0, 1));
+            result.should.be.bignumber.equal(maxInt256.dividedBy(10).dp(0, 1));
         });
-        it('convertFixed(max_int256,38,0)', async () => {
+        it('convertFixed(maxInt256,38,0)', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.convertFixed(max_int256.toString(10), 38, 0),
+                await fixidityLibMock.convertFixed(maxInt256.toString(10), 38, 0),
             );
             result.should.be.bignumber.equal(
-                max_int256.dividedBy((new BigNumber(10).pow(38))).dp(0, 1),
+                maxInt256.dividedBy((new BigNumber(10).pow(38))).dp(0, 1),
             );
         });
         it('convertFixed(1,0,38)', async () => {
@@ -128,18 +128,18 @@ contract('FixidityLibMock - newFixed', () => {
             result.should.be.bignumber.equal(new BigNumber(10).pow(76).multipliedBy(-1));
         });
         itShouldThrow(
-            'convertFixed(max_int256,0,1)',
+            'convertFixed(maxInt256,0,1)',
             async () => {
                 await fixidityLibMock
-                    .convertFixed(max_int256.toString(10), 0, 1);
+                    .convertFixed(maxInt256.toString(10), 0, 1);
             },
             'revert',
         );
         itShouldThrow(
-            'convertFixed(max_int256,39,0)',
+            'convertFixed(maxInt256,39,0)',
             async () => {
                 await fixidityLibMock
-                    .convertFixed(max_int256.toString(10), 39, 0);
+                    .convertFixed(maxInt256.toString(10), 39, 0);
             },
             'revert',
         );

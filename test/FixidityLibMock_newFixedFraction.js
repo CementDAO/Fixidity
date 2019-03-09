@@ -10,32 +10,32 @@ chai.use(require('chai-bignumber')()).should();
 contract('FixidityLibMock - newFixedFraction', () => {
     let fixidityLibMock;
     // eslint-disable-next-line camelcase
-    let fixed_1;
+    let fixed1;
     // eslint-disable-next-line camelcase
-    let max_fixed_div;
+    let maxFixedDiv;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         // eslint-disable-next-line camelcase
-        fixed_1 = new BigNumber(await fixidityLibMock.fixed_1());
+        fixed1 = new BigNumber(await fixidityLibMock.fixed1());
         // eslint-disable-next-line camelcase
-        max_fixed_div = new BigNumber(await fixidityLibMock.max_fixed_div());
+        maxFixedDiv = new BigNumber(await fixidityLibMock.maxFixedDiv());
     });
 
     describe('newFixedFraction', () => {
         itShouldThrow(
-            'newFixedFraction(max_fixed_div()+1,1)',
+            'newFixedFraction(maxFixedDiv()+1,1)',
             async () => {
                 await fixidityLibMock
-                    .newFixedFraction(max_fixed_div.plus(1).toString(10), 1);
+                    .newFixedFraction(maxFixedDiv.plus(1).toString(10), 1);
             },
             'revert',
         );
         itShouldThrow(
-            'newFixedFraction(1,max_fixed_div()+1)',
+            'newFixedFraction(1,maxFixedDiv()+1)',
             async () => {
                 await fixidityLibMock
-                    .newFixedFraction(1, max_fixed_div.plus(1).toString(10));
+                    .newFixedFraction(1, maxFixedDiv.plus(1).toString(10));
             },
             'revert',
         );
@@ -57,26 +57,26 @@ contract('FixidityLibMock - newFixedFraction', () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFixedFraction(1, 1),
             );
-            result.should.be.bignumber.equal(fixed_1);
+            result.should.be.bignumber.equal(fixed1);
         });
-        it('newFixedFraction(max_fixed_div(),1)', async () => {
+        it('newFixedFraction(maxFixedDiv(),1)', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.newFixedFraction(max_fixed_div.toString(10), 1),
+                await fixidityLibMock.newFixedFraction(maxFixedDiv.toString(10), 1),
             );
-            result.should.be.bignumber.equal(max_fixed_div.multipliedBy(fixed_1));
+            result.should.be.bignumber.equal(maxFixedDiv.multipliedBy(fixed1));
         });
-        it('newFixedFraction(1,fixed_1())', async () => {
+        it('newFixedFraction(1,fixed1())', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.newFixedFraction(1, fixed_1.toString(10)),
+                await fixidityLibMock.newFixedFraction(1, fixed1.toString(10)),
             );
             result.should.be.bignumber.equal(1);
         });
         itShouldThrow(
-            'newFixedFraction(10, max_fixed_div()*10)',
+            'newFixedFraction(10, maxFixedDiv()*10)',
             async () => {
                 await fixidityLibMock.newFixedFraction(
                     10,
-                    max_fixed_div.multipliedBy(10).toString(10),
+                    maxFixedDiv.multipliedBy(10).toString(10),
                 );
             },
             'revert',

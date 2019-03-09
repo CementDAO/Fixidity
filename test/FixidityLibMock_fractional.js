@@ -9,12 +9,12 @@ chai.use(require('chai-bignumber')()).should();
 contract('FixidityLibMock - fractional', () => {
     let fixidityLibMock;
     // eslint-disable-next-line camelcase
-    let fixed_1;
+    let fixed1;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         // eslint-disable-next-line camelcase
-        fixed_1 = new BigNumber(await fixidityLibMock.fixed_1());
+        fixed1 = new BigNumber(await fixidityLibMock.fixed1());
     });
 
     describe('fractional', () => {
@@ -22,27 +22,27 @@ contract('FixidityLibMock - fractional', () => {
             const result = new BigNumber(await fixidityLibMock.fractional(0));
             result.should.be.bignumber.equal(0);
         });
-        it('fractional(fixed_1())', async () => {
+        it('fractional(fixed1())', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.fractional(fixed_1.toString(10)),
+                await fixidityLibMock.fractional(fixed1.toString(10)),
             );
             result.should.be.bignumber.equal(0);
         });
-        it('fractional(fixed_1()-1)', async () => {
+        it('fractional(fixed1()-1)', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.fractional(fixed_1.minus(1).toString(10)),
+                await fixidityLibMock.fractional(fixed1.minus(1).toString(10)),
             );
             result.should.be.bignumber.equal(new BigNumber(10).pow(36).minus(1));
         });
-        it('fractional(-fixed_1())', async () => {
+        it('fractional(-fixed1())', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.fractional(fixed_1.multipliedBy(-1).toString(10)),
+                await fixidityLibMock.fractional(fixed1.multipliedBy(-1).toString(10)),
             );
             result.should.be.bignumber.equal(0);
         });
-        it('fractional(-fixed_1()+1)', async () => {
+        it('fractional(-fixed1()+1)', async () => {
             const result = new BigNumber(
-                await fixidityLibMock.fractional(fixed_1.multipliedBy(-1).plus(1).toString(10)),
+                await fixidityLibMock.fractional(fixed1.multipliedBy(-1).plus(1).toString(10)),
             );
             result.should.be.bignumber.equal(new BigNumber(10).pow(36).minus(1).multipliedBy(-1));
         });

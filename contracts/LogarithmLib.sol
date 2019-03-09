@@ -21,51 +21,51 @@ library LogarithmLib {
     /**
      * @dev ln(x)
      * README: This function has a 1/50 deviation close to ln(-1), 
-     * 1/max_fixed_mul() deviation at fixed_e()**2, but diverges to 10x 
-     * deviation at max_fixed_new().
+     * 1/maxFixedMul() deviation at fixedE()**2, but diverges to 10x 
+     * deviation at maxNewFixed().
      * Test ln(0) fails
-     * Test ln(-fixed_1()) fails
-     * Test ln(fixed_1()) returns 0
-     * Test ln(fixed_e()) returns fixed_1()
-     * Test ln(fixed_e()*fixed_e()) returns ln(fixed_e())+ln(fixed_e())
-     * Test ln(max_int256) returns 176752531042786059920093411119162458112
+     * Test ln(-fixed1()) fails
+     * Test ln(fixed1()) returns 0
+     * Test ln(fixedE()) returns fixed1()
+     * Test ln(fixedE()*fixedE()) returns ln(fixedE())+ln(fixedE())
+     * Test ln(maxInt256) returns 176752531042786059920093411119162458112
      * Test ln(1) returns -82
      */
     function ln(int256 value) public pure returns (int256) {
         assert(value >= 0);
         int256 v = value;
         int256 r = 0;
-        while(v <= FixidityLib.fixed_1() / 10) {
+        while(v <= FixidityLib.fixed1() / 10) {
             v = v * 10;
             r -= fixed_ln_10();
         }
-        while(v >= 10 * FixidityLib.fixed_1()) {
+        while(v >= 10 * FixidityLib.fixed1()) {
             v = v / 10;
             r += fixed_ln_10();
         }
-        while(v < FixidityLib.fixed_1()) {
-            v = FixidityLib.multiply(v, FixidityLib.fixed_e());
-            r -= FixidityLib.fixed_1();
+        while(v < FixidityLib.fixed1()) {
+            v = FixidityLib.multiply(v, FixidityLib.fixedE());
+            r -= FixidityLib.fixed1();
         }
-        while(v > FixidityLib.fixed_e()) {
-            v = FixidityLib.divide(v, FixidityLib.fixed_e());
-            r += FixidityLib.fixed_1();
+        while(v > FixidityLib.fixedE()) {
+            v = FixidityLib.divide(v, FixidityLib.fixedE());
+            r += FixidityLib.fixed1();
         }
-        if(v == FixidityLib.fixed_1()) {
+        if(v == FixidityLib.fixed1()) {
             return r;
         }
-        if(v == FixidityLib.fixed_e()) {
-            return FixidityLib.fixed_1() + r;
+        if(v == FixidityLib.fixedE()) {
+            return FixidityLib.fixed1() + r;
         }
 
-        v = v - 3 * FixidityLib.fixed_1() / 2;
+        v = v - 3 * FixidityLib.fixed1() / 2;
         r = r + fixed_ln_1_5();
-        int256 m = FixidityLib.fixed_1() * v / (v + 3 * FixidityLib.fixed_1());
+        int256 m = FixidityLib.fixed1() * v / (v + 3 * FixidityLib.fixed1());
         r = r + 2 * m;
-        int256 m_2 = m * m / FixidityLib.fixed_1();
+        int256 m_2 = m * m / FixidityLib.fixed1();
         uint8 i = 3;
         while(true) {
-            m = m * m_2 / FixidityLib.fixed_1();
+            m = m * m_2 / FixidityLib.fixed1();
             r = r + 2 * m / int256(i);
             i += 2;
             if(i >= 3 + 2 * FixidityLib.digits()) break;

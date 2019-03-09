@@ -10,83 +10,83 @@ chai.use(require('chai-bignumber')()).should();
 contract('FixidityLibMock - add', () => {
     let fixidityLibMock;
     // eslint-disable-next-line camelcase
-    let max_fixed_add;
+    let maxFixedAdd;
     // eslint-disable-next-line camelcase
-    let max_int256;
+    let maxInt256;
     // eslint-disable-next-line camelcase
-    let max_fixed_sub;
+    let maxFixedSub;
     // eslint-disable-next-line camelcase
-    let min_int256;
+    let minInt256;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         // eslint-disable-next-line camelcase
-        max_fixed_add = new BigNumber(await fixidityLibMock.max_fixed_add());
+        maxFixedAdd = new BigNumber(await fixidityLibMock.maxFixedAdd());
         // eslint-disable-next-line camelcase
-        max_fixed_sub = new BigNumber(await fixidityLibMock.max_fixed_sub());
+        maxFixedSub = new BigNumber(await fixidityLibMock.maxFixedSub());
         // eslint-disable-next-line camelcase
-        max_int256 = new BigNumber(await fixidityLibMock.max_int256());
+        maxInt256 = new BigNumber(await fixidityLibMock.maxInt256());
         // eslint-disable-next-line camelcase
-        min_int256 = new BigNumber(await fixidityLibMock.min_int256());
+        minInt256 = new BigNumber(await fixidityLibMock.minInt256());
     });
 
     describe('add', () => {
-        it('add(max_fixed_add(),max_fixed_add())', async () => {
+        it('add(maxFixedAdd(),maxFixedAdd())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.add(
-                    max_fixed_add.toString(10),
-                    max_fixed_add.toString(10),
+                    maxFixedAdd.toString(10),
+                    maxFixedAdd.toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(max_int256.minus(1));
+            result.should.be.bignumber.equal(maxInt256.minus(1));
         });
-        itShouldThrow('add(max_fixed_add()+1,max_fixed_add()+1)', async () => {
+        itShouldThrow('add(maxFixedAdd()+1,maxFixedAdd()+1)', async () => {
             await fixidityLibMock.add(
-                max_fixed_add.plus(1).toString(10),
-                max_fixed_add.plus(1).toString(10),
+                maxFixedAdd.plus(1).toString(10),
+                maxFixedAdd.plus(1).toString(10),
             );
         }, 'revert');
-        it('add(max_fixed_sub(),max_fixed_sub())', async () => {
+        it('add(maxFixedSub(),maxFixedSub())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.add(
-                    max_fixed_sub.toString(10),
-                    max_fixed_sub.toString(10),
+                    maxFixedSub.toString(10),
+                    maxFixedSub.toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(min_int256);
+            result.should.be.bignumber.equal(minInt256);
         });
-        itShouldThrow('add(max_fixed_sub()-1,max_fixed_sub()-1)', async () => {
+        itShouldThrow('add(maxFixedSub()-1,maxFixedSub()-1)', async () => {
             await fixidityLibMock.add(
-                max_fixed_sub.minus(1).toString(10),
-                max_fixed_sub.minus(1).toString(10),
+                maxFixedSub.minus(1).toString(10),
+                maxFixedSub.minus(1).toString(10),
             );
         }, 'revert');
-        itShouldThrow('add(max_int256(),max_int256())', async () => {
+        itShouldThrow('add(maxInt256(),maxInt256())', async () => {
             await fixidityLibMock.add(
-                max_int256.toString(10),
-                max_int256.toString(10),
+                maxInt256.toString(10),
+                maxInt256.toString(10),
             );
         }, 'revert');
-        itShouldThrow('add(min_int256(),min_int256())', async () => {
+        itShouldThrow('add(minInt256(),minInt256())', async () => {
             await fixidityLibMock.add(
-                min_int256.toString(10),
-                min_int256.toString(10),
+                minInt256.toString(10),
+                minInt256.toString(10),
             );
         }, 'revert');
-        it('add(max_int256(),-max_int256())', async () => {
+        it('add(maxInt256(),-maxInt256())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.add(
-                    max_int256.toString(10),
-                    max_int256.multipliedBy(-1).toString(10),
+                    maxInt256.toString(10),
+                    maxInt256.multipliedBy(-1).toString(10),
                 ),
             );
             result.should.be.bignumber.equal(0);
         });
-        it('add(min_int256()+1,-(min_int256()+1))', async () => {
+        it('add(minInt256()+1,-(minInt256()+1))', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.add(
-                    min_int256.plus(1).toString(10),
-                    min_int256.plus(1).multipliedBy(-1).toString(10),
+                    minInt256.plus(1).toString(10),
+                    minInt256.plus(1).multipliedBy(-1).toString(10),
                 ),
             );
             result.should.be.bignumber.equal(0);

@@ -10,36 +10,36 @@ chai.use(require('chai-bignumber')()).should();
 contract('FixidityLibMock - multiply', () => {
     let fixidityLibMock;
     // eslint-disable-next-line camelcase
-    let fixed_1;
+    let fixed1;
     // eslint-disable-next-line camelcase
-    let fixed_e;
+    let fixedE;
     // eslint-disable-next-line camelcase
-    let max_fixed_mul;
+    let maxFixedMul;
     // eslint-disable-next-line camelcase
-    let mul_precision;
+    let mulPrecision;
     // eslint-disable-next-line camelcase
-    let max_fixed_add;
+    let maxFixedAdd;
     // eslint-disable-next-line camelcase
-    let max_int256;
+    let maxInt256;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         // eslint-disable-next-line camelcase
-        fixed_1 = new BigNumber(await fixidityLibMock.fixed_1());
+        fixed1 = new BigNumber(await fixidityLibMock.fixed1());
         // eslint-disable-next-line camelcase
-        fixed_e = new BigNumber(await fixidityLibMock.fixed_e());
+        fixedE = new BigNumber(await fixidityLibMock.fixedE());
         // eslint-disable-next-line camelcase
-        max_fixed_mul = new BigNumber(await fixidityLibMock.max_fixed_mul());
+        maxFixedMul = new BigNumber(await fixidityLibMock.maxFixedMul());
         // eslint-disable-next-line camelcase
-        mul_precision = new BigNumber(await fixidityLibMock.mul_precision());
+        mulPrecision = new BigNumber(await fixidityLibMock.mulPrecision());
         // eslint-disable-next-line camelcase
-        max_fixed_add = new BigNumber(await fixidityLibMock.max_fixed_add());
+        maxFixedAdd = new BigNumber(await fixidityLibMock.maxFixedAdd());
         // eslint-disable-next-line camelcase
-        max_int256 = new BigNumber(await fixidityLibMock.max_int256());
+        maxInt256 = new BigNumber(await fixidityLibMock.maxInt256());
     });
 
     describe('multiply', () => {
-        it('multiply(max_fixed_mul(),0)', async () => {
+        it('multiply(maxFixedMul(),0)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
                     0,
@@ -48,291 +48,291 @@ contract('FixidityLibMock - multiply', () => {
             );
             result.should.be.bignumber.equal(0);
         });
-        it('multiply(max_fixed_mul(),0)', async () => {
+        it('multiply(maxFixedMul(),0)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    max_fixed_mul.toString(10),
+                    maxFixedMul.toString(10),
                     0,
                 ),
             );
             result.should.be.bignumber.equal(0);
         });
-        it('multiply(0, max_fixed_mul())', async () => {
+        it('multiply(0, maxFixedMul())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
                     0,
-                    max_fixed_mul.toString(10),
+                    maxFixedMul.toString(10),
                 ),
             );
             result.should.be.bignumber.equal(0);
         });
-        it('multiply(max_fixed_mul(),fixed_1())', async () => {
+        it('multiply(maxFixedMul(),fixed1())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    max_fixed_mul.toString(10),
-                    fixed_1.toString(10),
+                    maxFixedMul.toString(10),
+                    fixed1.toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(max_fixed_mul);
+            result.should.be.bignumber.equal(maxFixedMul);
         });
-        it('multiply(fixed_1(),max_fixed_mul())', async () => {
+        it('multiply(fixed1(),maxFixedMul())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.toString(10),
-                    max_fixed_mul.toString(10),
+                    fixed1.toString(10),
+                    maxFixedMul.toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(max_fixed_mul);
+            result.should.be.bignumber.equal(maxFixedMul);
         });
-        it('multiply(fixed_1()*2,fixed_1()*2)', async () => {
+        it('multiply(fixed1()*2,fixed1()*2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2).toString(10),
-                    fixed_1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(4));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(4));
         });
-        it('multiply(fixed_1()*2,fixed_1()*2.5)', async () => {
+        it('multiply(fixed1()*2,fixed1()*2.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2).toString(10),
-                    fixed_1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(5));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(5));
         });
-        it('multiply(fixed_1()*2.5,fixed_1()*2)', async () => {
+        it('multiply(fixed1()*2.5,fixed1()*2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2).toString(10),
-                    fixed_1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(5));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(5));
         });
-        it('multiply(fixed_1()*0.5,fixed_1()*0.5)', async () => {
+        it('multiply(fixed1()*0.5,fixed1()*0.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(0.5).toString(10),
-                    fixed_1.multipliedBy(0.5).toString(10),
+                    fixed1.multipliedBy(0.5).toString(10),
+                    fixed1.multipliedBy(0.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(0.25));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(0.25));
         });
-        it('multiply(fixed_1()/mul_precision(),fixed_1()*mul_precision())', async () => {
+        it('multiply(fixed1()/mulPrecision(),fixed1()*mulPrecision())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.dividedBy(mul_precision).toString(10),
-                    fixed_1.dividedBy(mul_precision).toString(10),
+                    fixed1.dividedBy(mulPrecision).toString(10),
+                    fixed1.dividedBy(mulPrecision).toString(10),
                 ),
             );
             result.should.be.bignumber.equal(1);
         });
-        it('multiply(fixed_1()*2.5,fixed_1()*2.5)', async () => {
+        it('multiply(fixed1()*2.5,fixed1()*2.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2.5).toString(10),
-                    fixed_1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(6.25));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(6.25));
         });
 
-        it('multiply(fixed_1()*-2,fixed_1()*-2)', async () => {
+        it('multiply(fixed1()*-2,fixed1()*-2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2).toString(10),
-                    fixed_1.multipliedBy(-2).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(4));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(4));
         });
-        it('multiply(fixed_1()*-2,fixed_1()*2)', async () => {
+        it('multiply(fixed1()*-2,fixed1()*2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2).toString(10),
-                    fixed_1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-4));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-4));
         });
-        it('multiply(fixed_1()*2,fixed_1()*-2)', async () => {
+        it('multiply(fixed1()*2,fixed1()*-2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2).toString(10),
-                    fixed_1.multipliedBy(-2).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-4));
-        });
-
-        it('multiply(fixed_1()*-2.5,fixed_1()*-2)', async () => {
-            const result = new BigNumber(
-                await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2.5).toString(10),
-                    fixed_1.multipliedBy(-2).toString(10),
-                ),
-            );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(5));
-        });
-        it('multiply(fixed_1()*-2.5,fixed_1()*2)', async () => {
-            const result = new BigNumber(
-                await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2.5).toString(10),
-                    fixed_1.multipliedBy(2).toString(10),
-                ),
-            );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-5));
-        });
-        it('multiply(fixed_1()*2.5,fixed_1()*-2)', async () => {
-            const result = new BigNumber(
-                await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2.5).toString(10),
-                    fixed_1.multipliedBy(-2).toString(10),
-                ),
-            );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-5));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-4));
         });
 
-        it('multiply(fixed_1()*-2,fixed_1()*-2.5)', async () => {
+        it('multiply(fixed1()*-2.5,fixed1()*-2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2).toString(10),
-                    fixed_1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(5));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(5));
         });
-        it('multiply(fixed_1()*-2,fixed_1()*2.5)', async () => {
+        it('multiply(fixed1()*-2.5,fixed1()*2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2).toString(10),
-                    fixed_1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-5));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-5));
         });
-        it('multiply(fixed_1()*2,fixed_1()*-2.5)', async () => {
+        it('multiply(fixed1()*2.5,fixed1()*-2)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2).toString(10),
-                    fixed_1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-5));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-5));
         });
 
-        it('multiply(fixed_1()*-2.5,fixed_1()*-2.5)', async () => {
+        it('multiply(fixed1()*-2,fixed1()*-2.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2.5).toString(10),
-                    fixed_1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
+                    fixed1.multipliedBy(-2.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(6.25));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(5));
         });
-        it('multiply(fixed_1()*-2.5,fixed_1()*2.5)', async () => {
+        it('multiply(fixed1()*-2,fixed1()*2.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(-2.5).toString(10),
-                    fixed_1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-6.25));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-5));
         });
-        it('multiply(fixed_1()*2.5,fixed_1()*-2.5)', async () => {
+        it('multiply(fixed1()*2,fixed1()*-2.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    fixed_1.multipliedBy(2.5).toString(10),
-                    fixed_1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(-2.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(-6.25));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-5));
         });
-        it('multiply(max_fixed_add(),2*fixed_1()', async () => {
+
+        it('multiply(fixed1()*-2.5,fixed1()*-2.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    max_fixed_add.toString(10),
-                    fixed_1.multipliedBy(2).toString(10),
+                    fixed1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(-2.5).toString(10),
                 ),
             );
-            result.should.be.bignumber.lte(max_int256);
+            result.should.be.bignumber.equal(fixed1.multipliedBy(6.25));
         });
-        itShouldThrow('multiply(max_fixed_add()+1,2*fixed_1())', async () => {
+        it('multiply(fixed1()*-2.5,fixed1()*2.5)', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.multiply(
+                    fixed1.multipliedBy(-2.5).toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-6.25));
+        });
+        it('multiply(fixed1()*2.5,fixed1()*-2.5)', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.multiply(
+                    fixed1.multipliedBy(2.5).toString(10),
+                    fixed1.multipliedBy(-2.5).toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-6.25));
+        });
+        it('multiply(maxFixedAdd(),2*fixed1()', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.multiply(
+                    maxFixedAdd.toString(10),
+                    fixed1.multipliedBy(2).toString(10),
+                ),
+            );
+            result.should.be.bignumber.lte(maxInt256);
+        });
+        itShouldThrow('multiply(maxFixedAdd()+1,2*fixed1())', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_add.plus(fixed_1).toString(10),
-                fixed_1.multipliedBy(2).toString(10),
+                maxFixedAdd.plus(fixed1).toString(10),
+                fixed1.multipliedBy(2).toString(10),
             );
         }, 'revert');
-        itShouldThrow('multiply(max_fixed_add(),2.5*fixed_1())', async () => {
+        itShouldThrow('multiply(maxFixedAdd(),2.5*fixed1())', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_add.plus(fixed_1).toString(10),
-                fixed_1.multipliedBy(2.5).toString(10),
+                maxFixedAdd.plus(fixed1).toString(10),
+                fixed1.multipliedBy(2.5).toString(10),
             );
         }, 'revert');
-        itShouldThrow('multiply(max_fixed_add(),max_fixed_add())', async () => {
+        itShouldThrow('multiply(maxFixedAdd(),maxFixedAdd())', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_add.toString(10),
-                max_fixed_add.toString(10),
+                maxFixedAdd.toString(10),
+                maxFixedAdd.toString(10),
             );
         }, 'revert');
-        it('multiply(max_fixed_mul(),max_fixed_mul()', async () => {
+        it('multiply(maxFixedMul(),maxFixedMul()', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    max_fixed_mul.toString(10),
-                    max_fixed_mul.toString(10),
+                    maxFixedMul.toString(10),
+                    maxFixedMul.toString(10),
                 ),
             );
-            result.should.be.bignumber.lte(max_int256);
+            result.should.be.bignumber.lte(maxInt256);
         });
-        itShouldThrow('multiply(max_fixed_mul(),max_fixed_mul()+1)', async () => {
+        itShouldThrow('multiply(maxFixedMul(),maxFixedMul()+1)', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_mul.toString(10),
-                max_fixed_mul.plus(fixed_1).toString(10),
+                maxFixedMul.toString(10),
+                maxFixedMul.plus(fixed1).toString(10),
             );
         }, 'revert');
 
-        it('multiply(max_fixed_add(),-2*fixed_1()', async () => {
+        it('multiply(maxFixedAdd(),-2*fixed1()', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    max_fixed_add.toString(10),
-                    fixed_1.multipliedBy(-2).toString(10),
+                    maxFixedAdd.toString(10),
+                    fixed1.multipliedBy(-2).toString(10),
                 ),
             );
-            result.should.be.bignumber.lte(max_int256);
+            result.should.be.bignumber.lte(maxInt256);
         });
-        itShouldThrow('multiply(max_fixed_add()+1,-2*fixed_1())', async () => {
+        itShouldThrow('multiply(maxFixedAdd()+1,-2*fixed1())', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_add.plus(fixed_1).toString(10),
-                fixed_1.multipliedBy(-2).toString(10),
+                maxFixedAdd.plus(fixed1).toString(10),
+                fixed1.multipliedBy(-2).toString(10),
             );
         }, 'revert');
-        itShouldThrow('multiply(max_fixed_add(),-2.5*fixed_1())', async () => {
+        itShouldThrow('multiply(maxFixedAdd(),-2.5*fixed1())', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_add.plus(fixed_1).toString(10),
-                fixed_1.multipliedBy(-2.5).toString(10),
+                maxFixedAdd.plus(fixed1).toString(10),
+                fixed1.multipliedBy(-2.5).toString(10),
             );
         }, 'revert');
-        itShouldThrow('multiply(max_fixed_add(),-max_fixed_add())', async () => {
+        itShouldThrow('multiply(maxFixedAdd(),-maxFixedAdd())', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_add.toString(10),
-                max_fixed_add.multipliedBy(-1).toString(10),
+                maxFixedAdd.toString(10),
+                maxFixedAdd.multipliedBy(-1).toString(10),
             );
         }, 'revert');
-        it('multiply(max_fixed_mul(),-max_fixed_mul()', async () => {
+        it('multiply(maxFixedMul(),-maxFixedMul()', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.multiply(
-                    max_fixed_mul.toString(10),
-                    max_fixed_mul.multipliedBy(-1).toString(10),
+                    maxFixedMul.toString(10),
+                    maxFixedMul.multipliedBy(-1).toString(10),
                 ),
             );
-            result.should.be.bignumber.lte(max_int256);
+            result.should.be.bignumber.lte(maxInt256);
         });
-        itShouldThrow('multiply(max_fixed_mul()+1,-max_fixed_mul())', async () => {
+        itShouldThrow('multiply(maxFixedMul()+1,-maxFixedMul())', async () => {
             await fixidityLibMock.multiply(
-                max_fixed_mul.plus(fixed_1).toString(10),
-                max_fixed_mul.multipliedBy(-1).toString(10),
+                maxFixedMul.plus(fixed1).toString(10),
+                maxFixedMul.multipliedBy(-1).toString(10),
             );
         }, 'revert');
     });

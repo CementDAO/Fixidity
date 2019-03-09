@@ -10,71 +10,71 @@ chai.use(require('chai-bignumber')()).should();
 contract('FixidityLibMock - divide', () => {
     let fixidityLibMock;
     // eslint-disable-next-line camelcase
-    let fixed_1;
+    let fixed1;
     // eslint-disable-next-line camelcase
-    let max_fixed_div;
+    let maxFixedDiv;
     // eslint-disable-next-line camelcase
-    let max_fixed_divisor;
+    let maxFixedDivisor;
     // eslint-disable-next-line camelcase
-    let mul_precision;
+    let mulPrecision;
     
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         // eslint-disable-next-line camelcase
-        fixed_1 = new BigNumber(await fixidityLibMock.fixed_1());
+        fixed1 = new BigNumber(await fixidityLibMock.fixed1());
         // eslint-disable-next-line camelcase
-        max_fixed_div = new BigNumber(await fixidityLibMock.max_fixed_div());
+        maxFixedDiv = new BigNumber(await fixidityLibMock.maxFixedDiv());
         // eslint-disable-next-line camelcase
-        max_fixed_divisor = new BigNumber(await fixidityLibMock.max_fixed_divisor());
+        maxFixedDivisor = new BigNumber(await fixidityLibMock.maxFixedDivisor());
         // eslint-disable-next-line camelcase
-        mul_precision = new BigNumber(await fixidityLibMock.mul_precision());
+        mulPrecision = new BigNumber(await fixidityLibMock.mulPrecision());
     });
 
     /*
-     * Test divide(fixed_1(),0) fails
-     * Test divide(fixed_1(),max_fixed_div()) returns max_int256 // Probably not to the last digits
-     * Test divide(fixed_1(),max_fixed_div()+1) fails // Maybe it will need to be +fixed_1()
-     * Test divide(max_fixed_div(),max_fixed_div()) returns fixed_1()
+     * Test divide(fixed1(),0) fails
+     * Test divide(fixed1(),maxFixedDiv()) returns maxInt256 // Probably not to the last digits
+     * Test divide(fixed1(),maxFixedDiv()+1) fails // Maybe it will need to be +fixed1()
+     * Test divide(maxFixedDiv(),maxFixedDiv()) returns fixed1()
      */
 
     describe('divide', () => {
-        it('divide(fixed_1(),fixed_1())', async () => {
+        it('divide(fixed1(),fixed1())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
-                    fixed_1.toString(10),
-                    fixed_1.toString(10),
+                    fixed1.toString(10),
+                    fixed1.toString(10),
                 ),
             );
             result.should.be.bignumber.equal(
-                fixed_1,
+                fixed1,
             );
         });
-        it('divide(fixed_1(),2*fixed_1())', async () => {
+        it('divide(fixed1(),2*fixed1())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
-                    fixed_1.toString(10),
-                    fixed_1.multipliedBy(2).toString(10),
+                    fixed1.toString(10),
+                    fixed1.multipliedBy(2).toString(10),
                 ),
             );
             result.should.be.bignumber.equal(
-                fixed_1.div(2).dp(0, 1),
+                fixed1.div(2).dp(0, 1),
             );
         });
-        itShouldThrow('divide(fixed_1(),0)', async () => {
+        itShouldThrow('divide(fixed1(),0)', async () => {
             await fixidityLibMock.divide(
-                fixed_1.toString(10),
+                fixed1.toString(10),
                 0,
             );
         }, 'revert');
-        it('divide(max_fixed_div(),1)', async () => {
+        it('divide(maxFixedDiv(),1)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
-                    max_fixed_div.toString(10),
+                    maxFixedDiv.toString(10),
                     1,
                 ),
             );
             result.should.be.bignumber.equal(
-                max_fixed_div.multipliedBy(fixed_1),
+                maxFixedDiv.multipliedBy(fixed1),
             );
         });
         it('divide(10**38,10**38)', async () => {
@@ -84,38 +84,38 @@ contract('FixidityLibMock - divide', () => {
                     new BigNumber(10).pow(38).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1);
+            result.should.be.bignumber.equal(fixed1);
         });
-        it('divide(10*max_fixed_divisor(),max_fixed_divisor())', async () => {
+        it('divide(10*maxFixedDivisor(),maxFixedDivisor())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
                     new BigNumber(10).pow(73).toString(10),
                     new BigNumber(10).pow(72).toString(10),
                 ),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(10));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(10));
         });
-        itShouldThrow('divide(10*max_fixed_divisor(),10*max_fixed_divisor()', async () => {
+        itShouldThrow('divide(10*maxFixedDivisor(),10*maxFixedDivisor()', async () => {
             await fixidityLibMock.divide(
                 new BigNumber(10).pow(73).toString(10),
                 new BigNumber(10).pow(73).toString(10),
             );
         }, 'revert');
-        itShouldThrow('divide(max_fixed_div()+1,1)', async () => {
+        itShouldThrow('divide(maxFixedDiv()+1,1)', async () => {
             await fixidityLibMock.divide(
-                max_fixed_div.plus(1).toString(10),
+                maxFixedDiv.plus(1).toString(10),
                 1,
             );
         }, 'revert');
-        it('divide(max_fixed_div(),max_fixed_div())', async () => {
+        it('divide(maxFixedDiv(),maxFixedDiv())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
-                    max_fixed_div.toString(10),
-                    max_fixed_div.toString(10),
+                    maxFixedDiv.toString(10),
+                    maxFixedDiv.toString(10),
                 ),
-            ).div(mul_precision).dp(0, 0);
+            ).div(mulPrecision).dp(0, 0);
             result.should.be.bignumber.equal(
-                fixed_1.div(mul_precision).dp(0, 0),
+                fixed1.div(mulPrecision).dp(0, 0),
             );
         });
     });
