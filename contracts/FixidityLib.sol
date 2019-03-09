@@ -7,13 +7,14 @@ library FixidityLib {
     int256 constant public fixed_pi =           3141592653589793238462643383279502884;
     int256 constant public fixed_exp_10 =   22026465794806716516957900645284244000000;
 
-	struct Fixidity {
-		uint8 digits;
-		int256 fixed_1;
-		int256 fixed_e;
+    struct Fixidity 
+    {
+        uint8 digits;
+        int256 fixed_1;
+        int256 fixed_e;
         int256 fixed_pi;
         int256 fixed_exp_10;
-	}
+    }
 
     function init(Fixidity storage fixidity, uint8 digits) public {
         assert(digits < 36);
@@ -23,6 +24,75 @@ library FixidityLib {
         fixidity.fixed_e = fixed_e / t;
         fixidity.fixed_pi = fixed_pi / t;
         fixidity.fixed_exp_10 = fixed_exp_10 / t;
+    }
+
+    /**
+     * @dev Converts an int256 to fixidity units, equivalent to multiplying
+     * by 10^6.
+     * TODO: Require that the int256 passed as a parameter isn't greater than
+     * MAX_INT_256 / 10^36
+     */
+    function newFromInt256(Fixidity storage fixidity, int256 x)
+        public
+        view
+        returns (int256)
+    {
+        return multiply(fixidity, x,fixidity.fixed_1);
+    }
+
+    /**
+     * @dev Converts an uint256 to fixidity units, equivalent to multiplying
+     * by 10^6.
+     * TODO: Require that the uint256 passed as a parameter isn't greater than
+     * MAX_INT_256 / 10^36
+     */
+    function newFromUint256(Fixidity storage fixidity, uint256 x)
+        public
+        view
+        returns (int256)
+    {
+        return multiply(fixidity, int256(x),fixidity.fixed_1);
+    }
+
+    /**
+     * @dev Converts two uint256 representing a fraction to fixidity units, 
+     * equivalent to multiplying by 10^6.
+     * TODO: Require that the parameters aren't greater than
+     * MAX_INT_256 / 10^36
+     */
+    function newFromUint256Fraction(
+        Fixidity storage fixidity, 
+        uint256 numerator, 
+        uint256 denominator
+        )
+        public
+        view
+        returns (int256)
+    {
+        int256 convertedNumerator = newFromUint256(fixidity, numerator);
+        int256 convertedDenominator = newFromUint256(fixidity, denominator);
+        return divide(fixidity, convertedNumerator, convertedDenominator);
+    }
+
+
+    /**
+     * @dev Converts two uint256 representing a fraction to fixidity units, 
+     * equivalent to multiplying by 10^6.
+     * TODO: Require that the parameters aren't greater than
+     * MAX_INT_256 / 10^36
+     */
+    function newFromInt256Fraction(
+        Fixidity storage fixidity, 
+        int256 numerator, 
+        int256 denominator
+        )
+        public
+        view
+        returns (int256)
+    {
+        int256 convertedNumerator = newFromInt256(fixidity, numerator);
+        int256 convertedDenominator = newFromInt256(fixidity, denominator);
+        return divide(fixidity, convertedNumerator, convertedDenominator);
     }
 
     function round(Fixidity storage fixidity, int256 v) public view returns (int256) {
@@ -49,15 +119,15 @@ library FixidityLib {
     }
 
     function add(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
-    	int256 t = a + b;
+        int256 t = a + b;
         assert(t - a == b);
-    	return t;
+        return t;
     }
 
     function subtract(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
-    	int256 t = a - b;
-    	assert(t + a == b);
-    	return t;
+        int256 t = a - b;
+        assert(t + a == b);
+        return t;
     }
 
     function reciprocal(Fixidity storage fixidity, int256 a) public view returns (int256) {
