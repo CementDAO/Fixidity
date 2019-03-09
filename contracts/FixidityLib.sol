@@ -168,6 +168,24 @@ library FixidityLib {
      * Both the origin and destination precisions must be 38 or less digits.
      * Origin values with a precision higher than the destination precision
      * will be truncated accordingly.
+     * Test convertFixed(1,0,0) returns 1;
+     * Test convertFixed(1,1,1) returns 1;
+     * Test convertFixed(1,1,0) returns 0;
+     * Test convertFixed(1,0,1) returns 10;
+     * Test convertFixed(10,1,0) returns 1;
+     * Test convertFixed(10,0,1) returns 100;
+     * Test convertFixed(100,1,0) returns 10;
+     * Test convertFixed(100,0,1) returns 1000;
+     * Test convertFixed(1000,2,0) returns 10;
+     * Test convertFixed(1000,0,2) returns 100000;
+     * Test convertFixed(1000,2,1) returns 100;
+     * Test convertFixed(1000,1,2) returns 10000;
+     * Test convertFixed(max_int256,1,0) returns max_int256/10;
+     * Test convertFixed(max_int256,0,1) throws
+     * Test convertFixed(max_int256,38,0) returns max_int256/(10**38);
+     * Test convertFixed(1,0,38) returns 10**38;
+     * Test convertFixed(max_int256,39,0) throws
+     * Test convertFixed(1,0,39) throws
      */
     function convertFixed(int256 x, uint8 _originDigits, uint8 _destinationDigits)
         public
