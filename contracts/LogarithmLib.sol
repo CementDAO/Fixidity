@@ -4,7 +4,14 @@ import "./FixidityLib.sol";
 
 library LogarithmLib {
 
+    /**
+     * @dev Hardcoded to 36 digits.
+     */
     int256 constant public fixed_log_e_1_5 =     405465108108164381978013115464349137;    
+
+    /**
+     * @dev Hardcoded to 36 digits.
+     */
     int256 constant public fixed_log_e_10 =     2302585092994045684017991454684364208;
 
     function log_e(int256 value) public pure returns (int256) {
