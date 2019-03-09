@@ -5,26 +5,40 @@ import "./FixidityLib.sol";
 library LogarithmLib {
 
     /**
-     * @dev Hardcoded to 36 digits.
+     * @dev ln(1.5), hardcoded with the comma 36 positions to the right.
      */
-    int256 constant public fixed_log_e_1_5 =     405465108108164381978013115464349137;    
+    function fixed_ln_1_5() public pure returns(int256) {
+        return 405465108108164381978013115464349137;
+    }
 
     /**
-     * @dev Hardcoded to 36 digits.
+     * @dev ln(10), hardcoded with the comma 36 positions to the right.
      */
-    int256 constant public fixed_log_e_10 =     2302585092994045684017991454684364208;
+    function fixed_ln_10() public pure returns(int256) {
+        return 2302585092994045684017991454684364208;
+    }
 
-    function log_e(int256 value) public pure returns (int256) {
-        assert(value > 0);
+    /**
+     * @dev ln(x)
+     * Test ln(0) fails
+     * Test ln(-fixed_1()) fails
+     * Test ln(fixed_1()) returns 0
+     * Test ln(fixed_e()) returns 1
+     * Test ln(fixed_e()*fixed_e()) returns ln(fixed_e())+ln(fixed_e())
+     * Test ln(max_int256) returns 176752531042786059920093411119162458112
+     * Test ln(1) returns -82
+     */
+    function ln(int256 value) public pure returns (int256) {
+        assert(value >= 0);
         int256 v = value;
         int256 r = 0;
         while(v <= FixidityLib.fixed_1() / 10) {
             v = v * 10;
-            r -= fixed_log_e_10;
+            r -= fixed_ln_10();
         }
         while(v >= 10 * FixidityLib.fixed_1()) {
             v = v / 10;
-            r += fixed_log_e_10;
+            r += fixed_ln_10();
         }
         while(v < FixidityLib.fixed_1()) {
             v = FixidityLib.multiply(v, FixidityLib.fixed_e());
@@ -42,7 +56,7 @@ library LogarithmLib {
         }
 
         v = v - 3 * FixidityLib.fixed_1() / 2;
-        r = r + fixed_log_e_1_5;
+        r = r + fixed_ln_1_5();
         int256 m = FixidityLib.fixed_1() * v / (v + 3 * FixidityLib.fixed_1());
         r = r + 2 * m;
         int256 m_2 = m * m / FixidityLib.fixed_1();
@@ -56,7 +70,11 @@ library LogarithmLib {
         return r;
     }
 
-    function log_any(int256 base, int256 v) public pure returns (int256) {
-        return FixidityLib.divide(log_e(v), log_e(base));
+    /**
+     * @dev log_b(x).
+     * Tests covered by ln(x) and divide(a,b)
+     */
+    function log_b(int256 b, int256 x) public pure returns (int256) {
+        return FixidityLib.divide(ln(x), ln(b));
     }
 }

@@ -88,7 +88,7 @@ library FixidityLib {
      * Hardcoded to 36 digits.
      */
     function max_fixed_mul() public pure returns(int256) {
-        return 240615969168004500000;
+        return 240615969168004513792;
     }
 
     /**
@@ -219,7 +219,7 @@ library FixidityLib {
     }
 
     /**
-     * @dev a-b. You can use add(a,-b) instead.
+     * @dev a-b. You can use add(a,-b) instead. Tests covered by add(a,b)
      */
     function subtract(int256 a, int256 b) public pure returns (int256) {
         return add(a,-b);
