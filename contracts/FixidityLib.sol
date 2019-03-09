@@ -120,11 +120,12 @@ library FixidityLib {
     /**
      * @dev Converts two int256 representing a fraction to fixed point units,
      * equivalent to multiplying dividend and divisor by 10^digits().
+     * Test newFromInt256Fraction(max_fixed_div()+1,1) fails
+     * Test newFromInt256Fraction(1,max_fixed_div()+1) fails
+     * Test newFromInt256Fraction(1,0) fails     
      * Test newFromInt256Fraction(0,1) returns 0
-     * Test newFromInt256Fraction(1,0) fails
      * Test newFromInt256Fraction(1,1) returns fixed_1()
      * Test newFromInt256Fraction(max_fixed_div(),1) returns max_fixed_div()
-     * Test newFromInt256Fraction(max_fixed_div()+1,1) fails
      * Test newFromInt256Fraction(1,fixed_1()) returns 1
      * Test newFromInt256Fraction(1,fixed_1()-1) returns 0
      */
@@ -149,6 +150,8 @@ library FixidityLib {
      * Test integer(0) returns 0
      * Test integer(fixed_1()) returns fixed_1()
      * Test integer(newFromInt256(max_fixed())) returns max_fixed()*fixed_1()
+     * Test integer(-fixed_1()) returns -fixed_1()
+     * Test integer(newFromInt256(-max_fixed())) returns -max_fixed()*fixed_1()
      */
     function integer(int256 x) public pure returns (int256) {
         return (x / fixed_1()) * fixed_1(); // Can't overflow
@@ -156,10 +159,13 @@ library FixidityLib {
 
 
     /**
-     * @dev Returns the fractional part of a fixed point number.
+     * @dev Returns the fractional part of a fixed point number. 
+     * In the case of a negative number the fractional is also negative.
      * Test fractional(0) returns 0
      * Test fractional(fixed_1()) returns 0
      * Test fractional(fixed_1()-1) returns 10^36-1
+     * Test fractional(-fixed_1()) returns 0
+     * Test fractional(-fixed_1()+1) returns -10^36-1
      */
     function fractional(int256 x) public pure returns (int256) {
         return x - (x / fixed_1()) * fixed_1(); // Can't overflow
@@ -171,8 +177,8 @@ library FixidityLib {
      * Test abs(0 returns 0
      * Test abs(fixed_1()) returns -fixed_1()
      * Test abs(-fixed_1()) returns fixed_1()
-     * Test abs(newFromInt256(max_fixed)) returns -max_fixed()*fixed_1()
-     * Test abs(newFromInt256(-max_fixed)) returns max_fixed()*fixed_1()
+     * Test abs(newFromInt256(max_fixed())) returns -max_fixed()*fixed_1()
+     * Test abs(newFromInt256(-max_fixed())) returns max_fixed()*fixed_1()
      */
     function abs(int256 x) public pure returns (int256) {
         if(x < 0) return -x;
@@ -189,6 +195,12 @@ library FixidityLib {
      * Test add(max_fixed_add,max_fixed_add()-1) returns max_int256()-1
      * Test add(max_fixed_add,max_fixed_add()) returns max_int256()
      * Test add(max_fixed_add + 1,max_fixed_add()) fails
+     * Test add(-max_fixed_add(),0) returns -max_fixed_add()
+     * Test add(0,-max_fixed_add()) returns -max_fixed_add()
+     * Test add(-max_fixed_add,max_fixed_add()) returns 0
+     * Test add(max_fixed_add,-max_fixed_add()) returns 0
+     * Test add(-max_fixed_add,-max_fixed_add()+1) returns 1-max_int256
+     * Test add(-max_fixed_add,-max_fixed_add()) fails
      */
     function add(int256 a, int256 b) public pure returns (int256) {
         int256 t = a + b;
@@ -197,19 +209,10 @@ library FixidityLib {
     }
 
     /**
-     * @dev a-b.
-     * Test subtract(0,0 returns 0
-     * Test subtract(max_fixed_add(),0) returns max_fixed_add()
-     * Test subtract(0,max_fixed_add()) returns -max_fixed_add()
-     * Test subtract(max_fixed_add,max_fixed_add()) returns 0
-     * Test subtract(-max_fixed_add,-max_fixed_add()) returns 0
-     * Test subtract(-max_fixed_add + 1,max_fixed_add()) returns -max_int256()+1 // I think this is the limit
-     * Test subtract(-max_fixed_add,-max_fixed_add()) fails
+     * @dev a-b. You can use add(a,-b) instead.
      */
     function subtract(int256 a, int256 b) public pure returns (int256) {
-        int256 t = a - b;
-        assert(t + b == a);
-        return t;
+        return add(a,-b);
     }
 
     /**
@@ -281,7 +284,7 @@ library FixidityLib {
 
     /**
      * @dev a/b. If the dividend is higher than max_fixed_div() it 
-     * might overflow.
+     * might overflow. You can use multiply(a,reciprocal(b)) instead.
      * Test divide(fixed_1(),0) fails
      * Test divide(0,fixed_1()) returns 0
      * Test divide(fixed_1(),fixed_1()) returns fixed_1()
