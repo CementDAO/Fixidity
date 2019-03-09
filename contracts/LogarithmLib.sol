@@ -12,24 +12,24 @@ library LogarithmLib {
     /**
      * @notice This is e in the fixed point units used in this library.
      * @dev 27182818284590452353602874713526624977572470936999595749669676277240766303535/fixed1()
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function fixedE() public pure returns(int256) {
-        return 2718281828459045235360287471352662498;
+        return 2718281828459045235360287;
     }
 
     /**
-     * @notice ln(1.5), hardcoded with the comma 36 positions to the right.
+     * @notice ln(1.5), hardcoded with the comma 24 positions to the right.
      */
     function fixedLn1_5() public pure returns(int256) {
-        return 405465108108164381978013115464349137;
+        return 405465108108164381978013;
     }
 
     /**
-     * @notice ln(10), hardcoded with the comma 36 positions to the right.
+     * @notice ln(10), hardcoded with the comma 24 positions to the right.
      */
     function fixedLn10() public pure returns(int256) {
-        return 2302585092994045684017991454684364208;
+        return 2302585092994045684017991;
     }
 
     /**

@@ -20,31 +20,30 @@ library FixidityLib {
      * @notice Number of positions that the comma is shifted to the right.
      */
     function digits() public pure returns(uint8) {
-        return 36;
+        return 24;
     }
     
     /**
      * @notice This is 1 in the fixed point units used in this library.
      * @dev Test fixed1() equals 10^digits()
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function fixed1() public pure returns(int256) {
-        return 1000000000000000000000000000000000000;
+        return 1000000000000000000000000;
     }
 
     /**
      * @notice The amount of decimals lost on each multiplication operand.
      * @dev Test mulPrecision() equals sqrt(fixed1)
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function mulPrecision() public pure returns(int256) {
-        return 1000000000000000000;
+        return 1000000000000;
     }
 
     /**
      * @notice Maximum value that can be represented in an int256
      * @dev Test maxInt256() equals 2^255 -1
-     * Hardcoded to 36 digits.
      */
     function maxInt256() public pure returns(int256) {
         return 57896044618658097711785492504343953926634992332820282019728792003956564819967;
@@ -53,7 +52,6 @@ library FixidityLib {
     /**
      * @notice Minimum value that can be represented in an int256
      * @dev Test minInt256 equals (2^255) * (-1)
-     * Hardcoded to 36 digits.
      */
     function minInt256() public pure returns(int256) {
         return -57896044618658097711785492504343953926634992332820282019728792003956564819968;
@@ -64,20 +62,20 @@ library FixidityLib {
      * @notice Maximum value that can be converted to fixed point. Optimize for
      * @dev deployment. 
      * Test maxNewFixed() equals maxInt256() / fixed1()
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function maxNewFixed() public pure returns(int256) {
-        return 57896044618658097711785492504343953926634;
+        return 57896044618658097711785492504343953926634992332820282;
     }
 
     /**
      * @notice Maximum value that can be converted to fixed point. Optimize for
      * deployment. 
      * @dev Test minNewFixed() equals -(maxInt256()) / fixed1()
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function minNewFixed() public pure returns(int256) {
-        return -57896044618658097711785492504343953926634;
+        return -57896044618658097711785492504343953926634992332820282;
     }
 
     /**
@@ -87,7 +85,6 @@ library FixidityLib {
      * Test add(maxFixedAdd()+1,maxFixedAdd()) throws 
      * Test add(-maxFixedAdd(),-maxFixedAdd()) equals -maxFixedAdd() - maxFixedAdd()
      * Test add(-maxFixedAdd(),-maxFixedAdd()-1) throws 
-     * Hardcoded to 36 digits.
      */
     function maxFixedAdd() public pure returns(int256) {
         return 28948022309329048855892746252171976963317496166410141009864396001978282409983;
@@ -96,7 +93,6 @@ library FixidityLib {
     /**
      * @notice Maximum negative value that can be safely in a subtraction.
      * @dev Test maxFixedSub() equals minInt256() / 2
-     * Hardcoded to 36 digits.
      */
     function maxFixedSub() public pure returns(int256) {
         return -28948022309329048855892746252171976963317496166410141009864396001978282409984;
@@ -109,10 +105,10 @@ library FixidityLib {
      * Test multiply(maxFixedMul(),maxFixedMul()+1) throws 
      * Test multiply(-maxFixedMul(),maxFixedMul()) equals -maxFixedMul() * maxFixedMul()
      * Test multiply(-maxFixedMul(),maxFixedMul()+1) throws 
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function maxFixedMul() public pure returns(int256) {
-        return 240615969168004511545000000000000000000000000000000000000;
+        return 240615969168004494714208256000000000000000000000000;
     }
 
     /**
@@ -121,10 +117,10 @@ library FixidityLib {
      * Test maxFixedDiv() equals maxInt256()/fixed1()
      * Test divide(maxFixedDiv(),multiply(mulPrecision(),mulPrecision())) = maxFixedDiv()*(10^digits())
      * Test divide(maxFixedDiv()+1,multiply(mulPrecision(),mulPrecision())) throws
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function maxFixedDiv() public pure returns(int256) {
-        return 57896044618658097711785492504343953926634;
+        return 57896044618658097711785492504343953926634992332820282;
     }
 
     /**
@@ -132,10 +128,10 @@ library FixidityLib {
      * @dev Test maxFixedDivisor() equals fixed1()*fixed1() - Or 10**(digits()*2)
      * Test divide(10**(digits()*2 + 1),10**(digits()*2)) = returns 10*fixed1()
      * Test divide(10**(digits()*2 + 1),10**(digits()*2 + 1)) = throws
-     * Hardcoded to 36 digits.
+     * Hardcoded to 24 digits.
      */
     function maxFixedDivisor() public pure returns(int256) {
-        return 1000000000000000000000000000000000000000000000000000000000000000000000000;
+        return 1000000000000000000000000000000000000000000000000;
     }
 
     /**
@@ -300,9 +296,9 @@ library FixidityLib {
      * @dev 
      * Test fractional(0) returns 0
      * Test fractional(fixed1()) returns 0
-     * Test fractional(fixed1()-1) returns 10^36-1
+     * Test fractional(fixed1()-1) returns 10^24-1
      * Test fractional(-fixed1()) returns 0
-     * Test fractional(-fixed1()+1) returns -10^36-1
+     * Test fractional(-fixed1()+1) returns -10^24-1
      */
     function fractional(int256 x) public pure returns (int256) {
         return x - (x / fixed1()) * fixed1(); // Can't overflow

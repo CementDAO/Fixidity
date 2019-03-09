@@ -28,11 +28,17 @@ contract('FixidityLibMock - fractional', () => {
             );
             result.should.be.bignumber.equal(0);
         });
+        it('fractional(-fixed1())', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.fractional(fixed1.multipliedBy(-1).toString(10)),
+            );
+            result.should.be.bignumber.equal(0);
+        });
         it('fractional(fixed1()-1)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.fractional(fixed1.minus(1).toString(10)),
             );
-            result.should.be.bignumber.equal(new BigNumber(10).pow(36).minus(1));
+            result.should.be.bignumber.equal(fixed1.minus(1).toString(10));
         });
         it('fractional(-fixed1())', async () => {
             const result = new BigNumber(
@@ -44,7 +50,7 @@ contract('FixidityLibMock - fractional', () => {
             const result = new BigNumber(
                 await fixidityLibMock.fractional(fixed1.multipliedBy(-1).plus(1).toString(10)),
             );
-            result.should.be.bignumber.equal(new BigNumber(10).pow(36).minus(1).multipliedBy(-1));
+            result.should.be.bignumber.equal(fixed1.multipliedBy(-1).plus(1).toString(10));
         });
     });
 });
