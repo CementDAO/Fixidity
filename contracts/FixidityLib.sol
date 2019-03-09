@@ -138,16 +138,34 @@ library FixidityLib {
         if(b == fixed_1()) return a;
         if(a == fixed_1()) return b;
 
-        int256 x1 = a / fixed_1();
-        int256 x2 = a - fixed_1() * x1;
-        int256 y1 = b / fixed_1();
-        int256 y2 = b - fixed_1() * y1;
-        int256 result = fixed_1() * x1 * y1 + x1 * y2 + x2 * y1 + x2 * y2 / fixed_1();
+        // Separate into integer and decimal parts
+        // a = a1 + a2, b = b1 + b2
+        int256 a1 = a / fixed_1();
+        int256 a2 = a % fixed_1();
+        int256 b1 = b / fixed_1();
+        int256 b2 = b % fixed_1();
         
-        if(abs(a) < fixed_1()) assert(result < b); // these can never overflow, really
-        if(abs(b) < fixed_1()) assert(result < a); // these can never overflow, really
-        if(abs(a) > fixed_1() && abs(b) > fixed_1()) // Can this overflow twice?
-            assert(result > fixed_1() && result > fixed_1());
+        // (a1 + a2) * (b1 + b2) = (a1 * b1) + (a1 * b2) + (a2 * b1) + (a2 * b2)
+        int256 a1b1 = a1 * b1;
+        if (a1 != 0) assert(a1b1 / a1 == b1); // Overflow a1b1
+        
+        // Only a1b1 needs to be multiplied back by fixed_1
+        int256 fixed_a1b1 = a1b1 * fixed_1();
+        if (a1b1 != 0) assert(fixed_a1b1 / a1b1 == fixed_1()); // Overflow a1b1 * fixed_1
+
+        int256 a2b1 = a2 * b1;
+        if (a2 != 0) assert(a2b1 / a2 == b1); // Overflow a2b1
+
+        int256 a1b2 = a1 * b2;
+        if (a1 != 0) assert(a1b2 / a1 == b2); // Overflow a1b2
+
+        int256 a2b2 = a2 * b2;
+        if (a2 != 0) assert(a2b2 / a2 == b2); // Overflow a2b2
+
+        //int256 result = fixed_1() * x1 * y1 + x1 * y2 + x2 * y1 + x2 * y2 / fixed_1();
+        int256 result = add(a1b1, a2b1); // Add checks for overflow
+        result = add(result, a1b2); // Add checks for overflow
+        result = add(result, a2b2); // Add checks for overflow
         return result;
     }
 
