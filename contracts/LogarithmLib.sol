@@ -74,7 +74,7 @@ library LogarithmLib {
     }
 
     /**
-     * @dev log_b(x).
+     * @dev log_b(x). The base needs to be in fixed point representation.
      * Tests covered by ln(x) and divide(a,b)
      */
     function log_b(int256 b, int256 x) public pure returns (int256) {

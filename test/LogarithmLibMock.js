@@ -86,4 +86,18 @@ contract('LogarithmLibMock', () => {
         result.should.be.bignumber.gte(fixed_1.plus(fixed_1.dividedBy(50)).multipliedBy(-82));
         result.should.be.bignumber.lte(fixed_1.minus(fixed_1.dividedBy(50)).multipliedBy(-82));
     });
+    it('ln(10*fixed_1)', async () => {
+        const result = new BigNumber(
+            await logarithmLibMock.ln(fixed_1.multipliedBy(10).toString(10)),
+        );
+        result.should.be.bignumber.gte(new BigNumber(2302585092994045000000000000000000000));
+        result.should.be.bignumber.lte(new BigNumber(2302585092994046000000000000000000000));
+    });
+    it('log(10,11*fixed_1)', async () => {
+        const result = new BigNumber(
+            await logarithmLibMock.log_b(fixed_1.multipliedBy(10).toString(10), fixed_1.multipliedBy(11).toString(10)),
+        );
+        result.should.be.bignumber.gte(new BigNumber(1041392685158225000000000000000000000));
+        result.should.be.bignumber.lte(new BigNumber(1041392685158226000000000000000000000));
+    });
 });
