@@ -66,6 +66,7 @@ library FixidityLib {
      * deployment. 
      * max_int256() / fixed_1()
      * Hardcoded to 36 digits.
+     * TODO: Rename to max_fixed_new()
      */
     function max_fixed() public pure returns(int256) {
         return 57896044618658097711785492504343953926634;
@@ -81,8 +82,9 @@ library FixidityLib {
     }
 
     /**
-     * @dev Maximum value that can be safely used as a dividend operator.
-     * Defined by the reciprocal() implementation. max_int256() / fixed_1()
+     * @dev Maximum value that can be safely used as a dividend.
+     * divide(max_fixed_div,newFromInt256Fraction(1,fixed_1())) = max_int256().
+     * max_int256()/fixed_1()
      * Hardcoded to 36 digits.
      */
     function max_fixed_div() public pure returns(int256) {
@@ -101,10 +103,10 @@ library FixidityLib {
     /**
      * @dev Converts an int256 to fixed point units, equivalent to multiplying
      * by 10^digits().
-     * Test x = 0 returns 0
-     * Test x = 1 returns fixed_1()
-     * Test x = max_fixed() returns max_fixed() * fixed_1()
-     * Test x = max_fixed()+1 fails
+     * Test newFromInt256(0) returns 0
+     * Test newFromInt256(1) returns fixed_1()
+     * Test newFromInt256(max_fixed()) returns max_fixed() * fixed_1()
+     * Test newFromInt256(max_fixed()+1) fails
      */
     function newFromInt256(int256 x)
         public
@@ -118,13 +120,13 @@ library FixidityLib {
     /**
      * @dev Converts two int256 representing a fraction to fixed point units,
      * equivalent to multiplying dividend and divisor by 10^digits().
-     * Test n = 0 returns 0
-     * Test d = 0 fails
-     * Test n = 1, d = 1 returns fixed_1()
-     * Test n = max_fixed_div(), d = 1 returns max_fixed_div()
-     * Test n = max_fixed_div()+1, d = 1 fails
-     * Test n = 1, d = fixed_1() returns 1
-     * Test n = 1, d = fixed_1()-1 returns 0
+     * Test newFromInt256Fraction(0,1) returns 0
+     * Test newFromInt256Fraction(1,0) fails
+     * Test newFromInt256Fraction(1,1) returns fixed_1()
+     * Test newFromInt256Fraction(max_fixed_div(),1) returns max_fixed_div()
+     * Test newFromInt256Fraction(max_fixed_div()+1,1) fails
+     * Test newFromInt256Fraction(1,fixed_1()) returns 1
+     * Test newFromInt256Fraction(1,fixed_1()-1) returns 0
      */
     function newFromInt256Fraction(
         int256 numerator, 
@@ -144,8 +146,9 @@ library FixidityLib {
 
     /**
      * @dev Returns the integer part of a fixed point number.
-     * Test x = 0 returns 0
-     * Test x = newFromInt256(max_fixed()) returns max_fixed()*fixed_1()
+     * Test integer(0) returns 0
+     * Test integer(fixed_1()) returns fixed_1()
+     * Test integer(newFromInt256(max_fixed())) returns max_fixed()*fixed_1()
      */
     function integer(int256 x) public pure returns (int256) {
         return (x / fixed_1()) * fixed_1(); // Can't overflow
@@ -154,9 +157,9 @@ library FixidityLib {
 
     /**
      * @dev Returns the fractional part of a fixed point number.
-     * Test x = 0 returns 0
-     * Test x = fixed_1() returns 0
-     * Test x = fixed_1()-1 returns 10^36-1
+     * Test fractional(0) returns 0
+     * Test fractional(fixed_1()) returns 0
+     * Test fractional(fixed_1()-1) returns 10^36-1
      */
     function fractional(int256 x) public pure returns (int256) {
         return x - (x / fixed_1()) * fixed_1(); // Can't overflow
@@ -165,11 +168,11 @@ library FixidityLib {
 
     /**
      * @dev Converts to positive if negative
-     * Test x = 0 returns 0
-     * Test x = fixed_1() returns -fixed_1()
-     * Test x = -fixed_1() returns fixed_1()
-     * Test x = newFromInt256(max_fixed) returns -max_fixed()
-     * Test x = newFromInt256(-max_fixed) returns max_fixed()
+     * Test abs(0 returns 0
+     * Test abs(fixed_1()) returns -fixed_1()
+     * Test abs(-fixed_1()) returns fixed_1()
+     * Test abs(newFromInt256(max_fixed)) returns -max_fixed()*fixed_1()
+     * Test abs(newFromInt256(-max_fixed)) returns max_fixed()*fixed_1()
      */
     function abs(int256 x) public pure returns (int256) {
         if(x < 0) return -x;
@@ -179,11 +182,13 @@ library FixidityLib {
     /**
      * @dev a+b. If any operator is higher than max_fixed_add() it 
      * might overflow.
-     * Test a = 0, b = 0 returns 0
-     * Test a = max_fixed_add(), b = 0 returns max_fixed_add()
-     * Test a = 0, b = max_fixed_add() returns max_fixed_add()
-     * Test a = max_fixed_add, b = max_fixed_add() returns max_fixed()
-     * Test a = max_fixed_add + 1, b = max_fixed_add() fails
+     * Test add(0,0) returns 0
+     * Test add(max_fixed_add(),0) returns max_fixed_add()
+     * Test add(0,max_fixed_add()) returns max_fixed_add()
+     * Test add(max_fixed_add-1,max_fixed_add()) returns max_int256()-1
+     * Test add(max_fixed_add,max_fixed_add()-1) returns max_int256()-1
+     * Test add(max_fixed_add,max_fixed_add()) returns max_int256()
+     * Test add(max_fixed_add + 1,max_fixed_add()) fails
      */
     function add(int256 a, int256 b) public pure returns (int256) {
         int256 t = a + b;
@@ -193,13 +198,13 @@ library FixidityLib {
 
     /**
      * @dev a-b.
-     * Test a = 0, b = 0 returns 0
-     * Test a = max_fixed_add(), b = 0 returns max_fixed_add()
-     * Test a = 0, b = max_fixed_add() returns -max_fixed_add()
-     * Test a = max_fixed_add, b = max_fixed_add() returns 0
-     * Test a = -max_fixed_add, b = -max_fixed_add() returns 0
-     * Test a = -max_fixed_add, b = max_fixed_add() returns -max_fixed()
-     * Test a = -max_fixed_add - 1, b = -max_fixed_add() fails
+     * Test subtract(0,0 returns 0
+     * Test subtract(max_fixed_add(),0) returns max_fixed_add()
+     * Test subtract(0,max_fixed_add()) returns -max_fixed_add()
+     * Test subtract(max_fixed_add,max_fixed_add()) returns 0
+     * Test subtract(-max_fixed_add,-max_fixed_add()) returns 0
+     * Test subtract(-max_fixed_add + 1,max_fixed_add()) returns -max_int256()+1 // I think this is the limit
+     * Test subtract(-max_fixed_add,-max_fixed_add()) fails
      */
     function subtract(int256 a, int256 b) public pure returns (int256) {
         int256 t = a - b;
@@ -210,15 +215,19 @@ library FixidityLib {
     /**
      * @dev a*b. If any of the operators is higher than max_fixed_mul() it 
      * might overflow.
-     * Test a = 0, b = 0 returns 0
-     * Test a = max_fixed_mul(), b = 0 returns 0
-     * Test a = max_fixed_mul(), b = fixed_1() returns max_fixed_mul()
-     * Test a = 0, b = max_fixed_mul() returns 0
-     * Test a = fixed_1(), b = max_fixed_mul() returns max_fixed_mul()
-     * Test a = max_fixed_mul(), b = max_fixed_mul() returns max_int256()
-     * Test a = max_fixed_mul()-1, b = max_fixed_mul() equals a = max_fixed_mul(), b = max_fixed_mul()-1
-     * Test a = max_fixed_mul()+1, b = max_fixed_mul() fails
-     * Test a = max_fixed_mul(), b = max_fixed_mul()+1 fails
+     * Test multiply(0,0) returns 0
+     * Test multiply(max_fixed_mul(),0) returns 0
+     * Test multiply(max_fixed_mul(),fixed_1()) returns max_fixed_mul()
+     * Test multiply(0,max_fixed_mul()) returns 0
+     * Test multiply(fixed_1(),max_fixed_mul()) returns max_fixed_mul()
+     * Test multiply(fixed_e(),fixed_e()) returns fixed_e()*fixed_e()
+     * Test multiply(-fixed_e(),fixed_e()) returns -fixed_e()*fixed_e()
+     * Test multiply(fixed_e(),-fixed_e()) returns -fixed_e()*fixed_e()
+     * Test multiply(-fixed_e(),-fixed_e()) returns fixed_e()*fixed_e()
+     * Test multiply(max_fixed_mul()-1,max_fixed_mul()) equals multiply(max_fixed_mul(),max_fixed_mul()-1)
+     * Test multiply(max_fixed_mul(),max_fixed_mul()) returns max_int256() // Probably not to the last digits
+     * Test multiply(max_fixed_mul()+1,max_fixed_mul()) fails // Maybe it will need to be +fixed_1() to fail
+     * Test multiply(max_fixed_mul(),max_fixed_mul()+1) fails // Maybe it will need to be +fixed_1() to fail
      */
     function multiply(int256 a, int256 b) public pure returns (int256) {
         if(a == 0 || b == 0) return 0;
@@ -258,10 +267,12 @@ library FixidityLib {
     
     /**
      * @dev 1/x
-     * Test x = 0 fails
-     * Test x = fixed_1() returns fixed_1()
-     * Test x = fixed_1()*2 returns fixed_1()/2
-     * Test x = fixed_1()*fixed_1() returns 0
+     * Test reciprocal(0) fails
+     * Test reciprocal(fixed_1()) returns fixed_1()
+     * Test reciprocal(fixed_1()*2) returns fixed_1()/2
+     * Test reciprocal(fixed_e()) returns fixed_1()/fixed_e() // Maybe not because of different precisions
+     * Test reciprocal(fixed_1()*fixed_1()) returns 1 // Testing how the fractional is truncated
+     * Test reciprocal(2*fixed_1()*fixed_1()) returns 0 // Testing how the fractional is truncated
      */
     function reciprocal(int256 x) public pure returns (int256) {
         assert(x != 0);
@@ -271,13 +282,13 @@ library FixidityLib {
     /**
      * @dev a/b. If the dividend is higher than max_fixed_div() it 
      * might overflow.
-     * Test a = fixed_1(), b = 0 fails
-     * Test a = 0, b = fixed_1() returns 0
-     * Test a = fixed_1(), b = fixed_1() returns fixed_1()
-     * Test a = max_fixed_div(), b = fixed_1() returns max_fixed_div()
-     * Test a = fixed_1(), b = max_fixed_div() returns max_fixed_div()
-     * Test a = max_fixed_div(), b = max_fixed_div() returns fixed_1()
-     * Test a = max_fixed_div()-1, b = max_fixed_div() equals a = max_fixed_div(), b = max_fixed_div()-1
+     * Test divide(fixed_1(),0) fails
+     * Test divide(0,fixed_1()) returns 0
+     * Test divide(fixed_1(),fixed_1()) returns fixed_1()
+     * Test divide(max_fixed_div(),fixed_1()) returns max_fixed_div()
+     * Test divide(fixed_1(),max_fixed_div()) returns max_int256 // Probably not to the last digits
+     * Test divide(fixed_1(),max_fixed_div()+1) fails // Maybe it will need to be +fixed_1()
+     * Test divide(max_fixed_div(),max_fixed_div()) returns fixed_1()
      */
     function divide(int256 a, int256 b) public pure returns (int256) {
         if(b == fixed_1()) return a;
