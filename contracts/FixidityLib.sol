@@ -4,7 +4,7 @@ pragma solidity ^0.5.0;
  * @dev This library provides fixed point arithmetic. All operations are done
  * with int256 and the operands must have been created with any of the newFrom*
  * functions, which shift the comma digits() to the right and check for limits.
- * When using this library be sure of using max_fixed() as the upper limit for
+ * When using this library be sure of using max_fixed_new() as the upper limit for
  * creation of fixed point numbers. Use max_fixed_mul(), max_fixed_div() and
  * max_fixed_add() if you want to be certain that those operations don't 
  * overflow.
@@ -68,13 +68,13 @@ library FixidityLib {
      * Hardcoded to 36 digits.
      * TODO: Rename to max_fixed_new()
      */
-    function max_fixed() public pure returns(int256) {
+    function max_fixed_new() public pure returns(int256) {
         return 57896044618658097711785492504343953926634;
     }
 
     /**
      * @dev Maximum value that can be safely used as a multiplication operator.
-     * sqrt(max_fixed())
+     * sqrt(max_fixed_new())
      * Hardcoded to 36 digits.
      */
     function max_fixed_mul() public pure returns(int256) {
@@ -105,15 +105,15 @@ library FixidityLib {
      * by 10^digits().
      * Test newFromInt256(0) returns 0
      * Test newFromInt256(1) returns fixed_1()
-     * Test newFromInt256(max_fixed()) returns max_fixed() * fixed_1()
-     * Test newFromInt256(max_fixed()+1) fails
+     * Test newFromInt256(max_fixed_new()) returns max_fixed_new() * fixed_1()
+     * Test newFromInt256(max_fixed_new()+1) fails
      */
     function newFromInt256(int256 x)
         public
         pure
         returns (int256)
     {
-        assert(x < max_fixed()); // Cannot process numbers above 57896044618658097711785492504343953926633.
+        assert(x < max_fixed_new()); // Cannot process numbers above 57896044618658097711785492504343953926633.
         return x * fixed_1();
     }
 
@@ -137,8 +137,8 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(numerator < max_fixed());
-        assert(denominator < max_fixed());
+        assert(numerator < max_fixed_new());
+        assert(denominator < max_fixed_new());
         assert(denominator != 0);
         int256 convertedNumerator = newFromInt256(numerator);
         int256 convertedDenominator = newFromInt256(denominator);
@@ -149,9 +149,9 @@ library FixidityLib {
      * @dev Returns the integer part of a fixed point number.
      * Test integer(0) returns 0
      * Test integer(fixed_1()) returns fixed_1()
-     * Test integer(newFromInt256(max_fixed())) returns max_fixed()*fixed_1()
+     * Test integer(newFromInt256(max_fixed_new())) returns max_fixed_new()*fixed_1()
      * Test integer(-fixed_1()) returns -fixed_1()
-     * Test integer(newFromInt256(-max_fixed())) returns -max_fixed()*fixed_1()
+     * Test integer(newFromInt256(-max_fixed_new())) returns -max_fixed_new()*fixed_1()
      */
     function integer(int256 x) public pure returns (int256) {
         return (x / fixed_1()) * fixed_1(); // Can't overflow
@@ -177,8 +177,8 @@ library FixidityLib {
      * Test abs(0 returns 0
      * Test abs(fixed_1()) returns -fixed_1()
      * Test abs(-fixed_1()) returns fixed_1()
-     * Test abs(newFromInt256(max_fixed())) returns -max_fixed()*fixed_1()
-     * Test abs(newFromInt256(-max_fixed())) returns max_fixed()*fixed_1()
+     * Test abs(newFromInt256(max_fixed_new())) returns -max_fixed_new()*fixed_1()
+     * Test abs(newFromInt256(-max_fixed_new())) returns max_fixed_new()*fixed_1()
      */
     function abs(int256 x) public pure returns (int256) {
         if(x < 0) return -x;
