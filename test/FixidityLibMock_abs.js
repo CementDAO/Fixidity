@@ -2,27 +2,26 @@ const FixidityLibMock = artifacts.require('./FixidityLibMock.sol');
 const BigNumber = require('bignumber.js');
 const chai = require('chai');
 
+const { itShouldThrow } = require('../../utils');
 // use default BigNumber
 chai.use(require('chai-bignumber')()).should();
 
 
 contract('FixidityLibMock - abs', () => {
     let fixidityLibMock;
-    // eslint-disable-next-line camelcase
     let fixed1;
-    // eslint-disable-next-line camelcase
     let maxNewFixed;
-    // eslint-disable-next-line camelcase
     let minNewFixed;
+    let maxInt256;
+    let minInt256;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
-        // eslint-disable-next-line camelcase
         fixed1 = new BigNumber(await fixidityLibMock.fixed1());
-        // eslint-disable-next-line camelcase
         maxNewFixed = new BigNumber(await fixidityLibMock.maxNewFixed());
-        // eslint-disable-next-line camelcase
         minNewFixed = new BigNumber(await fixidityLibMock.minNewFixed());
+        maxInt256 = new BigNumber(await fixidityLibMock.maxInt256());
+        minInt256 = new BigNumber(await fixidityLibMock.minInt256());
     });
 
     describe('abs', () => {
@@ -58,5 +57,8 @@ contract('FixidityLibMock - abs', () => {
             );
             result.should.be.bignumber.equal(minNewFixed.multipliedBy(fixed1).multipliedBy(-1));
         });
+        itShouldThrow('abs(minInt256()))', async () => {
+            await fixidityLibMock.abs(minInt256.toString(10));
+        }, 'revert');
     });
 });

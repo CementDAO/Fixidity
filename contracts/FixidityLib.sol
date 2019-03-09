@@ -320,7 +320,8 @@ library FixidityLib {
 
     /**
      * @notice Converts to positive if negative.
-     * x == -x is not true only for maxInt256, but abs(maxInt256) == maxInt256
+     * Due to int256 having one more negative number than positive numbers 
+     * abs(minInt256) reverts.
      * @dev 
      * Test abs(0) returns 0
      * Test abs(fixed1()) returns -fixed1()
@@ -329,8 +330,12 @@ library FixidityLib {
      * Test abs(newFixed(minNewFixed())) returns -minNewFixed()*fixed1()
      */
     function abs(int256 x) public pure returns (int256) {
-        if(x < 0) return -x;
-        else return x;
+        if(x >= 0) return x;
+        else {
+            int256 result = -x;
+            assert (result > 0);
+            return result;
+        }
     }
 
     /**
