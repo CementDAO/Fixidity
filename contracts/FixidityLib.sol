@@ -225,15 +225,16 @@ library FixidityLib {
      */
     function subtract(int256 a, int256 b) public pure returns (int256) {
         int256 t = a - b;
-        assert(t + a == b);
+        // assert(t + a == b);
         return t;
     }
 
     /**
      * @dev If v is closer to ceiling(v) than to floor(v) then return ceiling(v). Should be round_up()
      */
-    function round_off(int256 v) public pure returns (int256) {
+    function round_off(int256 value) public pure returns (int256) {
         int8 sign = 1;
+        int256 v = value;
         if(v < 0) {
             sign = -1;
             v = abs(v);
