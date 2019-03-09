@@ -39,26 +39,11 @@ library FixidityLib {
 
     /**
      * @dev This is e in the fixed point units used in this library.
+     * 27182818284590452353602874713526624977572470936999595749669676277240766303535/fixed_1()
      * Hardcoded to 36 digits.
      */
     function fixed_e() public pure returns(int256) {
         return 2718281828459045235360287471352662498;
-    }
-
-    /**
-     * @dev This is pi in the fixed point units used in this library.
-     * Hardcoded to 36 digits.
-     */
-    function fixed_pi() public pure returns(int256) {
-        return 3141592653589793238462643383279502884;
-    }
-
-    /**
-     * @dev fixed_exp_10
-     * Hardcoded to 36 digits.
-     */
-    function fixed_exp_10() public pure returns(int256) {
-        return 22026465794806716516957900645284244000000;
     }
 
     /**
