@@ -10,35 +10,35 @@ library FixidityLib {
     }
     
     /**
-     * @dev digits
+     * @dev finex_1
      */
     function fixed_1() public pure returns(int256) {
         return 1000000000000000000000000000000000000;
     }
 
     /**
-     * @dev digits
+     * @dev fixed_e
      */
     function fixed_e() public pure returns(int256) {
         return 2718281828459045235360287471352662498;
     }
 
     /**
-     * @dev digits
+     * @dev fixed_pi
      */
     function fixed_pi() public pure returns(int256) {
         return 3141592653589793238462643383279502884;
     }
 
     /**
-     * @dev digits
+     * @dev fixed_exp_10
      */
     function fixed_exp_10() public pure returns(int256) {
         return 22026465794806716516957900645284244000000;
     }
 
     /**
-     * @dev digits
+     * @dev masx_int256
      */
     function max_int256() public pure returns(int256) {
         return 57896044618658097711785492504343953926633;
