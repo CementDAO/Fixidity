@@ -63,11 +63,11 @@ library FixidityLib {
 
     /**
      * @dev Minimum value that can be represented in an int256
-     * Test min_int256 equals -1 * ((2^256 / 2)-2)
+     * Test min_int256 equals -1 * (2^256 / 2)
      * Hardcoded to 36 digits.
      */
     function min_int256() public pure returns(int256) {
-        return -57896044618658097711785492504343953926634992332820282019728792003956564819966;
+        return -57896044618658097711785492504343953926634992332820282019728792003956564819968;
     }
 
 
@@ -112,11 +112,20 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be safely used as an addition operator.
-     * Test max_fixed_add() equals max_int256() / 2
+     * Test max_fixed_add() equals max_int256()-1 / 2
      * Hardcoded to 36 digits.
      */
     function max_fixed_add() public pure returns(int256) {
         return 28948022309329048855892746252171976963317496166410141009864396001978282409983;
+    }
+
+    /**
+     * @dev Maximum negative value that can be safely in a subtraction.
+     * Test max_fixed_sub() equals min_int256()-1 / 2
+     * Hardcoded to 36 digits.
+     */
+    function max_fixed_sub() public pure returns(int256) {
+        return -28948022309329048855892746252171976963317496166410141009864396001978282409984;
     }
 
     /**
@@ -208,23 +217,16 @@ library FixidityLib {
     /**
      * @dev a+b. If any operator is higher than max_fixed_add() it 
      * might overflow.
-     * Test add(0,0) returns 0
-     * Test add(max_fixed_add(),0) returns max_fixed_add()
-     * Test add(0,max_fixed_add()) returns max_fixed_add()
-     * Test add(max_fixed_add-1,max_fixed_add()) returns max_int256()-1
-     * Test add(max_fixed_add,max_fixed_add()-1) returns max_int256()-1
-     * Test add(max_fixed_add,max_fixed_add()) returns max_int256()
-     * Test add(max_fixed_add + 1,max_fixed_add()) fails
-     * Test add(-max_fixed_add(),0) returns -max_fixed_add()
-     * Test add(0,-max_fixed_add()) returns -max_fixed_add()
-     * Test add(-max_fixed_add,max_fixed_add()) returns 0
-     * Test add(max_fixed_add,-max_fixed_add()) returns 0
-     * Test add(-max_fixed_add,-max_fixed_add()+1) returns 1-max_int256
-     * Test add(-max_fixed_add,-max_fixed_add()) fails
+     * Test add(max_fixed_add(),max_fixed_add()) returns max_int256()-1
+     * Test add(max_fixed_add()+1,max_fixed_add()+1) fails
+     * Test add(-max_fixed_sub(),-max_fixed_sub()) returns min_int256()
+     * Test add(-max_fixed_sub(),-max_fixed_sub()-1) fails
      */
     function add(int256 a, int256 b) public pure returns (int256) {
         int256 t = a + b;
         assert(t - a == b);
+        if(a > 0 && b > 0) assert(t > 0);
+        if(a < 0 && b < 0) assert(t < 0);
         return t;
     }
 
