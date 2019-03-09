@@ -20,10 +20,13 @@ library LogarithmLib {
 
     /**
      * @dev ln(x)
+     * README: This function has a 1/50 deviation close to ln(-1), 
+     * 1/max_fixed_mul() deviation at fixed_e()**2, but diverges to 10x 
+     * deviation at max_fixed_new().
      * Test ln(0) fails
      * Test ln(-fixed_1()) fails
      * Test ln(fixed_1()) returns 0
-     * Test ln(fixed_e()) returns 1
+     * Test ln(fixed_e()) returns fixed_1()
      * Test ln(fixed_e()*fixed_e()) returns ln(fixed_e())+ln(fixed_e())
      * Test ln(max_int256) returns 176752531042786059920093411119162458112
      * Test ln(1) returns -82
