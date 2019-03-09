@@ -76,10 +76,19 @@ library FixidityLib {
      * deployment. 
      * Test max_fixed_new() equals max_int256() / fixed_1()
      * Hardcoded to 36 digits.
-     * TODO: Rename to max_fixed_new()
      */
     function max_fixed_new() public pure returns(int256) {
         return 57896044618658097711785492504343953926634;
+    }
+
+    /**
+     * @dev Maximum value that can be converted to fixed point. Optimize for
+     * deployment. 
+     * Test min_fixed_new() equals -(max_int256()) / fixed_1()
+     * Hardcoded to 36 digits.
+     */
+    function min_fixed_new() public pure returns(int256) {
+        return -57896044618658097711785492504343953926634;
     }
 
     /**
@@ -123,7 +132,8 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(x <= max_fixed_new()); // Cannot process numbers above 57896044618658097711785492504343953926633.
+        assert(x <= max_fixed_new());
+        assert(x >= min_fixed_new());
         return x * fixed_1();
     }
 
@@ -135,7 +145,7 @@ library FixidityLib {
      * Test newFromInt256Fraction(1,0) fails     
      * Test newFromInt256Fraction(0,1) returns 0
      * Test newFromInt256Fraction(1,1) returns fixed_1()
-     * Test newFromInt256Fraction(max_fixed_div(),1) returns max_fixed_div()
+     * Test newFromInt256Fraction(max_fixed_div(),1) returns max_fixed_div()*fixed_1()
      * Test newFromInt256Fraction(1,fixed_1()) returns 1
      * Test newFromInt256Fraction(1,fixed_1()-1) returns 0
      */
@@ -187,8 +197,8 @@ library FixidityLib {
      * Test abs(0) returns 0
      * Test abs(fixed_1()) returns -fixed_1()
      * Test abs(-fixed_1()) returns fixed_1()
-     * Test abs(newFromInt256(max_fixed_new())) returns -max_fixed_new()*fixed_1()
-     * Test abs(newFromInt256(-max_fixed_new())) returns max_fixed_new()*fixed_1()
+     * Test abs(newFromInt256(max_fixed_new())) returns max_fixed_new()*fixed_1()
+     * Test abs(newFromInt256(min_fixed_new())) returns -min_fixed_new()*fixed_1()
      */
     function abs(int256 x) public pure returns (int256) {
         if(x < 0) return -x;

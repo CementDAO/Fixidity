@@ -9,13 +9,13 @@ contract('LogarithmLibMock', () => {
         logarithmLibMock = await LogarithmLibMock.deployed();
     });
 
-    it('log_e', async () => {
-        const result = await logarithmLibMock.log_e(5);
+    it('ln', async () => {
+        const result = await logarithmLibMock.ln(5);
         console.log(result.toString(10));
     });
 
-    it('log_any', async () => {
-        const result = await logarithmLibMock.log_any(5, 2);
+    it('log_b', async () => {
+        const result = await logarithmLibMock.log_b(5, 2);
         console.log(result.toString(10));
     });
 });
