@@ -17,7 +17,7 @@ library FixidityLib {
     }
 
     function init(Fixidity storage fixidity, uint8 digits) public {
-        assert(digits < 36);
+        assert(digits <= 36);
         fixidity.digits = digits;
         fixidity.fixed_1 = int256(uint256(10) ** uint256(digits));
         int256 t = int256(uint256(10) ** uint256(initial_digits - digits));
@@ -118,13 +118,13 @@ library FixidityLib {
         return multiply(fixidity, a, reciprocal(fixidity, b));
     }
 
-    function add(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
+    function add(Fixidity storage /*fixidity*/, int256 a, int256 b) public pure returns (int256) {
         int256 t = a + b;
         assert(t - a == b);
         return t;
     }
 
-    function subtract(Fixidity storage fixidity, int256 a, int256 b) public view returns (int256) {
+    function subtract(Fixidity storage /*fixidity*/, int256 a, int256 b) public pure returns (int256) {
         int256 t = a - b;
         assert(t + a == b);
         return t;
@@ -134,7 +134,7 @@ library FixidityLib {
         return round_off(fixidity, 10 * fixidity.fixed_1 * fixidity.fixed_1 / a, 1) / 10;
     }
 
-    function round_off(Fixidity storage fixidity, int256 v, uint8 digits) public view returns (int256) {
+    function round_off(Fixidity storage /*fixidity*/, int256 v, uint8 digits) public pure returns (int256) {
         int256 t = int256(uint256(10) ** uint256(digits));
         int8 sign = 1;
         if(v < 0) {
@@ -150,7 +150,7 @@ library FixidityLib {
         return round_off(fixidity, v, fixidity.digits - digits);
     }
 
-    function trunc_digits(Fixidity storage fixidity, int256 v, uint8 digits) public view returns (int256) {
+    function trunc_digits(Fixidity storage fixidity, int256 v, uint8 digits) public pure returns (int256) {
         if(digits <= 0) return v;
         return round_off(fixidity, v, digits)
             / int256(uint256(10) ** uint256(digits));
