@@ -2,6 +2,7 @@ const FixidityLibMock = artifacts.require('./FixidityLibMock.sol');
 const BigNumber = require('bignumber.js');
 const chai = require('chai');
 
+const { itShouldThrow } = require('../../utils');
 // use default BigNumber
 chai.use(require('chai-bignumber')()).should();
 
@@ -16,6 +17,9 @@ contract('FixidityLibMock - multiply', () => {
     let max_fixed_mul;
     // eslint-disable-next-line camelcase
     let mul_precision;
+    // eslint-disable-next-line camelcase
+    let max_fixed_add;
+
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
@@ -27,6 +31,8 @@ contract('FixidityLibMock - multiply', () => {
         max_fixed_mul = new BigNumber(await fixidityLibMock.max_fixed_mul());
         // eslint-disable-next-line camelcase
         mul_precision = new BigNumber(await fixidityLibMock.mul_precision());
+        // eslint-disable-next-line camelcase
+        max_fixed_add = new BigNumber(await fixidityLibMock.max_fixed_add());
     });
 
     describe('multiply', () => {
@@ -241,6 +247,18 @@ contract('FixidityLibMock - multiply', () => {
             );
             result.should.be.bignumber.equal(fixed_1.multipliedBy(-6.25));
         });
+        itShouldThrow('multiply(max_fixed_add(),max_fixed_add())', async () => {
+            await fixidityLibMock.add(
+                max_fixed_add.toString(10),
+                max_fixed_add.toString(10),
+            );
+        }, 'revert');
         // TODO: Test limits
+        /*
+        * Test multiply(max_fixed_mul()-1,max_fixed_mul()) equals multiply(max_fixed_mul(),max_fixed_mul()-1)
+        * Test multiply(max_fixed_mul(),max_fixed_mul()) returns max_int256() // Probably not to the last digits
+        * Test multiply(max_fixed_mul()+1,max_fixed_mul()) fails // Maybe it will need to be +fixed_1() to fail
+        * Test multiply(max_fixed_mul(),max_fixed_mul()+1) fails // Maybe it will need to be +fixed_1() to fail
+        */
     });
 });

@@ -242,7 +242,7 @@ library FixidityLib {
      * Test multiply(max_fixed_mul(),fixed_1()) returns max_fixed_mul()
      * Test multiply(fixed_1(),max_fixed_mul()) returns max_fixed_mul()
      * Test all combinations of (2,-2), (2, 2.5), (2, -2.5) and (0.5, -0.5)
-     * Test 0.000000000000000005 *  0.000000000000000005
+     * Test multiply(fixed_1()/mul_precision(),fixed_1()*mul_precision())
      * Test multiply(max_fixed_mul()-1,max_fixed_mul()) equals multiply(max_fixed_mul(),max_fixed_mul()-1)
      * Test multiply(max_fixed_mul(),max_fixed_mul()) returns max_int256() // Probably not to the last digits
      * Test multiply(max_fixed_mul()+1,max_fixed_mul()) fails // Maybe it will need to be +fixed_1() to fail

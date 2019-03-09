@@ -28,11 +28,15 @@ contract('FixidityLibMock - newFromInt256', () => {
 
     describe('newFromInt256', () => {
         it('newFromInt256(0)', async () => {
-            const result = await fixidityLibMock.newFromInt256(0);
+            const result = new BigNumber(
+                await fixidityLibMock.newFromInt256(0),
+            );
             result.should.be.bignumber.equal(0);
         });
         it('newFromInt256(1)', async () => {
-            const result = new BigNumber(await fixidityLibMock.newFromInt256(1));
+            const result = new BigNumber(
+                await fixidityLibMock.newFromInt256(1),
+            );
             result.should.be.bignumber.equal(fixed_1);
         });
         it('newFromInt256(max_fixed_new())', async () => {
@@ -57,7 +61,7 @@ contract('FixidityLibMock - newFromInt256', () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFromInt256(min_fixed_new.toString(10)),
             );
-            result.should.be.bignumber.equal(fixed_1.multipliedBy(max_fixed_new));
+            result.should.be.bignumber.equal(fixed_1.multipliedBy(min_fixed_new));
         });
         itShouldThrow(
             'newFromInt256(min_fixed_new()-1)',

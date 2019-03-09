@@ -26,44 +26,18 @@ contract('FixidityLibMock - divide', () => {
         max_int256 = new BigNumber(await fixidityLibMock.max_int256());
     });
 
+    /*
+     * Test divide(fixed_1(),0) fails
+     * Test divide(fixed_1(),max_fixed_div()) returns max_int256 // Probably not to the last digits
+     * Test divide(fixed_1(),max_fixed_div()+1) fails // Maybe it will need to be +fixed_1()
+     * Test divide(max_fixed_div(),max_fixed_div()) returns fixed_1()
+     */
+
     describe('divide', () => {
         itShouldThrow('divide(fixed_1(),0)', async () => {
             await fixidityLibMock.divide(
                 fixed_1.toString(10),
                 0,
-            );
-        });
-        it('divide(0,fixed_1())', async () => {
-            const result = new BigNumber(
-                await fixidityLibMock.divide(
-                    0,
-                    fixed_1.toString(10),
-                ),
-            );
-            result.should.be.bignumber.equal(
-                0,
-            );
-        });
-        it('divide(fixed_1(),fixed_1())', async () => {
-            const result = new BigNumber(
-                await fixidityLibMock.divide(
-                    fixed_1.toString(10),
-                    fixed_1.toString(10),
-                ),
-            );
-            result.should.be.bignumber.equal(
-                fixed_1,
-            );
-        });
-        it('divide(max_fixed_div(),fixed_1())', async () => {
-            const result = new BigNumber(
-                await fixidityLibMock.divide(
-                    max_fixed_div.toString(10),
-                    fixed_1.toString(10),
-                ),
-            );
-            result.should.be.bignumber.equal(
-                max_fixed_div,
             );
         });
         it('divide(fixed_1(),max_fixed_div())', async () => {
