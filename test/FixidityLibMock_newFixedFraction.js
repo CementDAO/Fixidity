@@ -65,26 +65,21 @@ contract('FixidityLibMock - newFixedFraction', () => {
             );
             result.should.be.bignumber.equal(max_fixed_div.multipliedBy(fixed_1));
         });
-        itShouldThrow(
-            'newFixedFraction(1,fixed_1())',
-            async () => {
-                await fixidityLibMock
-                    .newFixedFraction(1, 0);
-            },
-            'revert',
-        );
-        /* it('newFixedFraction(100,fixed_1())', async () => {
+        it('newFixedFraction(1,fixed_1())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.newFixedFraction(1, fixed_1.toString(10)),
             );
-            console.log(result.toString(10));
-            assert.equal(result.comparedTo(new BigNumber(1)), 0, 'should be one!');
-        }); */
-        /* it('newFixedFraction(10,fixed_1()+1)', async () => {
-            const result = new BigNumber(
-                await fixidityLibMock.newFixedFraction(1, fixed_1.plus(1).toString(10)),
-            );
-            result.should.be.bignumber.equal(0);
-        }); */
+            result.should.be.bignumber.equal(1);
+        });
+        itShouldThrow(
+            'newFixedFraction(10, max_fixed_div()*10)',
+            async () => {
+                await fixidityLibMock.newFixedFraction(
+                    10,
+                    max_fixed_div.multipliedBy(10).toString(10),
+                );
+            },
+            'revert',
+        );
     });
 });
