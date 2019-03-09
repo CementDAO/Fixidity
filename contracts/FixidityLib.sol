@@ -42,15 +42,6 @@ library FixidityLib {
     }
 
     /**
-     * @notice This is e in the fixed point units used in this library.
-     * @dev 27182818284590452353602874713526624977572470936999595749669676277240766303535/fixed1()
-     * Hardcoded to 36 digits.
-     */
-    function fixedE() public pure returns(int256) {
-        return 2718281828459045235360287471352662498;
-    }
-
-    /**
      * @notice Maximum value that can be represented in an int256
      * @dev Test maxInt256() equals 2^255 -1
      * Hardcoded to 36 digits.

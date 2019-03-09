@@ -8,13 +8,16 @@ import "../fixidity/LogarithmLib.sol";
 
 contract LogarithmLibMock {
 
-
-    function fixed_ln_1_5() public pure returns(int256) {
-        return LogarithmLib.fixed_ln_1_5();
+    function fixedE() public pure returns(int256) {
+        return LogarithmLib.fixedE();
     }
 
-    function fixed_ln_10() public pure returns(int256) {
-        return LogarithmLib.fixed_ln_10();
+    function fixedLn1_5() public pure returns(int256) {
+        return LogarithmLib.fixedLn1_5();
+    }
+
+    function fixedLn10() public pure returns(int256) {
+        return LogarithmLib.fixedLn10();
     }
 
     function ln(int256 value) public pure returns (int256) {

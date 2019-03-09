@@ -9,17 +9,11 @@ chai.use(require('chai-bignumber')()).should();
 
 contract('FixidityLibMock - reciprocal', () => {
     let fixidityLibMock;
-    // eslint-disable-next-line camelcase
     let fixed1;
-    // eslint-disable-next-line camelcase
-    let fixedE;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
-        // eslint-disable-next-line camelcase
         fixed1 = new BigNumber(await fixidityLibMock.fixed1());
-        // eslint-disable-next-line camelcase
-        fixedE = new BigNumber(await fixidityLibMock.fixedE());
     });
 
     describe('reciprocal', () => {
@@ -46,14 +40,14 @@ contract('FixidityLibMock - reciprocal', () => {
                 fixed1.dividedBy(2),
             );
         });
-        it('reciprocal(fixedE())', async () => {
+        it('reciprocal(2.5)', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.reciprocal(
-                    fixedE.toString(10),
+                    fixed1.multipliedBy(2.5).toString(10),
                 ),
             );
             result.should.be.bignumber.equal(
-                fixed1.multipliedBy(fixed1).div(fixedE).dp(0, 1),
+                fixed1.div(2.5).dp(0, 1),
             );
         });
         it('reciprocal(fixed1()*fixed1())', async () => {

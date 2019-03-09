@@ -10,16 +10,25 @@ import "./FixidityLib.sol";
 library LogarithmLib {
 
     /**
+     * @notice This is e in the fixed point units used in this library.
+     * @dev 27182818284590452353602874713526624977572470936999595749669676277240766303535/fixed1()
+     * Hardcoded to 36 digits.
+     */
+    function fixedE() public pure returns(int256) {
+        return 2718281828459045235360287471352662498;
+    }
+
+    /**
      * @notice ln(1.5), hardcoded with the comma 36 positions to the right.
      */
-    function fixed_ln_1_5() public pure returns(int256) {
+    function fixedLn1_5() public pure returns(int256) {
         return 405465108108164381978013115464349137;
     }
 
     /**
      * @notice ln(10), hardcoded with the comma 36 positions to the right.
      */
-    function fixed_ln_10() public pure returns(int256) {
+    function fixedLn10() public pure returns(int256) {
         return 2302585092994045684017991454684364208;
     }
 
@@ -43,29 +52,29 @@ library LogarithmLib {
         int256 r = 0;
         while(v <= FixidityLib.fixed1() / 10) {
             v = v * 10;
-            r -= fixed_ln_10();
+            r -= fixedLn10();
         }
         while(v >= 10 * FixidityLib.fixed1()) {
             v = v / 10;
-            r += fixed_ln_10();
+            r += fixedLn10();
         }
         while(v < FixidityLib.fixed1()) {
-            v = FixidityLib.multiply(v, FixidityLib.fixedE());
+            v = FixidityLib.multiply(v, fixedE());
             r -= FixidityLib.fixed1();
         }
-        while(v > FixidityLib.fixedE()) {
-            v = FixidityLib.divide(v, FixidityLib.fixedE());
+        while(v > fixedE()) {
+            v = FixidityLib.divide(v, fixedE());
             r += FixidityLib.fixed1();
         }
         if(v == FixidityLib.fixed1()) {
             return r;
         }
-        if(v == FixidityLib.fixedE()) {
+        if(v == fixedE()) {
             return FixidityLib.fixed1() + r;
         }
 
         v = v - 3 * FixidityLib.fixed1() / 2;
-        r = r + fixed_ln_1_5();
+        r = r + fixedLn1_5();
         int256 m = FixidityLib.fixed1() * v / (v + 3 * FixidityLib.fixed1());
         r = r + 2 * m;
         int256 m_2 = m * m / FixidityLib.fixed1();

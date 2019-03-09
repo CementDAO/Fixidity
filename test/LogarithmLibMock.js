@@ -10,25 +10,17 @@ chai.use(require('chai-bignumber')()).should();
 contract('LogarithmLibMock', () => {
     let fixidityLibMock;
     let logarithmLibMock;
-    // eslint-disable-next-line camelcase
     let fixed1;
-    // eslint-disable-next-line camelcase
     let fixedE;
-    // eslint-disable-next-line camelcase
     let mulPrecision;
-    // eslint-disable-next-line camelcase
     let maxNewFixed;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
         logarithmLibMock = await LogarithmLibMock.deployed();
-        // eslint-disable-next-line camelcase
         fixed1 = new BigNumber(await fixidityLibMock.fixed1());
-        // eslint-disable-next-line camelcase
-        fixedE = new BigNumber(await fixidityLibMock.fixedE());
-        // eslint-disable-next-line camelcase
+        fixedE = new BigNumber(await logarithmLibMock.fixedE());
         mulPrecision = new BigNumber(await fixidityLibMock.mulPrecision());
-        // eslint-disable-next-line camelcase
         maxNewFixed = new BigNumber(await fixidityLibMock.maxNewFixed());
     });
 
