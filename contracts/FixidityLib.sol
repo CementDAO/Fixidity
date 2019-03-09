@@ -21,7 +21,7 @@ library FixidityLib {
     
     /**
      * @dev This is 1 in the fixed point units used in this library.
-     * 10^digits()
+     * Test fixed_1() equals 10^digits()
      * Hardcoded to 36 digits.
      */
     function fixed_1() public pure returns(int256) {
@@ -54,7 +54,7 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be represented in an int256
-     * 2^256 / 2 -1
+     * Test max_int256() equals 2^256 / 2 -1
      * Hardcoded to 36 digits.
      */
     function max_int256() public pure returns(int256) {
@@ -62,9 +62,19 @@ library FixidityLib {
     }
 
     /**
+     * @dev Minimum value that can be represented in an int256
+     * Test min_int256 equals -1 * ((2^256 / 2)-2)
+     * Hardcoded to 36 digits.
+     */
+    function min_int256() public pure returns(int256) {
+        return -57896044618658097711785492504343953926634992332820282019728792003956564819966;
+    }
+
+
+    /**
      * @dev Maximum value that can be converted to fixed point. Optimize for
      * deployment. 
-     * max_int256() / fixed_1()
+     * Test max_fixed_new() equals max_int256() / fixed_1()
      * Hardcoded to 36 digits.
      * TODO: Rename to max_fixed_new()
      */
@@ -74,7 +84,7 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be safely used as a multiplication operator.
-     * sqrt(max_fixed_new())
+     * Test max_fixed_add equals sqrt(max_fixed_new())
      * Hardcoded to 36 digits.
      */
     function max_fixed_mul() public pure returns(int256) {
@@ -84,7 +94,7 @@ library FixidityLib {
     /**
      * @dev Maximum value that can be safely used as a dividend.
      * divide(max_fixed_div,newFromInt256Fraction(1,fixed_1())) = max_int256().
-     * max_int256()/fixed_1()
+     * Test max_fixed_div() equals max_int256()/fixed_1()
      * Hardcoded to 36 digits.
      */
     function max_fixed_div() public pure returns(int256) {
@@ -93,7 +103,7 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be safely used as an addition operator.
-     * max_int256() / 2
+     * Test max_fixed_add() equals max_int256() / 2
      * Hardcoded to 36 digits.
      */
     function max_fixed_add() public pure returns(int256) {
