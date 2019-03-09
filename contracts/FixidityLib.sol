@@ -21,6 +21,7 @@ library FixidityLib {
     
     /**
      * @dev This is 1 in the fixed point units used in this library.
+     * 10^digits()
      * Hardcoded to 36 digits.
      */
     function fixed_1() public pure returns(int256) {
@@ -53,6 +54,7 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be represented in an int256
+     * 2^256 / 2 -1
      * Hardcoded to 36 digits.
      */
     function max_int256() public pure returns(int256) {
@@ -61,32 +63,39 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be converted to fixed point. Optimize for
-     * deployment.
+     * deployment. 
+     * max_int256() / fixed_1()
+     * Hardcoded to 36 digits.
      */
     function max_fixed() public pure returns(int256) {
-        return max_int256() / fixed_1();
+        return 57896044618658097711785492504343953926634;
     }
 
     /**
      * @dev Maximum value that can be safely used as a multiplication operator.
+     * sqrt(max_fixed())
      * Hardcoded to 36 digits.
      */
     function max_fixed_mul() public pure returns(int256) {
-        return 240615969168004500000; // sqrt(max_fixed())
+        return 240615969168004500000;
     }
 
     /**
      * @dev Maximum value that can be safely used as a dividend operator.
+     * Defined by the reciprocal() implementation. max_int256() / fixed_1()
+     * Hardcoded to 36 digits.
      */
     function max_fixed_div() public pure returns(int256) {
-        return max_fixed() / fixed_1(); // Depends on reciprocal()
+        return 57896044618658097711785492504343953926634;
     }
 
     /**
      * @dev Maximum value that can be safely used as an addition operator.
+     * max_int256() / 2
+     * Hardcoded to 36 digits.
      */
     function max_fixed_add() public pure returns(int256) {
-        return max_fixed() / 2;
+        return 28948022309329048855892746252171976963317496166410141009864396001978282409983;
     }
 
     /**
@@ -119,14 +128,6 @@ library FixidityLib {
         int256 convertedNumerator = newFromInt256(numerator);
         int256 convertedDenominator = newFromInt256(denominator);
         return divide(convertedNumerator, convertedDenominator);
-    }
-
-    /**
-     * @dev Converts an int256 to the closest higher multiple of 10^digits().
-     * TODO: Not sure.
-     */
-    function round(int256 v) public pure returns (int256) {
-        return round_off(v);
     }
 
     /**
@@ -225,21 +226,7 @@ library FixidityLib {
      */
     function subtract(int256 a, int256 b) public pure returns (int256) {
         int256 t = a - b;
-        // assert(t + a == b);
+        assert(t + b == a);
         return t;
-    }
-
-    /**
-     * @dev If v is closer to ceiling(v) than to floor(v) then return ceiling(v). Should be round_up()
-     */
-    function round_off(int256 value) public pure returns (int256) {
-        int8 sign = 1;
-        int256 v = value;
-        if(v < 0) {
-            sign = -1;
-            v = abs(v);
-        }
-        if(v % fixed_1() >= fixed_1() / 2) v = v + fixed_1() - v % fixed_1();
-        return v * sign;
     }
 }
