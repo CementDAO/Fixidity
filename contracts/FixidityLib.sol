@@ -254,10 +254,8 @@ library FixidityLib {
      * Test multiply(0,max_fixed_mul()) returns 0
      * Test multiply(max_fixed_mul(),fixed_1()) returns max_fixed_mul()
      * Test multiply(fixed_1(),max_fixed_mul()) returns max_fixed_mul()
-     * Test multiply(fixed_e(),fixed_e()) returns fixed_e()*fixed_e()
-     * Test multiply(-fixed_e(),fixed_e()) returns -fixed_e()*fixed_e()
-     * Test multiply(fixed_e(),-fixed_e()) returns -fixed_e()*fixed_e()
-     * Test multiply(-fixed_e(),-fixed_e()) returns fixed_e()*fixed_e()
+     * Test all combinations of (2,-2), (2, 2.5), (2, -2.5) and (0.5, -0.5)
+     * Test 0.000000000000000005 *  0.000000000000000005
      * Test multiply(max_fixed_mul()-1,max_fixed_mul()) equals multiply(max_fixed_mul(),max_fixed_mul()-1)
      * Test multiply(max_fixed_mul(),max_fixed_mul()) returns max_int256() // Probably not to the last digits
      * Test multiply(max_fixed_mul()+1,max_fixed_mul()) fails // Maybe it will need to be +fixed_1() to fail
@@ -307,8 +305,6 @@ library FixidityLib {
      * @dev 1/x
      * Test reciprocal(0) fails
      * Test reciprocal(fixed_1()) returns fixed_1()
-     * Test reciprocal(fixed_1()*2) returns fixed_1()/2
-     * Test reciprocal(fixed_e()) returns fixed_1()/fixed_e() // Maybe not because of different precisions
      * Test reciprocal(fixed_1()*fixed_1()) returns 1 // Testing how the fractional is truncated
      * Test reciprocal(2*fixed_1()*fixed_1()) returns 0 // Testing how the fractional is truncated
      */
@@ -321,9 +317,6 @@ library FixidityLib {
      * @dev a/b. If the dividend is higher than max_fixed_div() it 
      * might overflow. You can use multiply(a,reciprocal(b)) instead.
      * Test divide(fixed_1(),0) fails
-     * Test divide(0,fixed_1()) returns 0
-     * Test divide(fixed_1(),fixed_1()) returns fixed_1()
-     * Test divide(max_fixed_div(),fixed_1()) returns max_fixed_div()
      * Test divide(fixed_1(),max_fixed_div()) returns max_int256 // Probably not to the last digits
      * Test divide(fixed_1(),max_fixed_div()+1) fails // Maybe it will need to be +fixed_1()
      * Test divide(max_fixed_div(),max_fixed_div()) returns fixed_1()
