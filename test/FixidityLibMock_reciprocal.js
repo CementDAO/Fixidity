@@ -53,7 +53,7 @@ contract('FixidityLibMock - reciprocal', () => {
                 ),
             );
             result.should.be.bignumber.equal(
-                fixed_1.dividedBy(fixed_e),
+                fixed_1.multipliedBy(fixed_1).div(fixed_e).dp(0, 1),
             );
         });
         it('reciprocal(fixed_1()*fixed_1())', async () => {

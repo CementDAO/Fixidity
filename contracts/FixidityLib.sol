@@ -48,7 +48,7 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be represented in an int256
-     * Test max_int256() equals 2^256 / 2 -1
+     * Test max_int256() equals 2^255 -1
      * Hardcoded to 36 digits.
      */
     function max_int256() public pure returns(int256) {
@@ -57,7 +57,7 @@ library FixidityLib {
 
     /**
      * @dev Minimum value that can be represented in an int256
-     * Test min_int256 equals -1 * (2^256 / 2)
+     * Test min_int256 equals (2^255) * (-1)
      * Hardcoded to 36 digits.
      */
     function min_int256() public pure returns(int256) {
@@ -86,6 +86,24 @@ library FixidityLib {
     }
 
     /**
+     * @dev Maximum value that can be safely used as an addition operator.
+     * Test max_fixed_add() equals max_int256()-1 / 2
+     * Hardcoded to 36 digits.
+     */
+    function max_fixed_add() public pure returns(int256) {
+        return 28948022309329048855892746252171976963317496166410141009864396001978282409983;
+    }
+
+    /**
+     * @dev Maximum negative value that can be safely in a subtraction.
+     * Test max_fixed_sub() equals min_int256() / 2
+     * Hardcoded to 36 digits.
+     */
+    function max_fixed_sub() public pure returns(int256) {
+        return -28948022309329048855892746252171976963317496166410141009864396001978282409984;
+    }
+
+    /**
      * @dev Maximum value that can be safely used as a multiplication operator.
      * Test max_fixed_add equals sqrt(max_fixed_new())
      * Hardcoded to 36 digits.
@@ -102,24 +120,6 @@ library FixidityLib {
      */
     function max_fixed_div() public pure returns(int256) {
         return 57896044618658097711785492504343953926634;
-    }
-
-    /**
-     * @dev Maximum value that can be safely used as an addition operator.
-     * Test max_fixed_add() equals max_int256()-1 / 2
-     * Hardcoded to 36 digits.
-     */
-    function max_fixed_add() public pure returns(int256) {
-        return 28948022309329048855892746252171976963317496166410141009864396001978282409983;
-    }
-
-    /**
-     * @dev Maximum negative value that can be safely in a subtraction.
-     * Test max_fixed_sub() equals min_int256()-1 / 2
-     * Hardcoded to 36 digits.
-     */
-    function max_fixed_sub() public pure returns(int256) {
-        return -28948022309329048855892746252171976963317496166410141009864396001978282409984;
     }
 
     /**
@@ -297,7 +297,7 @@ library FixidityLib {
      */
     function reciprocal(int256 x) public pure returns (int256) {
         assert(x != 0);
-        return fixed_1() / x; // Can't overflow
+        return (fixed_1()*fixed_1()) / x; // Can't overflow
     }
 
     /**

@@ -68,7 +68,7 @@ contract('FixidityLibMock - variables', () => {
     });
 
     /* it('fixed_e() equals 2718281828459045235360287471352662497757247093699959574966967627724076630/fixed_1()', async () => {
-        fixed_e.should.be.bignumber.equal(new BigNumber(2718281828459045235360287471352662497757247093699959574966967627724076630).dividedBy(fixed_1));
+        fixed_e.should.be.bignumber.equal(new BigNumber(2718281828459045235360287471352662497757247093699959574966967627724076630).dividedBy(fixed_1).dp(0,1));
     }); */
 
     it('max_int256() equals (2^255) - 1', async () => {
