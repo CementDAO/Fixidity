@@ -88,6 +88,10 @@ library FixidityLib {
     /**
      * @dev Maximum value that can be safely used as an addition operator.
      * Test max_fixed_add() equals max_int256()-1 / 2
+     * Test add(max_fixed_add(),max_fixed_add()) equals max_fixed_add() + max_fixed_add()
+     * Test add(max_fixed_add()+1,max_fixed_add()) throws 
+     * Test add(-max_fixed_add(),-max_fixed_add()) equals -max_fixed_add() - max_fixed_add()
+     * Test add(-max_fixed_add(),-max_fixed_add()-1) throws 
      * Hardcoded to 36 digits.
      */
     function max_fixed_add() public pure returns(int256) {
@@ -105,17 +109,23 @@ library FixidityLib {
 
     /**
      * @dev Maximum value that can be safely used as a multiplication operator.
-     * Test max_fixed_add equals sqrt(max_fixed_new())
+     * Calculated as sqrt(max_fixed_new())*fixed_1()
+     * Test multiply(max_fixed_mul(),max_fixed_mul()) equals max_fixed_mul() * max_fixed_mul()
+     * Test multiply(max_fixed_mul(),max_fixed_mul()+1) throws 
+     * Test multiply(-max_fixed_mul(),max_fixed_mul()) equals -max_fixed_mul() * max_fixed_mul()
+     * Test multiply(-max_fixed_mul(),max_fixed_mul()+1) throws 
      * Hardcoded to 36 digits.
      */
     function max_fixed_mul() public pure returns(int256) {
-        return 240615969168004513792;
+        return 240615969168004511545000000000000000000000000000000000000;
     }
 
     /**
-     * @dev Maximum value that can be safely used as a dividend.
+     * @dev Maximum value that can be safely used as a dividend().
      * divide(max_fixed_div,newFromInt256Fraction(1,fixed_1())) = max_int256().
      * Test max_fixed_div() equals max_int256()/fixed_1()
+     * Test divide(max_fixed_div(),multiply(mul_precision(),mul_precision())) = max_fixed_div()*(10^digits())
+     * Test divide(max_fixed_div()+1,multiply(mul_precision(),mul_precision())) throws
      * Hardcoded to 36 digits.
      */
     function max_fixed_div() public pure returns(int256) {
@@ -196,7 +206,8 @@ library FixidityLib {
 
 
     /**
-     * @dev Converts to positive if negative
+     * @dev Converts to positive if negative.
+     * x == -x is not true only for max_int256, but abs(max_int256) == max_int256
      * Test abs(0) returns 0
      * Test abs(fixed_1()) returns -fixed_1()
      * Test abs(-fixed_1()) returns fixed_1()

@@ -34,13 +34,35 @@ contract('FixidityLibMock - divide', () => {
      */
 
     describe('divide', () => {
+        it('divide(fixed_1(),fixed_1())', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.divide(
+                    fixed_1.toString(10),
+                    fixed_1.toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(
+                fixed_1,
+            );
+        });
+        it('divide(fixed_1(),2*fixed_1())', async () => {
+            const result = new BigNumber(
+                await fixidityLibMock.divide(
+                    fixed_1.toString(10),
+                    fixed_1.multipliedBy(2).toString(10),
+                ),
+            );
+            result.should.be.bignumber.equal(
+                fixed_1.div(2).dp(0, 1),
+            );
+        });
         itShouldThrow('divide(fixed_1(),0)', async () => {
             await fixidityLibMock.divide(
                 fixed_1.toString(10),
                 0,
             );
-        });
-        it('divide(fixed_1(),max_fixed_div())', async () => {
+        }, 'revert');
+        /* it('divide(fixed_1(),max_fixed_div())', async () => {
             const result = new BigNumber(
                 await fixidityLibMock.divide(
                     fixed_1.toString(10),
@@ -67,6 +89,6 @@ contract('FixidityLibMock - divide', () => {
             result.should.be.bignumber.equal(
                 fixed_1,
             );
-        });
+        }); */
     });
 });
