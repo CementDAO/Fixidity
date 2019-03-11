@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/extraterrestrial-tech/fixidity/issues"
   },
-  "homepage": "https://github.com/extraterrestrial-tech/fixidity#readme"
+  "homepage": "https://github.com/extraterrestrial-tech/fixidity#readme",
+  "dependencies": {
+    "bignumber.js": "^8.1.1",
+    "chai": "^4.2.0",
+    "chai-bignumber": "^3.0.0"
+  }
 }
