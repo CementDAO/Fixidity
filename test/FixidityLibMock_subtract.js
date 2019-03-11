@@ -16,7 +16,6 @@ contract('FixidityLibMock - subtract', () => {
     describe('subtract', () => {
         it('subtract', async () => {
             const result = await fixidityLibMock.subtract(4, 2);
-            console.log(result.toString(36));
         });
     });
 });
