@@ -10,7 +10,7 @@
         "test:local": "truffle test --network test",
         "test:docker": "echo TODO!",
         "lint:js": "eslint *.js .",
-        "lint:sol": "solium -d contracts --fix"
+        "lint:sol": "solium -d contracts"
     },
     "repository": {
         "type": "git",

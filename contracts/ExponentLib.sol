@@ -3,6 +3,7 @@ pragma solidity ^0.5.0;
 import "./FixidityLib.sol";
 import "./LogarithmLib.sol";
 
+
 library ExponentLib {
 
     function fixedExp10() public pure returns(int256) {
@@ -12,25 +13,26 @@ library ExponentLib {
     /**
      * @notice Not fully tested anymore.
      */
-    function powerE(int256 x) 
+    function powerE(int256 _x) 
         public 
         pure 
         returns (int256) 
     {
-        assert(x < 172 * FixidityLib.fixed1());
+        assert(_x < 172 * FixidityLib.fixed1());
+        int256 x = _x;
         int256 r = FixidityLib.fixed1();
-        while(x >= 10 * FixidityLib.fixed1()) {
+        while (x >= 10 * FixidityLib.fixed1()) {
             x -= 10 * FixidityLib.fixed1();
             r = FixidityLib.multiply(r, fixedExp10());
         }
-        if(x == FixidityLib.fixed1()) {
+        if (x == FixidityLib.fixed1()) {
             return FixidityLib.multiply(r, LogarithmLib.fixedE());
-        } else if(x == 0) {
+        } else if (x == 0) {
             return r;
         }
         int256 tr = 100 * FixidityLib.fixed1();
         int256 d = tr;
-        for(uint8 i = 1; i <= 2 * FixidityLib.digits(); i++) {
+        for (uint8 i = 1; i <= 2 * FixidityLib.digits(); i++) {
             d = (d * x) / (FixidityLib.fixed1() * i);
             tr += d;
         }
@@ -61,27 +63,30 @@ library ExponentLib {
         return powerE(FixidityLib.divide(LogarithmLib.ln(a), FixidityLib.fixed1() * n));
     }
 
-    function round_off(int256 v, uint8 digits) 
+    // solium-disable-next-line mixedcase
+    function round_off(int256 _v, uint8 digits) 
         public 
         pure 
         returns (int256) 
     {
         int256 t = int256(uint256(10) ** uint256(digits));
         int8 sign = 1;
-        if(v < 0) {
+        int256 v = _v;
+        if (v < 0) {
             sign = -1;
             v = 0 - v;
         }
-        if(v % t >= t / 2) v = v + t - v % t;
+        if (v % t >= t / 2) v = v + t - v % t;
         return v * sign;
     }
 
+    // solium-disable-next-line mixedcase
     function trunc_digits(int256 v, uint8 digits) 
         public 
         pure 
         returns (int256) 
     {
-        if(digits <= 0) return v;
+        if (digits <= 0) return v;
         return round_off(v, digits) / FixidityLib.fixed1();
     }
 }

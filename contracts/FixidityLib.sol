@@ -1,5 +1,6 @@
 pragma solidity ^0.5.0;
 
+
 /**
  * @title FixidityLib
  * @author Gadi Guy, Alberto Cuesta Canada
@@ -13,7 +14,6 @@ pragma solidity ^0.5.0;
  * maxFixedAdd() if you want to be certain that those operations don't 
  * overflow.
  */
-
 library FixidityLib {
 
     /**
@@ -56,7 +56,6 @@ library FixidityLib {
     function minInt256() public pure returns(int256) {
         return -57896044618658097711785492504343953926634992332820282019728792003956564819968;
     }
-
 
     /**
      * @notice Maximum value that can be converted to fixed point. Optimize for
@@ -223,7 +222,6 @@ library FixidityLib {
         return x;
     }
 
-
     /**
      * @notice Converts an int256 which is already in some fixed point 
      * representation to that of this library. The _originDigits parameter is the
@@ -294,7 +292,6 @@ library FixidityLib {
         return (x / fixed1()) * fixed1(); // Can't overflow
     }
 
-
     /**
      * @notice Returns the fractional part of a fixed point number. 
      * In the case of a negative number the fractional is also negative.
@@ -309,7 +306,6 @@ library FixidityLib {
         return x - (x / fixed1()) * fixed1(); // Can't overflow
     }
 
-
     /**
      * @notice Converts to positive if negative.
      * Due to int256 having one more negative number than positive numbers 
@@ -322,7 +318,7 @@ library FixidityLib {
      * Test abs(newFixed(minNewFixed())) returns -minNewFixed()*fixed1()
      */
     function abs(int256 x) public pure returns (int256) {
-        if(x >= 0) return x;
+        if (x >= 0) return x;
         else {
             int256 result = -x;
             assert (result > 0);
@@ -344,8 +340,8 @@ library FixidityLib {
      */
     function add(int256 x, int256 y) public pure returns (int256) {
         int256 z = x + y;
-        if(x > 0 && y > 0) assert(z > x && z > y);
-        if(x < 0 && y < 0) assert(z < x && z < y);
+        if (x > 0 && y > 0) assert(z > x && z > y);
+        if (x < 0 && y < 0) assert(z < x && z < y);
         return z;
     }
 
@@ -374,9 +370,9 @@ library FixidityLib {
      * Test multiply(maxFixedMul(),maxFixedMul()+1) fails
      */
     function multiply(int256 x, int256 y) public pure returns (int256) {
-        if(x == 0 || y == 0) return 0;
-        if(y == fixed1()) return x;
-        if(x == fixed1()) return y;
+        if (x == 0 || y == 0) return 0;
+        if (y == fixed1()) return x;
+        if (x == fixed1()) return y;
 
         // Separate into integer and fractional parts
         // x = x1 + x2, y = y1 + y2
@@ -390,6 +386,7 @@ library FixidityLib {
         if (x1 != 0) assert(x1y1 / x1 == y1); // Overflow x1y1
         
         // x1y1 needs to be multiplied back by fixed1
+        // solium-disable-next-line mixedcase
         int256 fixed_x1y1 = x1y1 * fixed1();
         if (x1y1 != 0) assert(fixed_x1y1 / x1y1 == fixed1()); // Overflow x1y1 * fixed1
         x1y1 = fixed_x1y1;
@@ -437,7 +434,7 @@ library FixidityLib {
      * Test divide(maxFixedDiv(),maxFixedDiv()) returns fixed1()
      */
     function divide(int256 x, int256 y) public pure returns (int256) {
-        if(y == fixed1()) return x;
+        if (y == fixed1()) return x;
         assert(y != 0);
         assert(y <= maxFixedDivisor());
         return multiply(x, reciprocal(y));

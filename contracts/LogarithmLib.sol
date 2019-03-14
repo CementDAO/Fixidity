@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 
 import "./FixidityLib.sol";
 
+
 /**
  * @title LogarithmLib
  * @author Gadi Guy, Alberto Cuesta Canada
@@ -21,6 +22,7 @@ library LogarithmLib {
     /**
      * @notice ln(1.5), hardcoded with the comma 24 positions to the right.
      */
+    // solium-disable-next-line mixedcase
     function fixedLn1_5() public pure returns(int256) {
         return 405465108108164381978013;
     }
@@ -50,26 +52,26 @@ library LogarithmLib {
         assert(value >= 0);
         int256 v = value;
         int256 r = 0;
-        while(v <= FixidityLib.fixed1() / 10) {
+        while (v <= FixidityLib.fixed1() / 10) {
             v = v * 10;
             r -= fixedLn10();
         }
-        while(v >= 10 * FixidityLib.fixed1()) {
+        while (v >= 10 * FixidityLib.fixed1()) {
             v = v / 10;
             r += fixedLn10();
         }
-        while(v < FixidityLib.fixed1()) {
+        while (v < FixidityLib.fixed1()) {
             v = FixidityLib.multiply(v, fixedE());
             r -= FixidityLib.fixed1();
         }
-        while(v > fixedE()) {
+        while (v > fixedE()) {
             v = FixidityLib.divide(v, fixedE());
             r += FixidityLib.fixed1();
         }
-        if(v == FixidityLib.fixed1()) {
+        if (v == FixidityLib.fixed1()) {
             return r;
         }
-        if(v == fixedE()) {
+        if (v == fixedE()) {
             return FixidityLib.fixed1() + r;
         }
 
@@ -77,13 +79,14 @@ library LogarithmLib {
         r = r + fixedLn1_5();
         int256 m = FixidityLib.fixed1() * v / (v + 3 * FixidityLib.fixed1());
         r = r + 2 * m;
+        // solium-disable-next-line mixedcase
         int256 m_2 = m * m / FixidityLib.fixed1();
         uint8 i = 3;
-        while(true) {
+        while (true) {
             m = m * m_2 / FixidityLib.fixed1();
             r = r + 2 * m / int256(i);
             i += 2;
-            if(i >= 3 + 2 * FixidityLib.digits()) break;
+            if (i >= 3 + 2 * FixidityLib.digits()) break;
         }
         return r;
     }
@@ -93,6 +96,7 @@ library LogarithmLib {
      * *param int256 b Base in fixed point representation.
      * @dev Tests covered by ln(x) and divide(a,b)
      */
+    // solium-disable-next-line mixedcase
     function log_b(int256 b, int256 x) public pure returns (int256) {
         return FixidityLib.divide(ln(x), ln(b));
     }
