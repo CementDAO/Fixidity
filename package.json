@@ -1,27 +1,31 @@
 {
-  "name": "fixidity",
-  "version": "1.0.0",
-  "description": "Fixed precision decimal math library for Solidity",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/extraterrestrial-tech/fixidity.git"
-  },
-  "author": "gadiguy@gmail.com",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/extraterrestrial-tech/fixidity/issues"
-  },
-  "homepage": "https://github.com/extraterrestrial-tech/fixidity#readme",
-  "dependencies": {
-    "bignumber.js": "^8.1.1",
-    "chai": "^4.2.0",
-    "chai-bignumber": "^3.0.0"
-  }
+    "name": "fixidity",
+    "version": "1.0.0",
+    "description": "Fixed precision decimal math library for Solidity",
+    "main": "truffle-config.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "npx truffle test --network test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/extraterrestrial-tech/fixidity.git"
+    },
+    "author": "gadiguy@gmail.com",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/extraterrestrial-tech/fixidity/issues"
+    },
+    "homepage": "https://github.com/extraterrestrial-tech/fixidity#readme",
+    "dependencies": {
+        "bignumber.js": "^8.1.1"
+    },
+    "devDependencies": {
+        "chai": "4.2.0",
+        "chai-bignumber": "3.0.0",
+        "truffle": "5.0.8",
+        "ganache-cli": "6.4.1"
+    }
 }
