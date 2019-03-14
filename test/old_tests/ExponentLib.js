@@ -1,4 +1,4 @@
-var utils = require('./utils');
+var utils = require('../utils');
 
 describe('ExponentLib.power_e', () => {
 	//                      .1234567890123456

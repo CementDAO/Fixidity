@@ -1,4 +1,4 @@
-var utils = require('./utils');
+var utils = require('../utils');
 
 describe('LogarithmLib.log_e', () => {
 	var data = [

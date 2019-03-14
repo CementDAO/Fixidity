@@ -3,7 +3,7 @@ const LogarithmLibMock = artifacts.require('./LogarithmLibMock.sol');
 const BigNumber = require('bignumber.js');
 const chai = require('chai');
 
-const { itShouldThrow } = require('../utils');
+const { itShouldThrow } = require('./utils');
 // use default BigNumber
 chai.use(require('chai-bignumber')()).should();
 
