@@ -7,7 +7,8 @@
         "test": "test"
     },
     "scripts": {
-        "test": "npx truffle test --network test",
+        "test:local": "truffle test --network test",
+        "test:docker": "echo TODO!",
         "lint:js": "eslint *.js ."
     },
     "repository": {
@@ -21,12 +22,12 @@
     },
     "homepage": "https://github.com/extraterrestrial-tech/fixidity#readme",
     "dependencies": {
-        "bignumber.js": "^8.1.1"
+        "bignumber.js": "8.1.1"
     },
     "devDependencies": {
         "chai": "4.2.0",
         "chai-bignumber": "3.0.0",
-        "truffle": "5.0.8",
+        "truffle": "5.0.0",
         "ganache-cli": "6.4.1",
         "eslint": "^5.13.0",
         "eslint-config-airbnb": "^17.1.0",
