@@ -67,9 +67,9 @@ contract('LogarithmLibMock', () => {
         const result = new BigNumber(
             await logarithmLibMock.ln(maxNewFixed.toString(10)),
         );
-        const log_max = new BigNumber(93859467695000404205515674);
-        result.should.be.bignumber.gte(log_max.multipliedBy(0.1));
-        result.should.be.bignumber.lte(log_max.multipliedBy(10));
+        const logMax = new BigNumber('93859467695000404205515674');
+        result.should.be.bignumber.gte(logMax.multipliedBy(0.1));
+        result.should.be.bignumber.lte(logMax.multipliedBy(10));
     });
     it('ln(1)', async () => { // 33% deviation at the lower precision limit
         const result = new BigNumber(
@@ -82,14 +82,14 @@ contract('LogarithmLibMock', () => {
         const result = new BigNumber(
             await logarithmLibMock.ln(fixed1.multipliedBy(10).toString(10)),
         );
-        result.should.be.bignumber.gte(new BigNumber(2302585092994045000000000));
-        result.should.be.bignumber.lte(new BigNumber(2302585092994046000000000));
+        result.should.be.bignumber.gte(new BigNumber('2302585092994045000000000'));
+        result.should.be.bignumber.lte(new BigNumber('2302585092994046000000000'));
     });
     it('log(10,11*fixed1)', async () => { // 10**-11 deviation at 11.0
         const result = new BigNumber(
             await logarithmLibMock.log_b(fixed1.multipliedBy(10).toString(10), fixed1.multipliedBy(11).toString(10)),
         );
-        result.should.be.bignumber.gte(new BigNumber(1041392685157000000000000));
-        result.should.be.bignumber.lte(new BigNumber(1041392685158000000000000));
+        result.should.be.bignumber.gte(new BigNumber('1041392685157000000000000'));
+        result.should.be.bignumber.lte(new BigNumber('1041392685158000000000000'));
     });
 });

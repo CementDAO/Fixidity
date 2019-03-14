@@ -9,25 +9,15 @@ chai.use(require('chai-bignumber')()).should();
 
 contract('FixidityLibMock - divide', () => {
     let fixidityLibMock;
-    // eslint-disable-next-line camelcase
     let fixed1;
-    // eslint-disable-next-line camelcase
     let maxFixedDiv;
-    // eslint-disable-next-line camelcase
     let maxFixedDivisor;
-    // eslint-disable-next-line camelcase
-    let mulPrecision;
-    
+
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
-        // eslint-disable-next-line camelcase
         fixed1 = new BigNumber(await fixidityLibMock.fixed1());
-        // eslint-disable-next-line camelcase
         maxFixedDiv = new BigNumber(await fixidityLibMock.maxFixedDiv());
-        // eslint-disable-next-line camelcase
         maxFixedDivisor = new BigNumber(await fixidityLibMock.maxFixedDivisor());
-        // eslint-disable-next-line camelcase
-        mulPrecision = new BigNumber(await fixidityLibMock.mulPrecision());
     });
 
     /*

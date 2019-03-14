@@ -9,24 +9,16 @@ chai.use(require('chai-bignumber')()).should();
 
 contract('FixidityLibMock - add', () => {
     let fixidityLibMock;
-    // eslint-disable-next-line camelcase
     let maxFixedAdd;
-    // eslint-disable-next-line camelcase
     let maxInt256;
-    // eslint-disable-next-line camelcase
     let maxFixedSub;
-    // eslint-disable-next-line camelcase
     let minInt256;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
-        // eslint-disable-next-line camelcase
         maxFixedAdd = new BigNumber(await fixidityLibMock.maxFixedAdd());
-        // eslint-disable-next-line camelcase
         maxFixedSub = new BigNumber(await fixidityLibMock.maxFixedSub());
-        // eslint-disable-next-line camelcase
         maxInt256 = new BigNumber(await fixidityLibMock.maxInt256());
-        // eslint-disable-next-line camelcase
         minInt256 = new BigNumber(await fixidityLibMock.minInt256());
     });
 

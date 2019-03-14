@@ -17,9 +17,6 @@ contract('FixidityLibMock - variables', () => {
     let minNewFixed;
     let maxFixedAdd;
     let maxFixedSub;
-    //let maxFixedMul;
-    //let maxFixedDiv;
-    //let maxFixedDivisor;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();

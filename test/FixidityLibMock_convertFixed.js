@@ -9,12 +9,10 @@ chai.use(require('chai-bignumber')()).should();
 
 contract('FixidityLibMock - newFixed', () => {
     let fixidityLibMock;
-    // eslint-disable-next-line camelcase
     let maxInt256;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
-        // eslint-disable-next-line camelcase
         maxInt256 = new BigNumber(await fixidityLibMock.maxInt256());
     });
 

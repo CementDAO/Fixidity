@@ -12,7 +12,6 @@ contract('FixidityLibMock - abs', () => {
     let fixed1;
     let maxNewFixed;
     let minNewFixed;
-    let maxInt256;
     let minInt256;
 
     before(async () => {
@@ -20,7 +19,6 @@ contract('FixidityLibMock - abs', () => {
         fixed1 = new BigNumber(await fixidityLibMock.fixed1());
         maxNewFixed = new BigNumber(await fixidityLibMock.maxNewFixed());
         minNewFixed = new BigNumber(await fixidityLibMock.minNewFixed());
-        maxInt256 = new BigNumber(await fixidityLibMock.maxInt256());
         minInt256 = new BigNumber(await fixidityLibMock.minInt256());
     });
 

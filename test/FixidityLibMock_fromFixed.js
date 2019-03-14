@@ -2,27 +2,20 @@ const FixidityLibMock = artifacts.require('./FixidityLibMock.sol');
 const BigNumber = require('bignumber.js');
 const chai = require('chai');
 
-const { itShouldThrow } = require('./utils');
 // use default BigNumber
 chai.use(require('chai-bignumber')()).should();
 
 
 contract('FixidityLibMock - newFixed', () => {
     let fixidityLibMock;
-    // eslint-disable-next-line camelcase
     let fixed1;
-    // eslint-disable-next-line camelcase
     let maxNewFixed;
-    // eslint-disable-next-line camelcase
     let minNewFixed;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
-        // eslint-disable-next-line camelcase
         fixed1 = new BigNumber(await fixidityLibMock.fixed1());
-        // eslint-disable-next-line camelcase
         maxNewFixed = new BigNumber(await fixidityLibMock.maxNewFixed());
-        // eslint-disable-next-line camelcase
         minNewFixed = new BigNumber(await fixidityLibMock.minNewFixed());
     });
 

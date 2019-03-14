@@ -275,7 +275,7 @@ contract('FixidityLibMock - multiply', () => {
         itShouldThrow('multiply(maxFixedMul(),maxFixedMul()+x)', async () => {
             await fixidityLibMock.multiply(
                 maxFixedMul.toString(10),
-                maxFixedMul.plus(30000000000000000000000000000000000).toString(10),
+                maxFixedMul.plus('30000000000000000000000000000000000').toString(10),
             );
         }, 'revert');
 
@@ -317,7 +317,7 @@ contract('FixidityLibMock - multiply', () => {
         });
         itShouldThrow('multiply(maxFixedMul()+x,-maxFixedMul())', async () => {
             await fixidityLibMock.multiply(
-                maxFixedMul.plus(30000000000000000000000000000000000).toString(10),
+                maxFixedMul.plus('30000000000000000000000000000000000').toString(10),
                 maxFixedMul.multipliedBy(-1).toString(10),
             );
         }, 'revert');

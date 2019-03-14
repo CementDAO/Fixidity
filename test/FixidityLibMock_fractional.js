@@ -8,12 +8,10 @@ chai.use(require('chai-bignumber')()).should();
 
 contract('FixidityLibMock - fractional', () => {
     let fixidityLibMock;
-    // eslint-disable-next-line camelcase
     let fixed1;
 
     before(async () => {
         fixidityLibMock = await FixidityLibMock.deployed();
-        // eslint-disable-next-line camelcase
         fixed1 = new BigNumber(await fixidityLibMock.fixed1());
     });
 

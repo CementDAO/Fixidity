@@ -53,5 +53,5 @@ const tokenNumber = (decimals, tokens) => new BigNumber(10)
 
 module.exports = {
     itShouldThrow,
-    tokenNumber
+    tokenNumber,
 };
