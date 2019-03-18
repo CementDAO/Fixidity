@@ -98,6 +98,8 @@ library LogarithmLib {
      */
     // solium-disable-next-line mixedcase
     function log_b(int256 b, int256 x) public pure returns (int256) {
+        if (b == FixidityLib.fixed1()*10)
+            return FixidityLib.divide(ln(x), fixedLn10());
         return FixidityLib.divide(ln(x), ln(b));
     }
 }
