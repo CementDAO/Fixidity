@@ -1,11 +1,11 @@
 {
     "name": "fixidity",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Fixed precision decimal math library for Solidity",
     "main": "truffle-config.js",
-    "directories": {
-        "test": "test"
-    },
+    "files": [
+        "contracts"
+    ],
     "scripts": {
         "test:local": "truffle test --network test",
         "test:docker": "echo TODO!",
@@ -14,14 +14,18 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/extraterrestrial-tech/fixidity.git"
+        "url": "git+https://github.com/cementdao/fixidity.git"
     },
     "author": "gadiguy@gmail.com",
-    "license": "Apache-2.0",
+    "contributors": [
+        "alberto@techhq.io",
+        "bernardo@techhq.io"
+    ],
+    "license": "MIT",
     "bugs": {
-        "url": "https://github.com/extraterrestrial-tech/fixidity/issues"
+        "url": "https://github.com/cementdao/fixidity/issues"
     },
-    "homepage": "https://github.com/extraterrestrial-tech/fixidity#readme",
+    "homepage": "https://github.com/cementdao/fixidity#readme",
     "dependencies": {
         "bignumber.js": "8.1.1"
     },
