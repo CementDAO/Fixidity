@@ -10,7 +10,11 @@
         "test:local": "truffle test --network test",
         "test:docker": "echo TODO!",
         "lint:js": "eslint *.js .",
-        "lint:sol": "solium -d contracts"
+        "lint:sol": "solium -d contracts",
+        "lint": "npm run lint:sol && npm run lint:js",
+        "security": "docker run --rm --memory=3g -v $(pwd):/tmp -w \"/tmp/\" mythril/myth --truffle",
+        "describe": "surya describe contracts/*.sol",
+        "coverage": "solidity-coverage"
     },
     "repository": {
         "type": "git",
@@ -32,13 +36,18 @@
     "devDependencies": {
         "chai": "4.2.0",
         "chai-bignumber": "3.0.0",
-        "truffle": "5.0.0",
-        "ganache-cli": "6.4.1",
         "eslint": "^5.13.0",
         "eslint-config-airbnb": "^17.1.0",
         "eslint-plugin-import": "^2.16.0",
         "eslint-plugin-jsx-a11y": "^6.2.1",
         "eslint-plugin-react": "^7.12.4",
-        "ethlint": "1.2.3"
+        "ganache-cli": "6.4.1",
+        "eth-gas-reporter": "^0.1.12",
+        "ethlint": "1.2.3",
+        "solc": "^0.5.7",
+        "solidity-coverage": "0.6.0-beta.4",
+        "surya": "0.2.8",
+        "truffle": "5.0.13",
+        "truffle-hdwallet-provider": "^1.0.7"
     }
 }
