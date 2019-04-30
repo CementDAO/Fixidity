@@ -35,6 +35,7 @@
         "eslint-plugin-import": "^2.16.0",
         "eslint-plugin-jsx-a11y": "^6.2.1",
         "eslint-plugin-react": "^7.12.4",
-        "ethlint": "1.2.3"
+        "ethlint": "1.2.3",
+	"eth-gas-reporter": "^0.1.0"
     }
 }
