@@ -1,5 +1,5 @@
 # FixidityLib
-An overflow-protected fixed-point arithmetic library for Solidity.
+An overflow-protected fixed point arithmetic library for Solidity.
 
 ## Introduction
 FixidityLib provide fixed point arithmetic for Solidity. This is achieved by
@@ -13,12 +13,12 @@ The main arithmetic operations currently supported are addition, subtraction,
 multiplication, division and logarithms. In a near future exponentials and
 square roots might be supported.
 
-In addition to fixed-point airthmetic operations, FixidityLib is fully 
+In addition to fixed point arithmetic operations, FixidityLib is fully 
 protected against overflow. Any operation that causes an overflow to happen
 will revert. 
 
 A number of constants have been provided that identify the safe
-limits for operation. When fixed-point arithmetic operations are done with 
+limits for operation. When fixed point arithmetic operations are done with 
 values between zero and a limit there will be no overflows and therefore the
 functions will never revert. It would be then useful in some cases to use 
 those limits to reject user inputs with an informative message when those 
@@ -55,7 +55,7 @@ Default: 1000000000000000000000000000000000000
 
 **function mulPrecision() public pure returns(int256)**
 The amount of decimals lost on each multiplication operand.
-Calcualted as mulPrecision() = sqrt(fixed1)
+Calculated as mulPrecision() = sqrt(fixed1)
 Default: 1000000000000000000
 
 **function maxInt256() public pure returns(int256)**
