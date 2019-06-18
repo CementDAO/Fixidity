@@ -68,7 +68,7 @@ library FixidityLib {
     }
 
     /**
-     * @notice Maximum value that can be converted to fixed point. Optimize for
+     * @notice Minimum value that can be converted to fixed point. Optimize for
      * deployment. 
      * @dev Test minNewFixed() equals -(maxInt256()) / fixed1()
      * Hardcoded to 24 digits.
@@ -151,8 +151,8 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(x <= maxNewFixed());
-        assert(x >= minNewFixed());
+        require(x <= maxNewFixed());
+        require(x >= minNewFixed());
         return x * fixed1();
     }
 
@@ -199,7 +199,7 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(_originDigits <= 38 && _destinationDigits <= 38);
+        require(_originDigits <= 38 && _destinationDigits <= 38);
         
         uint8 decimalDifference;
         if ( _originDigits > _destinationDigits ){
@@ -214,8 +214,8 @@ library FixidityLib {
             //     decimalDifference = abs(_destinationDigits - _originDigits)
             //     decimalDifference < 38
             //     10**38 < 2**128-1
-            assert(x <= maxInt256()/uint128(10)**uint128(decimalDifference));
-            assert(x >= minInt256()/uint128(10)**uint128(decimalDifference));
+            require(x <= maxInt256()/uint128(10)**uint128(decimalDifference));
+            require(x >= minInt256()/uint128(10)**uint128(decimalDifference));
             return x*(uint128(10)**uint128(decimalDifference));
         }
         // _originDigits == digits()) 
@@ -271,9 +271,9 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(numerator <= maxNewFixed());
-        assert(denominator <= maxNewFixed());
-        assert(denominator != 0);
+        require(numerator <= maxNewFixed());
+        require(denominator <= maxNewFixed());
+        require(denominator != 0);
         int256 convertedNumerator = newFixed(numerator);
         int256 convertedDenominator = newFixed(denominator);
         return divide(convertedNumerator, convertedDenominator);
@@ -420,7 +420,7 @@ library FixidityLib {
      * Test reciprocal(2*fixed1()*fixed1()) returns 0 // Testing how the fractional is truncated
      */
     function reciprocal(int256 x) public pure returns (int256) {
-        assert(x != 0);
+        require(x != 0);
         return (fixed1()*fixed1()) / x; // Can't overflow
     }
 
@@ -436,8 +436,8 @@ library FixidityLib {
      */
     function divide(int256 x, int256 y) public pure returns (int256) {
         if (y == fixed1()) return x;
-        assert(y != 0);
-        assert(y <= maxFixedDivisor());
+        require(y != 0);
+        require(y <= maxFixedDivisor());
         return multiply(x, reciprocal(y));
     }
 }
