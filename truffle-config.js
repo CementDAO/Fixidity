@@ -1,4 +1,4 @@
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const fs = require('fs');
 
 const infuraKey = 'your-key';
@@ -27,6 +27,8 @@ module.exports = {
         // see more here: https://www.npmjs.com/package/eth-gas-reporter
         // reporter: 'eth-gas-reporter',
     },
+
+    plugins: ['solidity-coverage'],
 
     solc: {
         optimizer: {

@@ -36,10 +36,10 @@ library LogarithmLib {
 
     /**
      * @notice ln(x)
-     * This function has a 1/50 deviation close to ln(-1), 
-     * 1/maxFixedMul() deviation at fixedE()**2, but diverges to 10x 
+     * This function has a 1/50 deviation close to ln(-1),
+     * 1/maxFixedMul() deviation at fixedE()**2, but diverges to 10x
      * deviation at maxNewFixed().
-     * @dev 
+     * @dev
      * Test ln(0) fails
      * Test ln(-fixed1()) fails
      * Test ln(fixed1()) returns 0
@@ -49,7 +49,7 @@ library LogarithmLib {
      * Test ln(1) returns -82
      */
     function ln(int256 value) public pure returns (int256) {
-        assert(value >= 0);
+        assert(value > 0);
         int256 v = value;
         int256 r = 0;
         while (v <= FixidityLib.fixed1() / 10) {

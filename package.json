@@ -14,7 +14,8 @@
         "lint": "npm run lint:sol && npm run lint:js",
         "security": "docker run --rm --memory=3g -v $(pwd):/tmp -w \"/tmp/\" mythril/myth --truffle",
         "describe": "surya describe contracts/*.sol",
-        "coverage": "solidity-coverage"
+        "coverage": "yarn build && SOLIDITY_COVERAGE=true scripts/test.sh",
+        "build": "truffle compile"
     },
     "repository": {
         "type": "git",
@@ -42,9 +43,9 @@
         "eslint-plugin-import": "2.16.0",
         "eslint-plugin-jsx-a11y": "6.2.1",
         "eslint-plugin-react": "7.12.4",
-        "ganache-cli": "6.8.2",
         "eth-gas-reporter": "0.2.14",
         "ethlint": "1.2.5",
+        "ganache-cli": "6.8.2",
         "solc": "0.5.7",
         "solidity-coverage": "0.7.1",
         "surya": "0.2.8",
