@@ -5,7 +5,8 @@
     "main": "truffle-config.js",
     "files": [
         "contracts",
-        "!contracts/mocks"
+        "!contracts/mocks",
+        "!contracts/Migrations.sol"
     ],
     "scripts": {
         "test:local": "truffle test --network test",
