@@ -31,7 +31,8 @@
     },
     "homepage": "https://github.com/cementdao/fixidity#readme",
     "dependencies": {
-        "bignumber.js": "8.1.1"
+        "bignumber.js": "8.1.1",
+        "truffle-hdwallet-provider": "^1.0.7"
     },
     "devDependencies": {
         "chai": "4.2.0",
@@ -47,7 +48,6 @@
         "solc": "^0.5.7",
         "solidity-coverage": "0.6.0-beta.4",
         "surya": "0.2.8",
-        "truffle": "5.0.13",
-        "truffle-hdwallet-provider": "^1.0.7"
+        "truffle": "5.0.13"
     }
 }
