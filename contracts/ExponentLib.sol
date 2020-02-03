@@ -6,7 +6,7 @@ import "./LogarithmLib.sol";
 
 library ExponentLib {
 
-    function fixedExp10() public pure returns(int256) {
+    function fixedExp10() internal pure returns(int256) {
         return 22026465794806716516957900645;
     }
 
@@ -14,7 +14,7 @@ library ExponentLib {
      * @notice Not fully tested anymore.
      */
     function powerE(int256 _x) 
-        public 
+        internal 
         pure 
         returns (int256) 
     {
@@ -40,7 +40,7 @@ library ExponentLib {
     }
 
     function powerAny(int256 a, int256 b) 
-        public 
+        internal 
         pure 
         returns (int256) 
     {
@@ -48,7 +48,7 @@ library ExponentLib {
     }
 
     function rootAny(int256 a, int256 b) 
-        public 
+        internal 
         pure 
         returns (int256) 
     {
@@ -56,7 +56,7 @@ library ExponentLib {
     }
 
     function rootN(int256 a, uint8 n) 
-        public 
+        internal 
         pure 
         returns (int256) 
     {
@@ -65,7 +65,7 @@ library ExponentLib {
 
     // solium-disable-next-line mixedcase
     function round_off(int256 _v, uint8 digits) 
-        public 
+        internal 
         pure 
         returns (int256) 
     {
@@ -82,7 +82,7 @@ library ExponentLib {
 
     // solium-disable-next-line mixedcase
     function trunc_digits(int256 v, uint8 digits) 
-        public 
+        internal 
         pure 
         returns (int256) 
     {

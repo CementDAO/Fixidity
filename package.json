@@ -1,8 +1,7 @@
 {
     "name": "@hq20/fixidity",
-    "version": "0.1.0-alpha.0",
+    "version": "0.1.0-alpha.1",
     "description": "Fixed precision decimal math library for Solidity",
-    "main": "truffle-config.js",
     "files": [
         "contracts",
         "!contracts/mocks",
