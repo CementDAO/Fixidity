@@ -331,7 +331,7 @@ library FixidityLib {
         result = add(result, x2y2); // Add checks for overflow
         return result;
     }
-    
+
     /**
      * @notice 1/x
      */
@@ -344,6 +344,7 @@ library FixidityLib {
      * @notice x/y. If the dividend is higher than maxFixedDiv() it
      * might overflow. You can use multiply(x,reciprocal(y)) instead.
      * There is a loss of precision on division for the lower mulPrecision() decimals.
+     */
     function divide(int256 x, int256 y) internal pure returns (int256) {
         if (y == fixed1()) return x;
         assert(y != 0);
@@ -351,6 +352,11 @@ library FixidityLib {
         return multiply(x, reciprocal(y));
     }
 
+    /**
+     * @notice Safe casting from int256 to uint256
+     * @param x int256 to cast
+     * @return casted uint256
+     */
     function safeIntToUint(int256 x) internal pure returns(uint256) {
         require(
             x >= 0,
