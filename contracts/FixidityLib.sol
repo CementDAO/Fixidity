@@ -16,6 +16,8 @@ pragma solidity ^0.5.0;
  */
 library FixidityLib {
 
+    /** CONSTANTS */
+
     /**
      * @notice Number of positions that the comma is shifted to the right.
      */
@@ -118,31 +120,7 @@ library FixidityLib {
         return 1000000000000000000000000000000000000000000000000;
     }
 
-    /**
-     * @notice Converts an int256 to fixed point units, equivalent to multiplying
-     * by 10^digits().
-     */
-    function newFixed(int256 x)
-        internal
-        pure
-        returns (int256)
-    {
-        assert(x <= maxNewFixed());
-        assert(x >= minNewFixed());
-        return x * fixed1();
-    }
-
-    /**
-     * @notice Converts an int256 in the fixed point representation of this
-     * library to a non decimal. All decimal digits will be truncated.
-     */
-    function fromFixed(int256 x)
-        internal
-        pure
-        returns (int256)
-    {
-        return x / fixed1();
-    }
+    /** CONVERSIONS */
 
     /**
      * @notice Converts an int256 which is already in some fixed point
@@ -156,8 +134,8 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(_originDigits <= 38 && _destinationDigits <= 38);
-        
+        require(_originDigits <= 38 && _destinationDigits <= 38, "Too many digits.");
+
         uint8 decimalDifference;
         if ( _originDigits > _destinationDigits ){
             decimalDifference = _originDigits - _destinationDigits;
@@ -180,32 +158,77 @@ library FixidityLib {
     }
 
     /**
-     * @notice Converts an int256 which is already in some fixed point
-     * representation to that of this library. The _originDigits parameter is the
-     * precision of x. Values with a precision higher than FixidityLib.digits()
-     * will be truncated accordingly.
+     * @notice Safe casting from int256 to uint256
+     * @param x int256 to cast
+     * @return casted uint256
      */
-    function newFixed(int256 x, uint8 _originDigits)
-        internal
-        pure
-        returns (int256)
-    {
-        return convertFixed(x, _originDigits, digits());
+    function safeIntToUint(int256 x) internal pure returns(uint256) {
+        require(
+            x >= 0,
+            "Cannot cast negative signed integer to unsigned integer."
+        );
+        return uint256(x);
     }
 
     /**
-     * @notice Converts an int256 in the fixed point representation of this
-     * library to a different representation. The _destinationDigits parameter is the
-     * precision of the output x. Values with a precision below than
-     * FixidityLib.digits() will be truncated accordingly.
+     * @notice Safe casting from uint256 to int256
+     * @param x uint256 to cast
+     * @return casted int256
      */
-    function fromFixed(int256 x, uint8 _destinationDigits)
-        internal
-        pure
-        returns (int256)
-    {
+    function safeUintToInt(uint256 x) internal pure returns(int256) {
+        require(
+            x <= safeIntToUint(maxInt256()),
+            "Cannot cast overflowing unsigned integer to signed integer."
+        );
+        return int256(x);
+    }
+
+    /// @dev Create a Fixidity fixed point number with `digits()` decimal numbers from an fixed point integer created elsewhere.
+    function fixedFromInt(int256 x, uint8 _originDigits) internal pure returns (int256) {
+        return convertFixed(x, _originDigits, digits());
+    }
+
+    /// @dev Create a Fixidity fixed point number with `digits()` decimal numbers from an fixed point unsigned integer created elsewhere.
+    /// ERC20Detailed tokens are in a fixed point representation of `decimals()` decimal numbers.
+    /// When working with wei amounts, use `fixedFromUint(amount, token.decimals())`.
+    /// To create decimal numbers, like for example 2.345, you would call `fixedFromUint(2345, 3)`.
+    function fixedFromUint(uint256 x, uint8 _originDigits) internal pure returns (int256) {
+        return fixedFromInt(safeUintToInt(x), _originDigits);
+    }
+
+    /// @dev Create a Fixidity fixed point number with `digits()` decimal numbers from an integer.
+    function fixedFromInt(int256 x) internal pure returns (int256) {
+        return fixedFromInt(x, 0);
+    }
+
+    /// @dev Create a Fixidity fixed point number with `digits()` decimal numbers from an unsigned integer.
+    function fixedFromUint(uint256 x) internal pure returns (int256) {
+        return fixedFromUint(x, 0);
+    }
+
+    /// @dev Convert a Fixidity fixed point number to an integer, truncating decimal numbers less significative than `_destinationDigits` and then removing the comma.
+    function intFromFixed(int256 x, uint8 _destinationDigits) internal pure returns (int256) {
         return convertFixed(x, digits(), _destinationDigits);
     }
+
+    /// @dev Convert a Fixidity fixed point number to an unsigned integer, truncating decimal numbers less significative than `_destinationDigits` and then removing the comma.
+    /// ERC20Detailed tokens are in a fixed point representation of `decimals()` decimal numbers.
+    /// When working with wei amounts, use `uintFromFixed(amount, token.decimals())`.
+    function uintFromFixed(int256 x, uint8 _destinationDigits) internal pure returns (uint256) {
+        return safeIntToUint(intFromFixed(x, _destinationDigits));
+    }
+
+    /// @dev Convert a Fixidity fixed point number to an integer, truncating all decimal numbers
+    function intFromFixed(int256 x) internal pure returns (int256) {
+        return intFromFixed(x, 0);
+    }
+
+    /// @dev Convert a Fixidity fixed point number to an unsigned integer, truncating all decimal numbers
+    function uintFromFixed(int256 x) internal pure returns (uint256) {
+        return uintFromFixed(x, 0);
+    }
+
+    /** MATH */
 
     /**
      * @notice Returns the integer part of a fixed point number.
@@ -271,11 +294,11 @@ library FixidityLib {
         int256 x2 = fractional(x);
         int256 y1 = integer(y) / fixed1();
         int256 y2 = fractional(y);
-        
+
         // (x1 + x2) * (y1 + y2) = (x1 * y1) + (x1 * y2) + (x2 * y1) + (x2 * y2)
         int256 x1y1 = x1 * y1;
         if (x1 != 0) assert(x1y1 / x1 == y1); // Overflow x1y1
-        
+
         // x1y1 needs to be multiplied back by fixed1
         // solium-disable-next-line mixedcase
         int256 fixed_x1y1 = x1y1 * fixed1();
@@ -321,33 +344,7 @@ library FixidityLib {
         return multiply(x, reciprocal(y));
     }
 
-    /**
-     * @notice Safe casting from int256 to uint256
-     * @param x int256 to cast
-     * @return casted uint256
-     */
-    function safeIntToUint(int256 x) internal pure returns(uint256) {
-        require(
-            x >= 0,
-            "Cannot cast negative signed integer to unsigned integer."
-        );
-        return uint256(x);
-    }
-
-    /**
-     * @notice Safe casting from uint256 to int256
-     * @param x uint256 to cast
-     * @return casted int256
-     */
-    function safeUintToInt(uint256 x) internal pure returns(int256) {
-        require(
-            x <= safeIntToUint(maxInt256()),
-            "Cannot cast overflowing unsigned integer to signed integer."
-        );
-        return int256(x);
-    }
-
-    /** OBSOLETE FUNCTIONS */
+    /** OBSOLETE FUNCTIONS - LEFT FOR BACKWARDS COMPATIBILITY */
 
     /**
      * @notice Converts two int256 representing a fraction to fixed point units,
@@ -367,5 +364,53 @@ library FixidityLib {
         int256 convertedNumerator = newFixed(numerator);
         int256 convertedDenominator = newFixed(denominator);
         return divide(convertedNumerator, convertedDenominator);
+    }
+
+    /**
+     * @notice Converts an int256 to fixed point units, equivalent to multiplying
+     * by 10^digits().
+     */
+    function newFixed(int256 x) internal pure returns (int256) {
+        return newFixedFromInt(x);
+    }
+
+        /**
+     * @notice Converts an int256 which is already in some fixed point
+     * representation to that of this library. The _originDigits parameter is the
+     * precision of x. Values with a precision higher than FixidityLib.digits()
+     * will be truncated accordingly.
+     */
+    function newFixed(int256 x, uint8 _originDigits)
+        internal
+        pure
+        returns (int256)
+    {
+        return convertFixed(x, _originDigits, digits());
+    }
+
+    /**
+     * @notice Converts an int256 in the fixed point representation of this
+     * library to a different representation. The _destinationDigits parameter is the
+     * precision of the output x. Values with a precision below than
+     * FixidityLib.digits() will be truncated accordingly.
+     */
+    function fromFixed(int256 x, uint8 _destinationDigits)
+        internal
+        pure
+        returns (int256)
+    {
+        return convertFixed(x, digits(), _destinationDigits);
+    }
+
+    /**
+     * @notice Converts an int256 in the fixed point representation of this
+     * library to a non decimal. All decimal digits will be truncated.
+     */
+    function fromFixed(int256 x)
+        internal
+        pure
+        returns (int256)
+    {
+        return fromFixed(x, digits());
     }
 }
