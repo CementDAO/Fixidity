@@ -104,11 +104,7 @@ library FixidityLib {
 
     /**
      * @notice Maximum value that can be safely used as a dividend.
-     * @dev divide(maxFixedDiv,newFixedFraction(1,fixed1())) = maxInt256().
-     * Test maxFixedDiv() equals maxInt256()/fixed1()
-     * Test divide(maxFixedDiv(),multiply(mulPrecision(),mulPrecision())) = maxFixedDiv()*(10^digits())
-     * Test divide(maxFixedDiv()+1,multiply(mulPrecision(),mulPrecision())) throws
-     * Hardcoded to 24 digits.
+     * @dev Hardcoded to 24 digits.
      */
     function maxFixedDiv() internal pure returns(int256) {
         return 57896044618658097711785492504343953926634992332820282;
@@ -116,10 +112,7 @@ library FixidityLib {
 
     /**
      * @notice Maximum value that can be safely used as a divisor.
-     * @dev Test maxFixedDivisor() equals fixed1()*fixed1() - Or 10**(digits()*2)
-     * Test divide(10**(digits()*2 + 1),10**(digits()*2)) = returns 10*fixed1()
-     * Test divide(10**(digits()*2 + 1),10**(digits()*2 + 1)) = throws
-     * Hardcoded to 24 digits.
+     * @dev Hardcoded to 24 digits.
      */
     function maxFixedDivisor() internal pure returns(int256) {
         return 1000000000000000000000000000000000000000000000000;
@@ -128,10 +121,6 @@ library FixidityLib {
     /**
      * @notice Converts an int256 to fixed point units, equivalent to multiplying
      * by 10^digits().
-     * @dev Test newFixed(0) returns 0
-     * Test newFixed(1) returns fixed1()
-     * Test newFixed(maxNewFixed()) returns maxNewFixed() * fixed1()
-     * Test newFixed(maxNewFixed()+1) fails
      */
     function newFixed(int256 x)
         internal
@@ -216,26 +205,6 @@ library FixidityLib {
         returns (int256)
     {
         return convertFixed(x, digits(), _destinationDigits);
-    }
-
-    /**
-     * @notice Converts two int256 representing a fraction to fixed point units,
-     * equivalent to multiplying dividend and divisor by 10^digits().
-     */
-    function newFixedFraction(
-        int256 numerator,
-        int256 denominator
-        )
-        internal
-        pure
-        returns (int256)
-    {
-        assert(numerator <= maxNewFixed());
-        assert(denominator <= maxNewFixed());
-        assert(denominator != 0);
-        int256 convertedNumerator = newFixed(numerator);
-        int256 convertedDenominator = newFixed(denominator);
-        return divide(convertedNumerator, convertedDenominator);
     }
 
     /**
@@ -376,5 +345,27 @@ library FixidityLib {
             "Cannot cast overflowing unsigned integer to signed integer."
         );
         return int256(x);
+    }
+
+    /** OBSOLETE FUNCTIONS */
+
+    /**
+     * @notice Converts two int256 representing a fraction to fixed point units,
+     * equivalent to multiplying dividend and divisor by 10^digits().
+     */
+    function newFixedFraction(
+        int256 numerator,
+        int256 denominator
+        )
+        internal
+        pure
+        returns (int256)
+    {
+        assert(numerator <= maxNewFixed());
+        assert(denominator <= maxNewFixed());
+        assert(denominator != 0);
+        int256 convertedNumerator = newFixed(numerator);
+        int256 convertedDenominator = newFixed(denominator);
+        return divide(convertedNumerator, convertedDenominator);
     }
 }
