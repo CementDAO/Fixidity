@@ -246,17 +246,23 @@ library FixidityLib {
     }
 
     /**
-     * @notice Converts to positive if negative.
+     * @notice Returns the negative of a fixed point number.
      * Due to int256 having one more negative number than positive numbers
-     * abs(minInt256) reverts.
+     * negative(minInt256) reverts.
+     */
+    function negative(int256 x) internal pure returns (int256) {
+        require(x > minInt256());
+        return -x;
+    }
+
+    /**
+     * @notice Converts to positive if negative.
      */
     function abs(int256 x) internal pure returns (int256) {
         if (x >= 0) {
             return x;
         } else {
-            int256 result = -x;
-            require (result > 0);
-            return result;
+            return negative(x);
         }
     }
 
@@ -276,7 +282,7 @@ library FixidityLib {
      * @notice x-y. You can use add(x,-y) instead.
      */
     function subtract(int256 x, int256 y) internal pure returns (int256) {
-        return add(x,-y);
+        return add(x,negative(y));
     }
 
     /**
