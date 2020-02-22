@@ -184,7 +184,7 @@ library FixidityLib {
     }
 
     /// @dev Create a Fixidity fixed point number with `digits()` decimal numbers from an fixed point integer created elsewhere.
-    function fixedFromInt(int256 x, uint8 _originDigits) internal pure returns (int256) {
+    function toFixed(int256 x, uint8 _originDigits) internal pure returns (int256) {
         return convertFixed(x, _originDigits, digits());
     }
 
@@ -192,40 +192,40 @@ library FixidityLib {
     /// ERC20Detailed tokens are in a fixed point representation of `decimals()` decimal numbers.
     /// When working with wei amounts, use `fixedFromUint(amount, token.decimals())`.
     /// To create decimal numbers, like for example 2.345, you would call `fixedFromUint(2345, 3)`.
-    function fixedFromUint(uint256 x, uint8 _originDigits) internal pure returns (int256) {
-        return fixedFromInt(safeUintToInt(x), _originDigits);
+    function toFixed(uint256 x, uint8 _originDigits) internal pure returns (int256) {
+        return toFixed(safeUintToInt(x), _originDigits);
     }
 
     /// @dev Create a Fixidity fixed point number with `digits()` decimal numbers from an integer.
-    function fixedFromInt(int256 x) internal pure returns (int256) {
-        return fixedFromInt(x, 0);
+    function toFixed(int256 x) internal pure returns (int256) {
+        return toFixed(x, 0);
     }
 
     /// @dev Create a Fixidity fixed point number with `digits()` decimal numbers from an unsigned integer.
-    function fixedFromUint(uint256 x) internal pure returns (int256) {
-        return fixedFromUint(x, 0);
+    function toFixed(uint256 x) internal pure returns (int256) {
+        return toFixed(x, 0);
     }
 
     /// @dev Convert a Fixidity fixed point number to an integer, truncating decimal numbers less significative than `_destinationDigits` and then removing the comma.
-    function intFromFixed(int256 x, uint8 _destinationDigits) internal pure returns (int256) {
+    function toInt(int256 x, uint8 _destinationDigits) internal pure returns (int256) {
         return convertFixed(x, digits(), _destinationDigits);
     }
 
     /// @dev Convert a Fixidity fixed point number to an unsigned integer, truncating decimal numbers less significative than `_destinationDigits` and then removing the comma.
     /// ERC20Detailed tokens are in a fixed point representation of `decimals()` decimal numbers.
     /// When working with wei amounts, use `uintFromFixed(amount, token.decimals())`.
-    function uintFromFixed(int256 x, uint8 _destinationDigits) internal pure returns (uint256) {
-        return safeIntToUint(intFromFixed(x, _destinationDigits));
+    function toUint(int256 x, uint8 _destinationDigits) internal pure returns (uint256) {
+        return safeIntToUint(toInt(x, _destinationDigits));
     }
 
     /// @dev Convert a Fixidity fixed point number to an integer, truncating all decimal numbers
-    function intFromFixed(int256 x) internal pure returns (int256) {
-        return intFromFixed(x, 0);
+    function toInt(int256 x) internal pure returns (int256) {
+        return toInt(x, 0);
     }
 
     /// @dev Convert a Fixidity fixed point number to an unsigned integer, truncating all decimal numbers
-    function uintFromFixed(int256 x) internal pure returns (uint256) {
-        return uintFromFixed(x, 0);
+    function toUint(int256 x) internal pure returns (uint256) {
+        return toUint(x, 0);
     }
 
     /** MATH */
@@ -371,7 +371,7 @@ library FixidityLib {
      * by 10^digits().
      */
     function newFixed(int256 x) internal pure returns (int256) {
-        return newFixedFromInt(x);
+        return newFixed(x, 0);
     }
 
         /**
