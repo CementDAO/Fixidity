@@ -13,7 +13,7 @@ The main arithmetic operations currently supported are addition, subtraction,
 multiplication, division and logarithms. In a near future exponentials and
 square roots might be supported.
 
-In addition to fixed-point airthmetic operations, FixidityLib is fully 
+In addition to fixed point arithmetic operations, FixidityLib is fully 
 protected against overflow. Any operation that causes an overflow to happen
 will revert. 
 
@@ -55,7 +55,7 @@ Default: 1000000000000000000000000000000000000
 
 **function mulPrecision() public pure returns(int256)**
 The amount of decimals lost on each multiplication operand.
-Calcualted as mulPrecision() = sqrt(fixed1)
+Calculated as mulPrecision() = sqrt(fixed1)
 Default: 1000000000000000000
 
 **function maxInt256() public pure returns(int256)**
