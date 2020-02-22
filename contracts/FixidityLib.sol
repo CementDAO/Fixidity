@@ -149,8 +149,8 @@ library FixidityLib {
             //     decimalDifference = abs(_destinationDigits - _originDigits)
             //     decimalDifference < 38
             //     10**38 < 2**128-1
-            assert(x <= maxInt256()/uint128(10)**uint128(decimalDifference));
-            assert(x >= minInt256()/uint128(10)**uint128(decimalDifference));
+            require(x <= maxInt256()/uint128(10)**uint128(decimalDifference));
+            require(x >= minInt256()/uint128(10)**uint128(decimalDifference));
             return x*(uint128(10)**uint128(decimalDifference));
         }
         // _originDigits == digits())
@@ -255,7 +255,7 @@ library FixidityLib {
             return x;
         } else {
             int256 result = -x;
-            assert (result > 0);
+            require (result > 0);
             return result;
         }
     }
@@ -267,8 +267,8 @@ library FixidityLib {
      */
     function add(int256 x, int256 y) internal pure returns (int256) {
         int256 z = x + y;
-        if (x > 0 && y > 0) assert(z > x && z > y);
-        if (x < 0 && y < 0) assert(z < x && z < y);
+        if (x > 0 && y > 0) require(z > x && z > y);
+        if (x < 0 && y < 0) require(z < x && z < y);
         return z;
     }
 
@@ -297,24 +297,24 @@ library FixidityLib {
 
         // (x1 + x2) * (y1 + y2) = (x1 * y1) + (x1 * y2) + (x2 * y1) + (x2 * y2)
         int256 x1y1 = x1 * y1;
-        if (x1 != 0) assert(x1y1 / x1 == y1); // Overflow x1y1
+        if (x1 != 0) require(x1y1 / x1 == y1); // Overflow x1y1
 
         // x1y1 needs to be multiplied back by fixed1
         // solium-disable-next-line mixedcase
         int256 fixed_x1y1 = x1y1 * fixed1();
-        if (x1y1 != 0) assert(fixed_x1y1 / x1y1 == fixed1()); // Overflow x1y1 * fixed1
+        if (x1y1 != 0) require(fixed_x1y1 / x1y1 == fixed1()); // Overflow x1y1 * fixed1
         x1y1 = fixed_x1y1;
 
         int256 x2y1 = x2 * y1;
-        if (x2 != 0) assert(x2y1 / x2 == y1); // Overflow x2y1
+        if (x2 != 0) require(x2y1 / x2 == y1); // Overflow x2y1
 
         int256 x1y2 = x1 * y2;
-        if (x1 != 0) assert(x1y2 / x1 == y2); // Overflow x1y2
+        if (x1 != 0) require(x1y2 / x1 == y2); // Overflow x1y2
 
         x2 = x2 / mulPrecision();
         y2 = y2 / mulPrecision();
         int256 x2y2 = x2 * y2;
-        if (x2 != 0) assert(x2y2 / x2 == y2); // Overflow x2y2
+        if (x2 != 0) require(x2y2 / x2 == y2); // Overflow x2y2
 
         // result = fixed1() * x1 * y1 + x1 * y2 + x2 * y1 + x2 * y2 / fixed1();
         int256 result = x1y1;
@@ -328,7 +328,7 @@ library FixidityLib {
      * @notice 1/x
      */
     function reciprocal(int256 x) internal pure returns (int256) {
-        assert(x != 0);
+        require(x != 0);
         return (fixed1()*fixed1()) / x; // Can't overflow
     }
 
@@ -339,8 +339,8 @@ library FixidityLib {
      */
     function divide(int256 x, int256 y) internal pure returns (int256) {
         if (y == fixed1()) return x;
-        assert(y != 0);
-        assert(y <= maxFixedDivisor());
+        require(y != 0);
+        require(y <= maxFixedDivisor());
         return multiply(x, reciprocal(y));
     }
 
@@ -358,9 +358,9 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        assert(numerator <= maxNewFixed());
-        assert(denominator <= maxNewFixed());
-        assert(denominator != 0);
+        require(numerator <= maxNewFixed());
+        require(denominator <= maxNewFixed());
+        require(denominator != 0);
         int256 convertedNumerator = newFixed(numerator);
         int256 convertedDenominator = newFixed(denominator);
         return divide(convertedNumerator, convertedDenominator);

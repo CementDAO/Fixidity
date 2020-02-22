@@ -49,7 +49,7 @@ library LogarithmLib {
      * Test ln(1) returns -82
      */
     function ln(int256 value) internal pure returns (int256) {
-        assert(value > 0);
+        require(value > 0);
         int256 v = value;
         int256 r = 0;
         while (v <= FixidityLib.fixed1() / 10) {

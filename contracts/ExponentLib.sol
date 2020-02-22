@@ -18,7 +18,7 @@ library ExponentLib {
         pure 
         returns (int256) 
     {
-        assert(_x < 172 * FixidityLib.fixed1());
+        require(_x < 172 * FixidityLib.fixed1());
         int256 x = _x;
         int256 r = FixidityLib.fixed1();
         while (x >= 10 * FixidityLib.fixed1()) {
