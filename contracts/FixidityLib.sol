@@ -66,7 +66,7 @@ library FixidityLib {
     }
 
     /**
-     * @notice Maximum value that can be converted to fixed point. Optimize for
+     * @notice Minimum value that can be converted to fixed point. Optimize for
      * deployment.
      * @dev Hardcoded to 24 digits.
      */
