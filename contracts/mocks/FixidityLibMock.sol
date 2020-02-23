@@ -52,22 +52,6 @@ contract FixidityLibMock {
         return FixidityLib.maxFixedSub();
     }
 
-    function newFixed(int256 x)
-        public
-        pure
-        returns (int256)
-    {
-        return FixidityLib.newFixed(x);
-    }
-
-    function fromFixed(int256 x)
-        public
-        pure
-        returns (int256)
-    {
-        return FixidityLib.fromFixed(x);
-    }
-
     function convertFixed(int256 x, uint8 _originDigits, uint8 _destinationDigits)
         public
         pure
@@ -76,15 +60,60 @@ contract FixidityLibMock {
         return FixidityLib.convertFixed(x, _originDigits, _destinationDigits);
     }
 
-    function newFixedFraction(
-        int256 numerator,
-        int256 denominator
-        )
+    function safeIntToUint(int256 x) public pure returns(uint256) {
+        return FixidityLib.safeIntToUint(x);
+    }
+
+    function safeUintToInt(uint256 x) public pure returns(int256) {
+        return FixidityLib.safeUintToInt(x);
+    }
+
+    function toFixed(int256 x, uint8 _originDigits)
         public
         pure
         returns (int256)
     {
-        return FixidityLib.newFixedFraction(numerator, denominator);
+        return FixidityLib.toFixed(x, _originDigits);
+    }
+
+    function toFixed(int256 x)
+        public
+        pure
+        returns (int256)
+    {
+        return FixidityLib.toFixed(x);
+    }
+
+    function toInt(int256 x, uint8 _destinationDigits)
+        public
+        pure
+        returns (int256)
+    {
+        return FixidityLib.toInt(x, _destinationDigits);
+    }
+
+    function toInt(int256 x)
+        public
+        pure
+        returns (int256)
+    {
+        return FixidityLib.toInt(x);
+    }
+
+    function toUint(int256 x, uint8 _destinationDigits)
+        public
+        pure
+        returns (uint256)
+    {
+        return FixidityLib.toUint(x, _destinationDigits);
+    }
+
+    function toUint(int256 x)
+        public
+        pure
+        returns (uint256)
+    {
+        return FixidityLib.toUint(x);
     }
 
     function integer(int256 v) public pure returns (int256) {
@@ -121,5 +150,32 @@ contract FixidityLibMock {
 
     function subtract(int256 a, int256 b) public pure returns (int256) {
         return FixidityLib.subtract(a, b);
+    }
+
+    function newFixed(int256 x)
+        public
+        pure
+        returns (int256)
+    {
+        return FixidityLib.newFixed(x);
+    }
+
+    function fromFixed(int256 x)
+        public
+        pure
+        returns (int256)
+    {
+        return FixidityLib.fromFixed(x);
+    }
+
+    function newFixedFraction(
+        int256 numerator,
+        int256 denominator
+        )
+        public
+        pure
+        returns (int256)
+    {
+        return FixidityLib.newFixedFraction(numerator, denominator);
     }
 }

@@ -377,7 +377,7 @@ library FixidityLib {
      * by 10^digits().
      */
     function newFixed(int256 x) internal pure returns (int256) {
-        return toFixed(x, 0);
+        return newFixed(x, 0);
     }
 
         /**
