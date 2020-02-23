@@ -8,6 +8,50 @@ In a separate terminal: `yarn start:ganache:local`
 `npx truffle migrate`
 `npx truffle test`
 
+## Usage
+Fixidity implements fixed point arithmetic by keeping a "virtual comma" in an int256.
+
+With the current implementation that uses 24 digits, 1 in Fixidity is 1 * 10**24.
+In a similar manner, 0.5 would be 5 * 10**23.
+
+Fixidity stores fixed point numbers in an int256, and it is up to the developer to remember whether a specific int256 is a Fixidity fixed point number or not.
+
+To create Fixidity fixed point numbers use `toFixed()`.
+
+```
+using FixidityLib for uint256;
+uint256 x = 1;
+int256 xFixed;
+xFixed = x.toFixed();
+...
+```
+
+To convert Fixidity fixed point number back to uint use `toUint()`.
+```
+...
+using FixidityLib for uint256;
+using FixidityLib for int256;
+uint256 x = 1;
+uint256 y = 1;
+int256 xFixed = x.toFixed();
+int256 yFixed = y.toFixed();
+int256 zFixed = x.add(y);
+uint256 z = zFixed.toUint();
+``` 
+
+FixidityLib can keep 24 digits, when using `toUint()` only the integer part will be returned.
+
+## Fixed Point Math with Tokens
+Ether and the ERC20 implementation use an implicit fixed point representation, although no arithmetic comes bundled up with them.
+
+The `decimals()` field from `ERC20Detailed` states how many digits are in the fractional part of a token. For Ether the fractional part of a token takes 18 digits.
+
+When using Fixidity to operate on wei or `ERC20Detailed` tokens, it is recommended to remember that these already have an implicit fractional part. When converting an `uint` to a fixed point number Fixidity will just add 24 zeros at the end. If the uint contains a number representing a large number of tokens an overflow will be more likely that it needs to be.
+
+When converting an ether wei amount to Fixidity fixed point use `toFixed(18)`. When converting from Fixidity fixed point to we use `toUint(18)`.
+When converting an ERC20 wei amount to Fixidity fixed point use `toFixed(token.decimals())`. When converting from Fixidity fixed point to we use `toUint(token.decimals())`.
+
+
 ## FixidityLib.sol
 This library implements  addition, subtraction,
 multiplication and division, along with the related constants and limits.
@@ -81,34 +125,47 @@ by zero.
 Calculated as maxFixedDivisor() = fixed1()*fixed1()
 Default: 1000000000000000000000000000000000000000000000000000000000000000000000000
 
-**function newFixed(int256 x)**
-Converts an int256 to fixed point units, equivalent to multiplying by 
-10^digits().
-
-**function fromFixed(int256 x)**
-Converts an int256 in the fixed point representation of this library to a non 
-decimal. All decimal digits will be truncated.
-
 **function convertFixed(int256 x, uint8 _originDigits, uint8 _destinationDigits)**
 Converts an int256 which is already in some fixed point representation to a
 different fixed precision representation. Both the origin and destination 
 precisions must be 38 or less digits. Origin values with a precision higher 
 than the destination precision will be truncated accordingly.
 
-**function newFixed(int256 x, uint8 _originDigits)**
+**function toFixed(int256 x)**
+Converts an int256 to fixed point units, equivalent to multiplying by 
+10^digits().
+
+**function toFixed(uint256 x)**
+Converts an uint256 to fixed point units, equivalent to multiplying by 
+10^digits().
+
+**function toFixed(int256 x, uint8 _originDigits)**
 Converts an int256 which is already in some fixed point representation to that 
 of this library. The _originDigits parameter is the precision of x. Values with
 a precision higher than FixidityLib.digits() will be truncated accordingly.
 
-**function fromFixed(int256 x, uint8 _destinationDigits)**
+**function toFixed(uint256 x, uint8 _originDigits)**
+Converts an uint256 which is already in some fixed point representation to that 
+of this library. The _originDigits parameter is the precision of x. Values with
+a precision higher than FixidityLib.digits() will be truncated accordingly.
+
+**function toUint(int256 x)**
+Converts an int256 in the fixed point representation of this library to an uint. All decimal digits will be truncated.
+
+**function toInt(int256 x)**
+Converts an int256 in the fixed point representation of this library to an uint. All decimal digits will be truncated.
+
+**function toUint(int256 x, uint8 _destinationDigits)**
 Converts an int256 in the fixed point representation of this library to a 
-different representation. The _destinationDigits parameter is the precision of
+different fixed point representation stored in an uint256. The _destinationDigits parameter is the precision of
 the output x. Values with a precision below than FixidityLib.digits() will be
 truncated accordingly.
 
-**function newFixedFraction(int256 numerator, int256 denominator)**
-Converts two int256 representing a fraction to fixed point units, equivalent to
-multiplying dividend and divisor by 10^digits() and then dividing them.
+**function toInt(int256 x, uint8 _destinationDigits)**
+Converts an int256 in the fixed point representation of this library to a 
+different fixed point representation stored in uint256. The _destinationDigits parameter is the precision of
+the output x. Values with a precision below than FixidityLib.digits() will be
+truncated accordingly.
 
 **function integer(int256 x) public pure returns (int256)**
 Returns the integer part of a fixed point number, still in fixed point format.
@@ -138,6 +195,33 @@ x*y. If any of the operators is higher than maxFixedMul() it might overflow.
 x/y. If the dividend is higher than maxFixedDiv() it might overflow. You can 
 use multiply(x,reciprocal(y)) instead.
 There is a loss of precision on division for the lower mulPrecision() decimals.
+
+** Obsolete functions kept for backwards compatibility**
+
+**function newFixed(int256 x)**
+Converts an int256 to fixed point units, equivalent to multiplying by 
+10^digits().
+
+**function fromFixed(int256 x)**
+Converts an int256 in the fixed point representation of this library to a non 
+decimal. All decimal digits will be truncated.
+
+**function newFixed(int256 x, uint8 _originDigits)**
+Converts an int256 which is already in some fixed point representation to that 
+of this library. The _originDigits parameter is the precision of x. Values with
+a precision higher than FixidityLib.digits() will be truncated accordingly.
+
+**function fromFixed(int256 x, uint8 _destinationDigits)**
+Converts an int256 in the fixed point representation of this library to a 
+different representation. The _destinationDigits parameter is the precision of
+the output x. Values with a precision below than FixidityLib.digits() will be
+truncated accordingly.
+
+**function newFixedFraction(int256 numerator, int256 denominator)**
+Converts two int256 representing a fraction to fixed point units, equivalent to
+multiplying dividend and divisor by 10^digits() and then dividing them.
+
+
 
 ## LogarithmLib.sol
 This library extends FixidityLib by implementing logarithms, along with the related constants and limits.
