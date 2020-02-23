@@ -15,7 +15,7 @@ library LogarithmLib {
      * @dev 27182818284590452353602874713526624977572470936999595749669676277240766303535/fixed1()
      * Hardcoded to 24 digits.
      */
-    function fixedE() public pure returns(int256) {
+    function fixedE() internal pure returns(int256) {
         return 2718281828459045235360287;
     }
 
@@ -23,23 +23,23 @@ library LogarithmLib {
      * @notice ln(1.5), hardcoded with the comma 24 positions to the right.
      */
     // solium-disable-next-line mixedcase
-    function fixedLn1_5() public pure returns(int256) {
+    function fixedLn1_5() internal pure returns(int256) {
         return 405465108108164381978013;
     }
 
     /**
      * @notice ln(10), hardcoded with the comma 24 positions to the right.
      */
-    function fixedLn10() public pure returns(int256) {
+    function fixedLn10() internal pure returns(int256) {
         return 2302585092994045684017991;
     }
 
     /**
      * @notice ln(x)
-     * This function has a 1/50 deviation close to ln(-1), 
-     * 1/maxFixedMul() deviation at fixedE()**2, but diverges to 10x 
+     * This function has a 1/50 deviation close to ln(-1),
+     * 1/maxFixedMul() deviation at fixedE()**2, but diverges to 10x
      * deviation at maxNewFixed().
-     * @dev 
+     * @dev
      * Test ln(0) fails
      * Test ln(-fixed1()) fails
      * Test ln(fixed1()) returns 0
@@ -48,8 +48,8 @@ library LogarithmLib {
      * Test ln(maxInt256) returns 176752531042786059920093411119162458112
      * Test ln(1) returns -82
      */
-    function ln(int256 value) public pure returns (int256) {
-        assert(value >= 0);
+    function ln(int256 value) internal pure returns (int256) {
+        require(value > 0);
         int256 v = value;
         int256 r = 0;
         while (v <= FixidityLib.fixed1() / 10) {
@@ -97,7 +97,7 @@ library LogarithmLib {
      * @dev Tests covered by ln(x) and divide(a,b)
      */
     // solium-disable-next-line mixedcase
-    function log_b(int256 b, int256 x) public pure returns (int256) {
+    function log_b(int256 b, int256 x) internal pure returns (int256) {
         if (b == FixidityLib.fixed1()*10)
             return FixidityLib.divide(ln(x), fixedLn10());
         return FixidityLib.divide(ln(x), ln(b));
