@@ -13,11 +13,7 @@ library ExponentLib {
     /**
      * @notice Not fully tested anymore.
      */
-    function powerE(int256 _x) 
-        internal 
-        pure 
-        returns (int256) 
-    {
+    function powerE(int256 _x) internal pure returns (int256) {
         require(_x < 172 * FixidityLib.fixed1());
         int256 x = _x;
         int256 r = FixidityLib.fixed1();
@@ -39,36 +35,20 @@ library ExponentLib {
         return trunc_digits(FixidityLib.multiply(tr, r), 2);
     }
 
-    function powerAny(int256 a, int256 b) 
-        internal 
-        pure 
-        returns (int256) 
-    {
+    function powerAny(int256 a, int256 b) internal pure returns (int256) {
         return powerE(FixidityLib.multiply(LogarithmLib.ln(a), b));
     }
 
-    function rootAny(int256 a, int256 b) 
-        internal 
-        pure 
-        returns (int256) 
-    {
+    function rootAny(int256 a, int256 b) internal pure returns (int256) {
         return powerAny(a, FixidityLib.reciprocal(b));
     }
 
-    function rootN(int256 a, uint8 n) 
-        internal 
-        pure 
-        returns (int256) 
-    {
+    function rootN(int256 a, uint8 n) internal pure returns (int256) {
         return powerE(FixidityLib.divide(LogarithmLib.ln(a), FixidityLib.fixed1() * n));
     }
 
     // solium-disable-next-line mixedcase
-    function round_off(int256 _v, uint8 digits) 
-        internal 
-        pure 
-        returns (int256) 
-    {
+    function round_off(int256 _v, uint8 digits) internal pure returns (int256) {
         int256 t = int256(uint256(10) ** uint256(digits));
         int8 sign = 1;
         int256 v = _v;
@@ -81,11 +61,7 @@ library ExponentLib {
     }
 
     // solium-disable-next-line mixedcase
-    function trunc_digits(int256 v, uint8 digits) 
-        internal 
-        pure 
-        returns (int256) 
-    {
+    function trunc_digits(int256 v, uint8 digits) internal pure returns (int256) {
         if (digits <= 0) return v;
         return round_off(v, digits) / FixidityLib.fixed1();
     }
