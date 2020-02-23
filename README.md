@@ -108,7 +108,7 @@ Maximum value that can be safely used as a multiplication operator.
 Divisions where a value is divided by another over this value might overflow, 
 but not necessarily so.
 Calculated as maxFixedMul() = sqrt(maxNewFixed())*fixed1().
-Default: 240615969168004511545000000000000000000000000000000000000
+Default: 240615969168004511545033772477625056927114980741063
 
 **function maxFixedDiv() public pure returns(int256)**
 Maximum value that can be safely used as a dividend.
