@@ -10,6 +10,7 @@
     "scripts": {
         "test:local": "truffle test --network test",
         "test:docker": "echo TODO!",
+        "start:ganache:local": "./scripts/local_ganache.sh",
         "lint:js": "eslint *.js .",
         "lint:sol": "solium -d contracts",
         "lint": "npm run lint:sol && npm run lint:js",
