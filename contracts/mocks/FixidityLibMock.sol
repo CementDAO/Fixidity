@@ -184,6 +184,12 @@ contract FixidityLibMock {
         return FixidityLib.fractional(v);
     }
 
+    /**
+     * @dev Converts to oppsite sign
+     */
+    function negative(int256 x) public pure returns (int256) {
+        return FixidityLib.negative(x);
+    }
 
     /**
      * @dev Converts to positive if negative
