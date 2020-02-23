@@ -417,6 +417,6 @@ library FixidityLib {
         pure
         returns (int256)
     {
-        return fromFixed(x, digits());
+        return fromFixed(x, 0);
     }
 }
